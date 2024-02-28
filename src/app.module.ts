@@ -7,6 +7,9 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EmailModule } from './utils/email/email.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { CategoriesModule } from './categories/categories.module';
+import { Product } from './product/entity/Product.entity';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -19,6 +22,8 @@ import { CacheModule } from '@nestjs/cache-manager';
     UserModule,
     AuthModule,
     EmailModule,
+    //CategoriesModule,
+    ProductModule
   ],
   controllers: [AppController],
   providers: [AppService],
