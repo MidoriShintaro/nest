@@ -26,11 +26,11 @@ export class Review {
   rate: number;
 
   @Prop({type:Types.ObjectId, ref : 'Product'})
-  Product: Product;
+  Product: string;
 
   
   @Prop({type:Types.ObjectId, ref : 'User'})
-  User: User;
+  User: string;
 
 }
 

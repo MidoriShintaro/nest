@@ -26,7 +26,7 @@ export class Shipping {
   method:String;
 
   @Prop({type:Types.ObjectId, ref:'Order'})
-  Order:Order;
+  Order:string;
 
 }
 

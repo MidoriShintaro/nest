@@ -17,5 +17,5 @@ export class Guarantee{
 
     @IsArray()
     @IsNotEmpty()
-    products_id:number[];
+    products_id:string[];
 }

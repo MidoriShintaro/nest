@@ -8,7 +8,7 @@ export class BrandDto{
 
     @IsArray()
     @IsNotEmpty()
-    products_id: Number[];
+    products_id: string[];
 
 
 }

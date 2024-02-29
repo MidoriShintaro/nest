@@ -18,7 +18,7 @@ export class Brand {
   brandname: string;
 
   @Prop({type:[{type:Types.ObjectId, ref:'Product'}]})
-  Products : Product[];
+  Products : string[];
 
 
 

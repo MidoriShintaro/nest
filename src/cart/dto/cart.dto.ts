@@ -18,11 +18,11 @@ export class CartDTO{
 
     @IsNumber()
     @IsNotEmpty()
-    user_id:number;
+    user_id:string;
 
     @IsArray()
     @IsNotEmpty()
-    products_id:number[];
+    products_id:string[];
     
 
     

@@ -23,11 +23,11 @@ export class Orderdetail {
   quantity:number;
 
   @Prop({type:Types.ObjectId, ref:'Product'})
-  Product:Product;
+  Product:string;
 
   
   @Prop({type:Types.ObjectId, ref:'Order'})
-  Order:Order;
+  Order:string;
 
 
 

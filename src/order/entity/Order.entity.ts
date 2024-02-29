@@ -23,13 +23,13 @@ export class Order {
   status: string;
 
   @Prop({type:[{type:Types.ObjectId, ref:'Orderdetail'}]})
-  Orderdetails: Orderdetail[];
+  Orderdetails: string[];
 
   @Prop({type:Types.ObjectId, ref:'Payment'})
-  Payment: Payment;
+  Payment: string;
 
   @Prop({type:[{type:Types.ObjectId, ref:'Shipping'}]})
-  Shippings:Shipping[];
+  Shippings:string[];
  
 }
 

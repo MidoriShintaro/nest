@@ -25,7 +25,7 @@ export class Guarantee {
   guarantee:boolean;
 
   @Prop({type:Types.ObjectId, ref:'Product'})
-  Product = Product;
+  Product : string;
 
 }
 
