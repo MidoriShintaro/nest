@@ -52,15 +52,15 @@ export class User {
   })
   role: string;
 
-  @Prop({type: Types.ObjectId, ref : 'Cart'})
-  Cart: string;
+  @Prop({type: [{type:Types.ObjectId, ref : 'Orderdetail'}]})
+  OrderdetailId: string[];
 
   @Prop({type:[{type:Types.ObjectId, ref: 'Review'}]})
   Reviews: string[];
 
   @Prop({type:[{type:Types.ObjectId, ref: 'Voucher'}]})
   Vouchers: string[];
-s
+
 
 }
 

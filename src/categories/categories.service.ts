@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { privateDecrypt } from 'crypto';
-import { Model, Types, Mongoose} from 'mongoose';
+import { Model, Types, Mongoose, ClientSession} from 'mongoose';
 import { CategoriesDTO } from './dto/category.dto';
 import { Category, CategoryDocument } from './entity/Categories.entity';
 import { ObjectId } from 'typeorm';
@@ -28,8 +28,12 @@ export class CategoriesService {
         return await oldCategory.save();
     }
 
-    async delete (id: string)
+    async delete (ids: string[])
     {
+        for(const id of ids)
+        {
+            const session: ClientSession =await this.categoryModel.startSession();
+        session.startTransaction();
         console.error('idNumber:',id)
 
         const obejctId =new  Types.ObjectId(id);
@@ -42,18 +46,36 @@ export class CategoriesService {
             throw new Error('Category not found!!!');
         }
     
-
+        
+        
         try{
+            const products =  oldCategory.Products;
+            console.error('old products', products);
+        const otherCategory = await this.categoryModel.findOne({categoryname:'other'}).exec();
+        const productOtherCategory = otherCategory.Products;
+       const reustlconcat =  productOtherCategory.concat(products);
+        console.error('products other', reustlconcat);
+        otherCategory.Products = reustlconcat;
+
+        otherCategory.save();
+
             const result =  await oldCategory.deleteOne({_id:obejctId});
             if(result.deletedCount==0)
             {
                 throw Error ('No category is deleted')
             }
+            session.commitTransaction();
+            session.endSession();
+
         }
         catch(error)
         {
             console.log(error);
+            session.abortTransaction();
+            session.endSession();
         }
+        }
+        
     }
     async findByName(categoryName: string): Promise<Category>{
 

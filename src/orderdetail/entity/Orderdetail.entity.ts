@@ -16,22 +16,26 @@ export type OrderdetailDocument = HydratedDocument<Orderdetail>;
   },
 })
 export class Orderdetail {
-  @Prop({ type: Number, required: true })
-  unitprice: number;
+
 
   @Prop({ type: Number, required: true })
   quantity:number;
 
   @Prop({type:Types.ObjectId, ref:'Product'})
-  Product:string;
+  ProductId:string;
 
-  
+  @Prop({type:Boolean})
+  active:boolean;
+
   @Prop({type:Types.ObjectId, ref:'Order'})
-  Order:string;
+  OrderId:string;
 
+  @Prop({type:Types.ObjectId, ref:'User'})
+  UserId:string;
 
+  @Prop({ type: Number})
+  UnitPrice:number;
 
- 
 }
 
 export const OrderdetailSchema = SchemaFactory.createForClass(Orderdetail);

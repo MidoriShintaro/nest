@@ -16,6 +16,8 @@ export class CategoriesDTO{
     @IsArray()
     @IsOptional()
     products_id: string[];
+
+    ids:string[];
     
 
 }

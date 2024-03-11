@@ -21,8 +21,7 @@ export class Payment {
   @Prop({ type: Number, required: true })
   value: number;
 
-  @Prop({type: Date, required:true})
-  date:Date;
+  
 
   @Prop({type:Types.ObjectId, ref:'Order'})
   Order:string;

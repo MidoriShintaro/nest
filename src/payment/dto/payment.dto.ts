@@ -1,6 +1,6 @@
 import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class Payment{
+export class PaymentDto{
 
     @IsString()
     @IsNotEmpty()
@@ -10,9 +10,6 @@ export class Payment{
     @IsNotEmpty()
     value:number;
 
-    @IsDate()
-    @IsNotEmpty()
-    date:Date;
 
     
     

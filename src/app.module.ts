@@ -10,6 +10,8 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { CategoriesModule } from './categories/categories.module';
 import { Product } from './product/entity/Product.entity';
 import { ProductModule } from './product/product.module';
+import { VoucherModule } from './voucher/voucher.module';
+import { OrderdetailModule } from './orderdetail/orderdetail.module';
 
 @Module({
   imports: [
@@ -23,7 +25,9 @@ import { ProductModule } from './product/product.module';
     AuthModule,
     EmailModule,
     //CategoriesModule,
-    ProductModule
+    ProductModule,
+    VoucherModule,
+    OrderdetailModule
   ],
   controllers: [AppController],
   providers: [AppService],

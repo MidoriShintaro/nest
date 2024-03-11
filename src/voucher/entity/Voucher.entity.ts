@@ -27,10 +27,10 @@ export class Voucher {
   type:String;
 
   @Prop({type:[{type:Types.ObjectId, ref:'Product'}]})
-  Products:Product[];
+  Products:string[];
   
   @Prop({type:[{type:Types.ObjectId, ref:'User'}]})
-  User:User[];
+  User:string[];
 
 }
 
