@@ -4,15 +4,15 @@ export class OrderdetailDto{
    
 
     @IsNumber()
-    @IsNotEmpty()
+    @IsOptional()
     quantity:number;
     
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     userId:string;
 
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     ProductId:string;
 
     @IsString()

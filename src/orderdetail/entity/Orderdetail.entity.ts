@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Date, HydratedDocument, Types } from 'mongoose';
-import { Product } from 'src/product/entity/Product.entity';
-import { Order } from 'src/order/entity/Order.entity';
+
 
 export type OrderdetailDocument = HydratedDocument<Orderdetail>;
 

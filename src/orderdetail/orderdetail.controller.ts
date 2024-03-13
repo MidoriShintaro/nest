@@ -13,23 +13,28 @@ export class OrderDetailController
     {
         return this.OrderDetailService.create(orderDetailDto);
     }
-    @Get(':id')
-    async getAllInOder(@Param()id:string):Promise<Orderdetail[]>
+    //@Get(':id')
+    //async getAllInOder(@Param()id:string):Promise<Orderdetail[]>
+    //{
+    //    return this.OrderDetailService.findAllInOrder(id);
+    //}
+    @Get()
+    async getAllInOder():Promise<Orderdetail[]>
     {
-        return this.OrderDetailService.findAllInOrder(id);
+        return this.OrderDetailService.findAll();
     }
-    //@Put(':id')
-    //async update(@Param('id') id:string,@Body() productDto:ProductDto):Promise<Product>
-    //{
-    //    return this.productService.update(productDto, id);
-    //}
+    @Put(':id')
+    async update(@Param('id') id:string,@Body() orderDetailDto:OrderdetailDto):Promise<Orderdetail>
+    {
+        return this.OrderDetailService.updateQuantity(orderDetailDto, id);
+    }
 
-    //@Delete()
-    //async delete(@Body() body:any)
-    //{
-    //    const productIds: string[] = body.ids;
-    //    console.error('products', productIds);
-    //    await this.productService.delete(productIds);
-    //}
+    @Delete()
+    async delete(@Body() body:any)
+    {
+        const orderDetailIds: string[] = body.ids;
+        console.error('orderDetail', orderDetailIds);
+        await this.OrderDetailService.delete(orderDetailIds);
+    }
     
 }
