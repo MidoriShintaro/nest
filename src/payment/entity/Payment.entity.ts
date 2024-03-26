@@ -15,16 +15,24 @@ export type PaymentDocument = HydratedDocument<Payment>;
   },
 })
 export class Payment {
-  @Prop({ type: String, required: true })
+  @Prop({
+    type: String,
+    enum: {
+      values: ['MOMO', 'BANK'],
+    },
+  })
   method: string;
 
   @Prop({ type: Number, required: true })
   value: number;
 
+  @Prop({ type: Number})
+  shipvalue: number;
+
   
 
   @Prop({type:Types.ObjectId, ref:'Order'})
-  Order:string;
+  OrderId:string;
 
 }
 

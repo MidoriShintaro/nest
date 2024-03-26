@@ -1,16 +1,17 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-
 import { Model, Types, Mongoose, ClientSession} from 'mongoose';
-
 import { Payment } from './entity/Payment.entity';
 import { PaymentDto } from './dto/payment.dto';
+import { Order } from 'src/order/entity/Order.entity';
+
 
 
 @Injectable()
 export class PaymentService {
 
-    constructor(@InjectModel (Payment.name) private paymentModel: Model<Payment>){}
+    constructor(@InjectModel (Payment.name) private paymentModel: Model<Payment>,
+    @InjectModel (Order.name) private orderModel: Model<Order>){}
   
     //async update (updatePaymentDto: PaymentDto, id:string): Promise<Payment>
     //{
@@ -101,16 +102,27 @@ export class PaymentService {
     //    return true;
     //}
     
-    //async create(createPaymentDto:PaymentDto ): Promise<Payment> {
-    //    const exists = await this.findNameAndCode(createPaymentDto);
-    //    if (exists) {
-    //        Logger.error('Payment already exists');
-    //        return null;
-    //    }
+    async create(createPaymentDto:PaymentDto ): Promise<Payment> {
+        
+       const {method,orderId,value,shipvalue} = createPaymentDto;
+       const createdPayment = new this.paymentModel();
 
-    //    const createdPayment = new this.paymentModel(createPaymentDto);
-    //    return createdPayment.save();
-    //}
+       const orderIdObject =new Types.ObjectId(orderId);
+        const order =await this.orderModel.findById(orderIdObject);
+        if (!order)
+        {
+            throw new NotFoundException('Not found Order');
+        }
+        
+        createdPayment.OrderId = orderId;
+        createdPayment.method = method;
+        createdPayment.value = value + shipvalue;
+        const paymentSaved = await createdPayment.save();
+        order.PaymentId = paymentSaved._id.toHexString();
+        console.error('order paymentid  is', order.PaymentId);
+        await order.save();
+        return paymentSaved;
+    }
 
     //async findAll (): Promise<Category[]>
     //{

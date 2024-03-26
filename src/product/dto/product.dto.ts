@@ -32,6 +32,22 @@ export class ProductDto {
   @IsOptional()
   viewcount: number;
 
+  @IsNumber()
+  @IsOptional()
+  height: number;
+
+  @IsNumber()
+  @IsOptional()
+  width: number;
+
+  @IsNumber()
+  @IsOptional()
+  length: number;
+
+  @IsNumber()
+  @IsOptional()
+  weight: number;
+
   @IsString()
   @IsOptional()
   image: string;

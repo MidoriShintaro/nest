@@ -1,34 +1,68 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException, Session } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Order } from "./entity/Order.entity";
-import { Model } from "mongoose";
+import { ClientSession, Model, Types } from "mongoose";
 import { OrderDto } from "./dto/order.dto";
 import { In } from "typeorm";
 import { Orderdetail } from "src/orderdetail/entity/Orderdetail.entity";
 import { Mode } from "fs";
+import { Product } from "src/product/entity/Product.entity";
+import { Payment } from "src/payment/entity/Payment.entity";
+
+import { NotFoundError, of } from "rxjs";
+import { GetUser } from "src/auth/get-user.decorator";
+import { User } from "src/user/entity/user.entity";
 
 
 @Injectable()
 export class OrderService {
-    constructor(@InjectModel(Order.name) private orderModel: Model<Order>) { }
+    constructor(@InjectModel(Order.name) private orderModel: Model<Order>,
+    @InjectModel(Orderdetail.name) private orderdetailModel: Model<Orderdetail>,
+    @InjectModel(Product.name) private productModel: Model<Product>,
+    @InjectModel(Payment.name) private paymentModel: Model<Payment>,
+    @InjectModel(Payment.name) private userModel: Model<User>
 
-    // async create(createProductDto: OrderDto): Promise<Order> {
-    //    const {orderdetailIds,paymentId,shippingIds} = createProductDto;
-    //    const orderModel = new Order();
-    //    orderModel.status = true;
-    //    orderdetailIds.forEach(orderDetailId => {
-         
-    //    });
-    //    orderModel.OrderdetailIds = orderdetailIds;
-    //    orderModel.PaymentId = paymentId;
-    //    orderModel.ShippingIds = shippingIds;
+   
 
-    //    const orderSaved = new this.orderModel(orderModel);
-    //    const orderCreated = await orderSaved.save();
+    ) { }
 
-    //    return orderCreated;
-
-    //}
+     async create(createProductDto: OrderDto, user:User): Promise<Order> {
+        const session:ClientSession  = await this.orderModel.startSession();
+        try {
+        const {orderdetailIds} = createProductDto;
+        const orderModel = new Order();
+        orderModel.status = false;
+        var totalPrice = 0 ;
+        for (const orderdetailId of orderdetailIds){
+            const orderdetailObject = new Types.ObjectId(orderdetailId); 
+            const orderdetail =await this.orderdetailModel.findById(orderdetailObject).exec();
+            totalPrice += orderdetail.UnitPrice;
+            if(!orderdetail)
+            {
+                throw new NotFoundException('Orderdetail not found');
+            }
+        }
+        
+        console.error ('total Price ', totalPrice);
+        orderModel.totalAmount = totalPrice;
+        orderModel.OrderdetailIds = orderdetailIds;
+        const userIsAct = user.username;
+        const userObject = await this.userModel.findOne({username:userIsAct});
+        const userObjectId = userObject._id.toHexString();
+        orderModel.userId = userObjectId;
+        
+        const orderSaved = new this.orderModel(orderModel);
+        const orderCreated = await orderSaved.save();
+        await userObject.OrderIds.push(orderCreated.id);
+        return orderCreated;
+        session.commitTransaction();
+        session.endSession();
+        } catch (error) {
+            session.abortTransaction();
+            session.endSession();
+        }
+        
+}
 
     //async update(updateProductDto: ProductDto, id:string): Promise<Product> {
     //    const objectId = new Types.ObjectId(id);

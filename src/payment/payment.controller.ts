@@ -1,18 +1,21 @@
-//import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { PaymentService } from './payment.service';
+import { PaymentDto } from './dto/payment.dto';
+import { Payment } from './entity/Payment.entity';
 
 
-//@Controller('/categories')
-//export class PaymentController {
+@Controller('/payment')
+export class PaymentController {
 
-//    constructor (private readonly paymentService: PaymentService){}
+constructor (private readonly paymentService: PaymentService){}
 
 
-//    @Post()
-//    async create(@Body() categoryDto:CategoriesDTO ): Promise<Category>{
+    @Post()
+    async create(@Body() paymentDto:PaymentDto ): Promise<Payment>{
         
-//        return this.categoryService.create(categoryDto);
+        return this.paymentService.create(paymentDto);
         
-//    }
+    }
 //    @Put(':id')
 //    async update(@Param('id') id:string, @Body() categoryDto:CategoriesDTO ): Promise<Category>{
 //       return this.categoryService.update(categoryDto,id);
@@ -30,4 +33,4 @@
 //        return this.categoryService.findAll();
 //    }
 
-//}
+}

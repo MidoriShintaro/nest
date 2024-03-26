@@ -14,8 +14,7 @@ export class OrderDto{
     @IsOptional()
     paymentId:string;
 
-    @IsOptional()
-    shippingIds:string[];
+   
     
 
 

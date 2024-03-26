@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument,Types } from 'mongoose';
 import { Category } from 'src/categories/entity/Categories.entity';
 
-import { Cart } from 'src/cart/entity/Cart.entity';
 import { Voucher } from 'src/voucher/entity/Voucher.entity';
 import { Review } from 'src/review/entity/Review.entity';
 import { Orderdetail } from 'src/orderdetail/entity/Orderdetail.entity';
@@ -39,6 +38,18 @@ export class Product {
   @Prop({ type: Number, required: true })
   price: number;
 
+  @Prop({ type: Number })
+  height: number;
+
+  @Prop({ type: Number })
+  width: number;
+
+  @Prop({ type: Number })
+  length: number;
+
+  @Prop({ type: Number })
+  weight: number;
+
   
   @Prop({ type: String})
   description: string;
@@ -66,15 +77,11 @@ export class Product {
   Vouchers: String[];
 
   @Prop({type:[{type:Types.ObjectId, ref:'Review'}]})
-  Revies: String[];
+  Reviews: String[];
 
   
   @Prop({type:Types.ObjectId, ref:'OrderDetial'})
   Orderdetail:Orderdetail;
-
-  
-  
-
 
 }
 

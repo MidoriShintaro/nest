@@ -22,7 +22,7 @@ export class ProductService {
         if (!oldProduct) {
             throw new Error('old Prodcut not found!!!');
         }
-        const {productname, size, color, numberstock,price,description,viewcount,image,categoryName, brand,Cart} = updateProductDto ;
+        const {productname,length, weight, width,height, size, color, numberstock,price,description,viewcount,image,categoryName, brand,Cart} = updateProductDto ;
         if(productname!=null)
         {
             oldProduct.productname = productname;
@@ -34,6 +34,22 @@ export class ProductService {
         if(color != null)
         {
             oldProduct.color = color;
+        }
+        if(height != null)
+        {
+            oldProduct.height = height;
+        }
+        if(length != null)
+        {
+            oldProduct.length = length;
+        }
+        if(weight != null)
+        {
+            oldProduct.weight = weight;
+        }
+        if(width != null)
+        {
+            oldProduct.width = width;
         }
         if(numberstock != null)
         {
@@ -118,7 +134,7 @@ export class ProductService {
     }
 
     async create(createProductDto: ProductDto): Promise<Product> {
-        const {productname, size, color, numberstock,price,description,viewcount,image,categoryName, brand,Cart} = createProductDto ;
+        const {productname,length, weight, width, height ,size, color, numberstock,price,description,viewcount,image,categoryName, brand,Cart} = createProductDto ;
         const exists = await this.findNameAndCode(createProductDto);
         if (exists) {
             Logger.error('Category already exists');
@@ -139,6 +155,13 @@ export class ProductService {
         createdProduct.description = description;
         createdProduct.viewcount = viewcount;
         createdProduct.image = image;
+        createdProduct.length = length;
+
+        createdProduct.width = width;
+
+        createdProduct.height = height;
+        createdProduct.weight = weight;
+
         var id = await this.categoryService.findByNameReturnId(createProductDto.categoryName);
         console.error('categoryName',createProductDto.categoryName);
         console.log('id type',typeof(id));

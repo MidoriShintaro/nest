@@ -14,6 +14,11 @@ export class ReviewDTO{
     @IsOptional()
     rate:number;
 
+    @IsString()
+    @IsOptional()
+    productId:string;
+
+
     
 
     

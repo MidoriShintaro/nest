@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Cart } from 'src/cart/entity/Cart.entity';
+
 import { Review } from 'src/review/entity/Review.entity';
 import { Orderdetail } from 'src/orderdetail/entity/Orderdetail.entity';
 import { Order } from 'src/order/entity/Order.entity';
@@ -60,6 +60,14 @@ export class User {
 
   @Prop({type:[{type:Types.ObjectId, ref: 'Voucher'}]})
   Vouchers: string[];
+
+  @Prop({type: Types.ObjectId, ref : 'Adress'})
+  address: string;
+
+  
+  @Prop({type:[{type:Types.ObjectId, ref: 'Order'}]})
+  OrderIds: string[];
+
 
 
 }

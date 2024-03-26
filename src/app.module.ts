@@ -8,10 +8,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { EmailModule } from './utils/email/email.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CategoriesModule } from './categories/categories.module';
-import { Product } from './product/entity/Product.entity';
 import { ProductModule } from './product/product.module';
 import { VoucherModule } from './voucher/voucher.module';
 import { OrderdetailModule } from './orderdetail/orderdetail.module';
+import { OrderModule } from './order/order.module';
+import { PaymentModule } from './payment/payment.module';
+import { ReviewModule } from './review/review.module';
+
 
 @Module({
   imports: [
@@ -27,7 +30,10 @@ import { OrderdetailModule } from './orderdetail/orderdetail.module';
     //CategoriesModule,
     ProductModule,
     VoucherModule,
-    OrderdetailModule
+    OrderdetailModule,
+    OrderModule,
+    PaymentModule,
+    ReviewModule
   ],
   controllers: [AppController],
   providers: [AppService],

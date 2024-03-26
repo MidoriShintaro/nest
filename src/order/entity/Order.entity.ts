@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Date, HydratedDocument, Types } from 'mongoose';
 import { Orderdetail } from 'src/orderdetail/entity/Orderdetail.entity';
 import { Payment } from 'src/payment/entity/Payment.entity';
-import { Shipping } from 'src/shipping/entity/shipping.entity';
+
 import { Column } from 'typeorm';
 
 export type OrderDocument = HydratedDocument<Order>;
@@ -29,8 +29,8 @@ export class Order {
   @Prop({type:Types.ObjectId, ref:'Payment'})
   PaymentId: string;
 
-  @Prop({type:[{type:Types.ObjectId, ref:'Shipping'}]})
-  ShippingIds:string[];
+  @Prop({type:Types.ObjectId, ref:'User'})
+  userId: string;
 
   @Prop({ type: Number})
   totalAmount: number;
