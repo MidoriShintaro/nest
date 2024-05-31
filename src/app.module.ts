@@ -7,6 +7,14 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EmailModule } from './utils/email/email.module';
 import { CacheModule } from '@nestjs/cache-manager';
+// import { CategoriesModule } from './categories/categories.module';
+import { ProductModule } from './product/product.module';
+import { VoucherModule } from './voucher/voucher.module';
+import { OrderdetailModule } from './orderdetail/orderdetail.module';
+import { OrderModule } from './order/order.module';
+import { PaymentModule } from './payment/payment.module';
+import { ReviewModule } from './review/review.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -19,6 +27,14 @@ import { CacheModule } from '@nestjs/cache-manager';
     UserModule,
     AuthModule,
     EmailModule,
+    //CategoriesModule,
+    ProductModule,
+    VoucherModule,
+    OrderdetailModule,
+    OrderModule,
+    PaymentModule,
+    ReviewModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],

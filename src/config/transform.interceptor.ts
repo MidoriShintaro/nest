@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface Response<T> {
-  message: T;
+  data: T;
   status: string;
 }
 
@@ -20,8 +20,6 @@ export class TransformInterceptor<T>
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<Response<T>> {
-    return next
-      .handle()
-      .pipe(map((message) => ({ status: 'success', message })));
+    return next.handle().pipe(map((data) => ({ status: 'success', data })));
   }
 }
