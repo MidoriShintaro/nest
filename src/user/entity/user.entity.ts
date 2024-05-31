@@ -1,11 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 
-import { Review } from 'src/review/entity/Review.entity';
-import { Orderdetail } from 'src/orderdetail/entity/Orderdetail.entity';
-import { Order } from 'src/order/entity/Order.entity';
-import { Voucher } from 'src/voucher/entity/Voucher.entity';
-
 export type UserDocument = HydratedDocument<User>;
 
 export enum UserRole {
@@ -52,24 +47,20 @@ export class User {
   })
   role: string;
 
-  @Prop({type: [{type:Types.ObjectId, ref : 'Orderdetail'}]})
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Orderdetail' }] })
   OrderdetailIds: string[];
 
-  @Prop({type:[{type:Types.ObjectId, ref: 'Review'}]})
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Review' }] })
   Reviews: string[];
 
-  @Prop({type:[{type:Types.ObjectId, ref: 'Voucher'}]})
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Voucher' }] })
   Vouchers: string[];
 
-  @Prop({type: Types.ObjectId, ref : 'Adress'})
+  @Prop({ type: Types.ObjectId, ref: 'Adress' })
   address: string;
 
-  
-  @Prop({type:[{type:Types.ObjectId, ref: 'Order'}]})
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Order' }] })
   OrderIds: string[];
-
-
-
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

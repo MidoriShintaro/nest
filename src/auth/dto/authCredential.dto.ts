@@ -1,7 +1,7 @@
 import {
   IsEmail,
   IsEmpty,
-  IsNotEmpty,
+  // IsNotEmpty,
   IsOptional,
   IsString,
   Matches,
@@ -9,11 +9,10 @@ import {
 } from 'class-validator';
 
 export class AuthCredential {
-  @IsNotEmpty()
+  @IsOptional()
   username: string;
 
   @IsEmail()
-
   email: string;
 
   @IsString()
@@ -26,7 +25,7 @@ export class AuthCredential {
   @IsEmpty()
   phoneNumber: string;
 
-  @IsEmpty()
-  //@IsOptional()
+  // @IsEmpty()
+  @IsOptional()
   role: string;
 }

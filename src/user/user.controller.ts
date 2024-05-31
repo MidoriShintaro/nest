@@ -34,7 +34,7 @@ export class UserController {
   @HttpCode(200)
   @UseGuards(RolesGuard)
   @Roles([UserRole.ADMIN])
-  async getAllUser(@GetUser() user:User): Promise<User[]> {
+  async getAllUser(@GetUser() user: User): Promise<User[]> {
     console.log('user in usercontroller is', user);
     return await this.userService.getAllUsers();
   }

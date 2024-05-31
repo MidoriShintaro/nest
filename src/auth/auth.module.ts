@@ -8,7 +8,6 @@ import { User, UserSchema } from 'src/user/entity/user.entity';
 import { JwtStrategy } from './config/jwt.strategy';
 import { UserService } from 'src/user/user.service';
 import { EmailService } from 'src/utils/email/email.service';
-import { GetUser } from './get-user.decorator';
 
 @Module({
   imports: [
@@ -21,6 +20,6 @@ import { GetUser } from './get-user.decorator';
   ],
   controllers: [AuthController],
   providers: [AuthService, UserService, JwtStrategy, EmailService],
-  exports: [JwtStrategy, PassportModule]
+  exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}

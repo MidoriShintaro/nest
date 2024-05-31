@@ -1,12 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument,Types } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 import { Category } from 'src/categories/entity/Categories.entity';
 
 import { Voucher } from 'src/voucher/entity/Voucher.entity';
 import { Review } from 'src/review/entity/Review.entity';
 import { Orderdetail } from 'src/orderdetail/entity/Orderdetail.entity';
-
-
 
 export type ProductDocument = HydratedDocument<Product>;
 
@@ -27,12 +25,10 @@ export class Product {
   @Prop({ type: String, required: true })
   size: string;
 
-  
   @Prop({ type: String, required: true })
   color: string;
 
-  
-  @Prop({ type: Number})
+  @Prop({ type: Number })
   numberstock: number;
 
   @Prop({ type: Number, required: true })
@@ -50,39 +46,35 @@ export class Product {
   @Prop({ type: Number })
   weight: number;
 
-  
-  @Prop({ type: String})
+  @Prop({ type: String })
   description: string;
 
-  @Prop({ type: Number})
+  @Prop({ type: Number })
   viewcount: number;
 
   @Prop({ type: String })
   image: string;
-  
-  @Prop({type: String})
+
+  @Prop({ type: String })
   Brand: string;
-  
-  @Prop({type: Types.ObjectId, ref:'Category', required:true})
+
+  @Prop({ type: Types.ObjectId, ref: 'Category', required: true })
   Category: string;
 
-
-  @Prop({type: Types.ObjectId, ref : 'Cart'})
+  @Prop({ type: Types.ObjectId, ref: 'Cart' })
   Cart: string;
 
-  @Prop({type:String})
-  Guarantee:string;
+  @Prop({ type: String })
+  Guarantee: string;
 
-  @Prop({type:[{type:Types.ObjectId, ref:'Voucher'}]})
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Voucher' }] })
   Vouchers: String[];
 
-  @Prop({type:[{type:Types.ObjectId, ref:'Review'}]})
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Review' }] })
   Reviews: String[];
 
-  
-  @Prop({type:Types.ObjectId, ref:'OrderDetial'})
-  Orderdetail:Orderdetail;
-
+  @Prop({ type: Types.ObjectId, ref: 'OrderDetial' })
+  Orderdetail: Orderdetail;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

@@ -1,21 +1,12 @@
-import { IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
-export class OrderDto{
+import { IsOptional, IsString } from 'class-validator';
+export class OrderDto {
+  @IsOptional()
+  status: boolean;
 
-  
-   
-    @IsOptional()
-    status:boolean;
+  @IsOptional()
+  orderdetailIds: string[];
 
- 
-    @IsOptional()
-    orderdetailIds:string[];
-    
-    @IsString()
-    @IsOptional()
-    paymentId:string;
-
-   
-    
-
-
+  @IsString()
+  @IsOptional()
+  paymentId: string;
 }

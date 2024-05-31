@@ -9,10 +9,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const httpAdapter = app.get(HttpAdapterHost);
+  app.enableCors({ origin: 'http://localhost:5173', credentials: true });
   app.useGlobalFilters(new GlobalExceptionFilter(httpAdapter));
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  await app.listen(3000);
+  await app.listen(5000);
 }
 bootstrap();
