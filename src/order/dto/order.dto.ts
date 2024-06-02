@@ -1,12 +1,12 @@
 import { IsOptional, IsString } from 'class-validator';
 export class OrderDto {
-  @IsOptional()
-  status: boolean;
+
 
   @IsOptional()
-  orderdetailIds: string[];
+  carts: string[];
 
-  @IsString()
   @IsOptional()
-  paymentId: string;
+  user: string;
+
+
 }

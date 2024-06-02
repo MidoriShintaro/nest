@@ -36,10 +36,5 @@ export class OrderDetailController {
     return this.orderDetailService.updateQuantity(orderDetailDto, id);
   }
 
-  @Delete()
-  async delete(@Body() body: any) {
-    const orderDetailIds: string[] = body.ids;
-    console.error('orderDetail', orderDetailIds);
-    await this.orderDetailService.delete(orderDetailIds);
-  }
+  
 }

@@ -47,8 +47,7 @@ export class User {
   })
   role: string;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Orderdetail' }] })
-  OrderdetailIds: string[];
+
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Review' }] })
   Reviews: string[];

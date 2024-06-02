@@ -29,8 +29,6 @@ export class Orderdetail {
   @Prop({type:Types.ObjectId, ref:'Order'})
   OrderId:string;
 
-  @Prop({type:Types.ObjectId, ref:'User'})
-  UserId:string;
 
   @Prop({ type: Number})
   UnitPrice:number;

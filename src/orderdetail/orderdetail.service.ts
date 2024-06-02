@@ -36,60 +36,6 @@ export class OrderDetailService {
     return oldOrderDetail.save();
   }
 
-  async delete(ids: string[]) {
-    for (const id of ids) {
-      try {
-        const objectId = new Types.ObjectId(id);
-        const oldOrderDetail = await this.orderDetailModel
-          .findById(objectId)
-          .exec();
-        if (!oldOrderDetail) {
-          throw new Error('Product not found!!!');
-        }
-        const userId = new Types.ObjectId(oldOrderDetail.UserId);
-        const userUpdate = await this.usertModel.findById(userId);
-        console.error('userUpdate', userUpdate);
-        // Update each category to remove the reference to the deleted product
-        userUpdate.OrderdetailIds.splice(
-          userUpdate.OrderdetailIds.indexOf(
-            (await this.orderDetailModel.findById(id))._id.toHexString(),
-          ),
-          1,
-        );
-        await userUpdate.save();
-
-        if (oldOrderDetail.OrderId != undefined) {
-          const orderId = new Types.ObjectId(oldOrderDetail.OrderId);
-          const orderUpdate = await this.ordertModel.findById(orderId);
-          orderUpdate.OrderdetailIds.splice(
-            orderUpdate.OrderdetailIds.indexOf(
-              (await this.orderDetailModel.findById(id))._id.toHexString(),
-            ),
-            1,
-          );
-          await orderUpdate.save();
-        }
-        const productId = new Types.ObjectId(oldOrderDetail.ProductId);
-        const productDelete = await this.ordertModel.findById(productId);
-        if (productDelete.OrderdetailIds != undefined) {
-          productDelete.OrderdetailIds.splice(
-            productDelete.OrderdetailIds.indexOf(
-              (await this.orderDetailModel.findById(id))._id.toHexString(),
-            ),
-            1,
-          );
-          await productDelete.save();
-        }
-        const result = await oldOrderDetail.deleteOne();
-        if (result.deletedCount === 0) {
-          throw new Error('No product is deleted');
-        }
-      } catch (error) {
-        console.log(error);
-        // Handle error or rethrow it
-      }
-    }
-  }
 
   async create(createOrderDetail: OrderdetailDto): Promise<Orderdetail> {
     const session: ClientSession = await this.orderDetailModel.startSession();
@@ -108,13 +54,7 @@ export class OrderDetailService {
       if (!productFind) {
         throw new Error('Product not found!!!');
       }
-      const userobjectid = new Types.ObjectId(userId);
-      const userFind = await this.usertModel.findById(userobjectid).exec();
-      console.error('user find is', userFind);
-      if (!userFind) {
-        throw new Error('User not found!!!');
-      }
-      OrderDetail.UserId = userId;
+      
 
       OrderDetail.ProductId = ProductId;
       OrderDetail.quantity = quantity;
@@ -135,17 +75,9 @@ export class OrderDetailService {
 
       OrderDetail.UnitPrice = quantity * priceProduct;
 
-      OrderDetail.active = false;
+      OrderDetail.active = true;
       const orderdetail = new this.orderDetailModel(OrderDetail);
       const orderDetailsaved = orderdetail.save();
-      const orderDetails = userFind.OrderdetailIds;
-      orderDetails.push((await orderDetailsaved)._id.toHexString());
-      userFind.OrderdetailIds = orderDetails;
-
-      await userFind.save();
-      console.error('Order detail is', orderDetailsaved);
-      console.error('user after saved is', userFind);
-
       return orderDetailsaved;
       session.commitTransaction();
       session.endSession();

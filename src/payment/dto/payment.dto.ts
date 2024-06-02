@@ -3,12 +3,10 @@ import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "clas
 export class PaymentDto{
 
     @IsString()
-    @IsEnum(['MOMO', 'BANK'])
+    @IsEnum(['MOMO', 'BANK','PAYBACK'])
     method:string;
 
-    @IsNumber()
-    @IsNotEmpty()
-    value:number;
+    
 
 
 

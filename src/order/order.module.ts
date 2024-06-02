@@ -10,6 +10,8 @@ import {
 import { Payment, PaymentSchema } from 'src/payment/entity/Payment.entity';
 import { Product, ProductSchema } from 'src/product/entity/Product.entity';
 import { User, UserSchema } from 'src/user/entity/user.entity';
+import { Cart, CartSchema } from 'src/cart/entity/cart.entity';
+import { OrderDetailService } from 'src/orderdetail/orderdetail.service';
 
 @Module({
   imports: [
@@ -19,9 +21,11 @@ import { User, UserSchema } from 'src/user/entity/user.entity';
       { name: Payment.name, schema: PaymentSchema },
       { name: User.name, schema: UserSchema },
       { name: Product.name, schema: ProductSchema },
+      { name: Cart.name, schema: CartSchema }
+
     ]),
   ],
   controllers: [OrderController],
-  providers: [OrderService],
+  providers: [OrderService,OrderDetailService],
 })
 export class OrderModule {}

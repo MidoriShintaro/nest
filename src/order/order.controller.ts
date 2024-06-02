@@ -25,20 +25,21 @@ export class OrderController {
   @UseGuards(RolesGuard)
   @Roles([UserRole.USER])
   async create(
-    @Body() orderDto: OrderDto,
-    @GetUser() user: User,
+    @Body() orderDto: OrderDto
+   
   ): Promise<Order> {
-    return this.orderService.create(orderDto, user);
+    console.log('do this function')
+    return this.orderService.create(orderDto);
   }
   @Get()
   @HttpCode(200)
   @UseGuards(RolesGuard)
   @Roles([UserRole.USER])
   async findOne(@GetUser() user: User) {
-    console.log('user is', user); // In ra thông tin người dùng
+  // In ra thông tin người dùng
 
     // Thực hiện các thao tác khác với thông tin người dùng...
-    return 'This action returns all users';
+ 
   }
   //@Get()
   //async getAll():Promise<Product[]>

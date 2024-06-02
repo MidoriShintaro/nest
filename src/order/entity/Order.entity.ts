@@ -20,8 +20,10 @@ export type OrderDocument = HydratedDocument<Order>;
 export class Order {
   
 
-  @Prop({ type: Boolean, required: true })
-  status: boolean;
+  @Prop({ type:String ,enum:{
+    values:['NOTPAY','PAID']
+  }, required: true })
+  status: string;
 
   @Prop({type:[{type:Types.ObjectId, ref:'Orderdetail'}]})
   OrderdetailIds: string[];
@@ -34,7 +36,11 @@ export class Order {
 
   @Prop({ type: Number})
   totalAmount: number;
+
+  @Prop({ type: Number})
+  totalDue: number;
  
+  
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
