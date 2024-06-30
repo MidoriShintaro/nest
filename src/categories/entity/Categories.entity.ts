@@ -20,13 +20,13 @@ export type CategoryDocument = HydratedDocument<Category>;
 })
 export class Category {
   @Prop({ type: String, required: true })
-  categoryname: string;
+  categoryName: string;
 
   @Prop({ type: String, required: true })
   code: string;
 
   @Prop({type:[{type: Types.ObjectId, ref :'Product'}]})
-  Products:string[];
+  products:string[];
 
 }
 

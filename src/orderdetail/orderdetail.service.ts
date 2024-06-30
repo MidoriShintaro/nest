@@ -42,10 +42,10 @@ export class OrderDetailService {
     try {
       session.startTransaction();
 
-      const { quantity, ProductId, OrderId, userId } = createOrderDetail;
+      const { quantity, productId, orderId, userId } = createOrderDetail;
       const OrderDetail = new Orderdetail();
       console.error('createDetail is', createOrderDetail);
-      const productObjectId = new Types.ObjectId(ProductId);
+      const productObjectId = new Types.ObjectId(productId);
       const productFind = await this.productModel
         .findById(productObjectId)
         .exec();
@@ -56,24 +56,24 @@ export class OrderDetailService {
       }
       
 
-      OrderDetail.ProductId = ProductId;
+      OrderDetail.productId = productId;
       OrderDetail.quantity = quantity;
 
       console.error('product Find is', productFind);
       const priceProduct = productFind.price;
-      const orderObjectId = new Types.ObjectId(OrderId);
-      console.error('Order is ', OrderId);
-      if (OrderId != undefined) {
+      const orderObjectId = new Types.ObjectId(orderId);
+      console.error('Order is ', orderId);
+      if (orderId != undefined) {
         const orderFind = await this.productModel
           .findById(orderObjectId)
           .exec();
         if (!orderFind) {
           throw new Error('Order not found!!!');
         }
-        OrderDetail.OrderId = OrderId;
+        OrderDetail.orderId = orderId;
       }
 
-      OrderDetail.UnitPrice = quantity * priceProduct;
+      OrderDetail.unitPrice = quantity * priceProduct;
 
       OrderDetail.active = true;
       const orderdetail = new this.orderDetailModel(OrderDetail);

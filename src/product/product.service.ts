@@ -17,37 +17,33 @@ export class ProductService {
   ) {}
 
   async update(updateProductDto: ProductDto, id: string): Promise<Product> {
+   
     const objectId = new Types.ObjectId(id);
+   
     const oldProduct = await this.productModel.findById(objectId).exec();
+   
     if (!oldProduct) {
       throw new Error('old Prodcut not found!!!');
     }
     const {
-      productname,
+      productName,
       length,
       weight,
       width,
       height,
       size,
       color,
-      numberstock,
+      numberStock,
       price,
       description,
-      viewcount,
       image,
       categoryName,
       brand,
-      Cart,
+      cartId,
     } = updateProductDto;
-    if (productname != null) {
-      oldProduct.productname = productname;
-    }
-    if (size != null) {
-      oldProduct.size = size;
-    }
-    if (color != null) {
-      oldProduct.color = color;
-    }
+    
+   
+   
     if (height != null) {
       oldProduct.height = height;
     }
@@ -60,27 +56,29 @@ export class ProductService {
     if (width != null) {
       oldProduct.width = width;
     }
-    if (numberstock != null) {
-      oldProduct.numberstock = numberstock;
+    if (numberStock != null) {
+      oldProduct.numberStock = numberStock;
     }
-    if (price != null) {
-      oldProduct.price = price;
-    }
+    
     if (description != null) {
       oldProduct.description = description;
     }
-    if (viewcount != null) {
-      oldProduct.viewcount = viewcount;
-    }
+    oldProduct.productName = productName;
+    oldProduct.size = size;
+    oldProduct.color = color;
+    oldProduct.price = price;
+
+    console.log('erro', oldProduct);
     if (categoryName != null) {
       const oldCategoryName = this.categoryService.findByIdReturnName(
-        oldProduct.Category,
+        oldProduct.category,
       );
+    
       if (categoryName != (await oldCategoryName).toString()) {
         try {
           const result = this.categoryService.deleteOldProductAndAddnewProduct(
             (await oldCategoryName).toString(),
-            productname,
+            productName,
             updateProductDto.id,
           );
           console.error(result);
@@ -93,10 +91,11 @@ export class ProductService {
     }
     if (image != null) {
     }
-    if (Cart != null) {
+    if (cartId != null) {
     }
-
-    return await oldProduct.save();
+   const result = await oldProduct.save();
+   console.log("result", result);
+    return result;
   }
 
   async delete(ids: string[]) {
@@ -112,8 +111,8 @@ export class ProductService {
         });
         console.error('categoryUpdate', categoriesToUpdate);
         // Update each category to remove the reference to the deleted product
-        categoriesToUpdate.Products.splice(
-          categoriesToUpdate.Products.indexOf(
+        categoriesToUpdate.products.splice(
+          categoriesToUpdate.products.indexOf(
             (await this.productModel.findById(id))._id.toHexString(),
           ),
           1,
@@ -132,7 +131,7 @@ export class ProductService {
 
   async findNameAndCode(createProductDto: ProductDto): Promise<boolean> {
     const product = await this.productModel
-      .findOne({ categoryname: createProductDto.productname })
+      .findOne({ categoryname: createProductDto.productName })
       .exec();
     if (!product) {
       Logger.error('Category not found');
@@ -143,21 +142,21 @@ export class ProductService {
 
   async create(createProductDto: ProductDto): Promise<Product> {
     const {
-      productname,
+      productName,
       length,
       weight,
       width,
       height,
       size,
       color,
-      numberstock,
+      numberStock,
       price,
       description,
-      viewcount,
+      viewCount,
       image,
       categoryName,
       brand,
-      Cart,
+      cartId,
     } = createProductDto;
     const exists = await this.findNameAndCode(createProductDto);
     if (exists) {
@@ -172,13 +171,13 @@ export class ProductService {
     console.error('Category ..', category);
 
     const createdProduct = new Product();
-    createdProduct.productname = productname;
+    createdProduct.productName = productName;
     createdProduct.size = size;
     createdProduct.color = color;
     createdProduct.price = price;
-    createdProduct.numberstock = numberstock;
+    createdProduct.numberStock = numberStock;
     createdProduct.description = description;
-    createdProduct.viewcount = viewcount;
+    createdProduct.viewCount = viewCount;
     createdProduct.image = image;
     createdProduct.length = length;
 
@@ -192,7 +191,7 @@ export class ProductService {
     );
     console.error('categoryName', createProductDto.categoryName);
     console.log('id type', typeof id);
-    createdProduct.Category = id;
+    createdProduct.category = id;
     //createdProduct.Brand = brand;
     //createdProduct.Cart = Cart;
 
@@ -200,7 +199,7 @@ export class ProductService {
 
     const saveProduct = await createdProducts.save();
     console.error('Product error', saveProduct);
-    category.Products.push(saveProduct._id.toHexString());
+    category.products.push(saveProduct._id.toHexString());
     const savedCategory = new this.categoryModel(category);
     savedCategory.save();
     console.log('Category after push', savedCategory);

@@ -13,7 +13,7 @@ export class ProductDto {
 
   @IsString()
   @IsNotEmpty()
-  productname: string;
+  productName: string;
 
   @IsString()
   @IsNotEmpty()
@@ -29,7 +29,7 @@ export class ProductDto {
 
   @IsNumber()
   @IsOptional()
-  numberstock: number;
+  numberStock: number;
 
   @IsString()
   @IsOptional()
@@ -37,7 +37,7 @@ export class ProductDto {
 
   @IsNumber()
   @IsOptional()
-  viewcount: number;
+  viewCount: number;
 
   @IsNumber()
   @IsOptional()
@@ -70,7 +70,7 @@ export class ProductDto {
   @IsNumber()
   @IsOptional()
   //@IsNotEmpty()
-  Cart: string;
+  cartId: string;
 
   @IsOptional()
   ids: string[];

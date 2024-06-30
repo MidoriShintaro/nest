@@ -3,7 +3,7 @@ export class OrderDto {
 
 
   @IsOptional()
-  carts: string[];
+  cartIds: string[];
 
   @IsOptional()
   user: string;

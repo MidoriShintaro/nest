@@ -98,7 +98,7 @@ export class PaymentService {
   //}
 
   async create(createPaymentDto: PaymentDto): Promise<Payment> {
-    const { method, orderId, shipvalue } = createPaymentDto;
+    const { method, orderId, shipValue } = createPaymentDto;
     const createdPayment = new this.paymentModel();
 
     const orderIdObject = new Types.ObjectId(orderId);
@@ -109,15 +109,15 @@ export class PaymentService {
 
     
     createdPayment.method =  method;
-    createdPayment.value =  order.totalAmount + shipvalue;
+    createdPayment.value =  order.totalAmount + shipValue;
     const paymentSaved = await createdPayment.save();
-    order.PaymentId = paymentSaved._id.toHexString();
-    order.totalDue = order.totalAmount + shipvalue;
+    order.paymentId = paymentSaved._id.toHexString();
+    order.totalDue = order.totalAmount + shipValue;
     if(method==='MOMO'||method ==='BANK')
       { 
         order.status = 'PAID';
       }
-    console.error('order paymentid  is', order.PaymentId);
+    console.error('order paymentid  is', order.paymentId);
     await order.save();
     return paymentSaved;
   }

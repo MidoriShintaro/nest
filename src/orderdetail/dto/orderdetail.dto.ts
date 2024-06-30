@@ -13,13 +13,13 @@ export class OrderdetailDto{
 
     @IsString()
     @IsOptional()
-    ProductId:string;
+    productId:string;
 
     @IsString()
     @IsOptional()
-    OrderId:string;
+    orderId:string;
 
     @IsOptional()
-    UnitPrice:Number;
+    unitPrice:Number;
 
 }

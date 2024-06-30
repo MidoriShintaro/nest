@@ -21,17 +21,17 @@ export class Orderdetail {
   quantity:number;
 
   @Prop({type:Types.ObjectId, ref:'Product'})
-  ProductId:string;
+  productId:string;
 
   @Prop({type:Boolean})
   active:boolean;
 
   @Prop({type:Types.ObjectId, ref:'Order'})
-  OrderId:string;
+  orderId:string;
 
 
   @Prop({ type: Number})
-  UnitPrice:number;
+  unitPrice:number;
 
 }
 

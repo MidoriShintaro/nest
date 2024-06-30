@@ -27,12 +27,12 @@ export class Payment {
   value: number;
 
   @Prop({ type: Number})
-  shipvalue: number;
+  shipValue: number;
 
   
 
   @Prop({type:Types.ObjectId, ref:'Order'})
-  OrderId:string;
+  orderId:string;
 
 }
 

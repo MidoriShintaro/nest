@@ -26,10 +26,10 @@ export class Review {
   rate: number;
 
   @Prop({type:Types.ObjectId, ref : 'Product'})
-  ProductId: string;
+  productId: string;
 
   
   @Prop({type:Types.ObjectId, ref : 'User'})
-  UserId: string;
+  userId: string;
 }
 export const ReviewSchema = SchemaFactory.createForClass(Review);

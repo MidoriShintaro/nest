@@ -22,13 +22,13 @@ export class ReviewService {
     const {comment,image,productId,rate} = reviewDto;
     
     const reviewObject = new Review();
-    reviewObject.ProductId = productId;
+    reviewObject.productId = productId;
     reviewObject.comment = comment;
 
     reviewObject.image = image;
 
     reviewObject.rate = rate;
-    reviewObject.UserId = user.id;
+    reviewObject.userId = user.id;
 
     const reviewModel = new this.reviewModel(reviewObject);
     const reviewsaved = await reviewModel.save();
@@ -37,7 +37,7 @@ export class ReviewService {
     const productObject = await this.productModel.findById(new Types.ObjectId(productId));
     console.error('product Object', productObject);
     console.error('reviewsaved.id', reviewsaved._id.toHexString());
-    productObject.Reviews.push(reviewsaved._id.toHexString());
+    productObject.reviews.push(reviewsaved._id.toHexString());
     console.error('product Object save again', productObject);
     await userObject.save();
     await productObject.save();
@@ -77,12 +77,12 @@ export class ReviewService {
         const objectId = new Types.ObjectId(id);
         const review = await this.reviewModel.findById(objectId);
         await review.deleteOne();
-        const productId = new Types.ObjectId(review.ProductId);
+        const productId = new Types.ObjectId(review.productId);
         const proudct = await this.productModel.findById(productId);
-        proudct.Reviews.splice(
-            proudct.Reviews.indexOf((
+        proudct.reviews.splice(
+            proudct.reviews.indexOf((
                 await this.reviewModel.findById(id))._id.toHexString()),1);
-        console.error('reviews delete', proudct.Reviews);
+        console.error('reviews delete', proudct.reviews);
         const userObject = await this.userModel.findById(new Types.ObjectId(user.id));
         userObject.Reviews.splice(
             userObject.Reviews.indexOf((

@@ -16,7 +16,7 @@ export class PaymentDto{
     
     @IsNumber()
     @IsOptional()
-    shipvalue:number;
+    shipValue:number;
 
 
     

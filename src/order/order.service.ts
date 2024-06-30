@@ -35,7 +35,7 @@ export class OrderService {
     session.startTransaction();
     try {
       
-      const { carts } = createProductDto;
+      const { cartIds } = createProductDto;
     
       const orderModel = new Order();
         const usesrId = new Types.ObjectId(createProductDto.user);
@@ -52,20 +52,20 @@ export class OrderService {
 
 
       let totalPrice = 0;
-      for (const cartId of carts) {
+      for (const cartId of cartIds) {
         const cartObject = new Types.ObjectId(cartId);
         const cart = await this.cartModel
           .findById(cartObject)
           .exec();
           const orderDetailModel = new Orderdetail();
       
-          orderDetailModel.ProductId = cart.product;
+          orderDetailModel.productId = cart.product;
           orderDetailModel.quantity = cart.quantity;
           const productObject = await this.productModel.findById(new Types.ObjectId(cart.product));
           const price = productObject.price;
           totalPrice = price * cart.quantity;
-          orderDetailModel.UnitPrice = price * cart.quantity;
-          orderDetailModel.OrderId = orderCreated.id;
+          orderDetailModel.unitPrice = price * cart.quantity;
+          orderDetailModel.orderId = orderCreated.id;
           orderDetailModel.active = true;
          const orderdetailt = new this.orderdetailModel(orderDetailModel);
         const test = await orderdetailt.save();

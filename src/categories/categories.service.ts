@@ -19,7 +19,7 @@ export class CategoriesService {
     if (!oldCategory) {
       throw new Error('Category not found!!!');
     }
-    oldCategory.categoryname = updateCategoryDto.categoryname;
+    oldCategory.categoryName = updateCategoryDto.categoryName;
     oldCategory.code = updateCategoryDto.code;
 
     return await oldCategory.save();
@@ -41,15 +41,15 @@ export class CategoriesService {
       }
 
       try {
-        const products = oldCategory.Products;
+        const products = oldCategory.products;
         console.error('old products', products);
         const otherCategory = await this.categoryModel
-          .findOne({ categoryname: 'other' })
+          .findOne({ categoryName: 'other' })
           .exec();
-        const productOtherCategory = otherCategory.Products;
+        const productOtherCategory = otherCategory.products;
         const reustlconcat = productOtherCategory.concat(products);
         console.error('products other', reustlconcat);
-        otherCategory.Products = reustlconcat;
+        otherCategory.products = reustlconcat;
 
         otherCategory.save();
 
@@ -68,7 +68,7 @@ export class CategoriesService {
   }
   async findByName(categoryName: string): Promise<Category> {
     const category = await this.categoryModel
-      .findOne({ categoryname: categoryName })
+      .findOne({ categoryName: categoryName })
       .exec();
     console.error('result', category);
 
@@ -80,7 +80,7 @@ export class CategoriesService {
   }
   async findByNameReturnId(categoryName: string): Promise<string> {
     const category = await this.categoryModel
-      .findOne({ categoryname: categoryName })
+      .findOne({ categoryName: categoryName })
       .exec();
     console.error('result', category);
 
@@ -93,6 +93,10 @@ export class CategoriesService {
   }
   async findByIdReturnName(categoryId: string): Promise<string> {
     const categoryObjectId = new Types.ObjectId(categoryId);
+    console.error('result categoryId', categoryObjectId);
+    console.error('result categoryId', categoryId);
+
+
     const category = await this.categoryModel.findById(categoryObjectId).exec();
     console.error('result categoryId', categoryId);
 
@@ -102,7 +106,7 @@ export class CategoriesService {
       Logger.error('Category not found');
       return null;
     }
-    const categoryName = category.categoryname;
+    const categoryName = category.categoryName;
     console.error('id is:', categoryName);
     return categoryName.toString();
   }
@@ -112,16 +116,16 @@ export class CategoriesService {
     productId: string,
   ): Promise<boolean> {
     try {
-      const oldCategory = this.categoryModel.findOne({ categoryname: oldName });
-      const newCategory = this.categoryModel.findOne({ categoryname: newName });
-      const oldProduct = (await oldCategory).Products;
+      const oldCategory = this.categoryModel.findOne({ categoryName: oldName });
+      const newCategory = this.categoryModel.findOne({ categoryName: newName });
+      const oldProduct = (await oldCategory).products;
       const oldIndex = oldProduct.indexOf(productId);
       oldProduct.splice(oldIndex, 1);
 
-      const newProduct = (await newCategory).Products;
+      const newProduct = (await newCategory).products;
       newProduct.push(productId);
-      (await oldCategory).Products = oldProduct;
-      (await newCategory).Products = newProduct;
+      (await oldCategory).products = oldProduct;
+      (await newCategory).products = newProduct;
       (await oldCategory).save();
       (await newCategory).save();
       return true;
@@ -131,7 +135,7 @@ export class CategoriesService {
   }
   async findNameAndCode(createCategoryDto: CategoriesDTO): Promise<boolean> {
     const category = await this.categoryModel
-      .findOne({ categoryname: createCategoryDto.categoryname })
+      .findOne({ categoryName: createCategoryDto.categoryName })
       .exec();
     if (!category) {
       Logger.error('Category not found');

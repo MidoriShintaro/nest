@@ -26,10 +26,10 @@ export class Order {
   status: string;
 
   @Prop({type:[{type:Types.ObjectId, ref:'Orderdetail'}]})
-  OrderdetailIds: string[];
+  orderdetailIds: string[];
 
   @Prop({type:Types.ObjectId, ref:'Payment'})
-  PaymentId: string;
+  paymentId: string;
 
   @Prop({type:Types.ObjectId, ref:'User'})
   userId: string;
