@@ -43,10 +43,14 @@ export class ReviewController
     @Put(':id')
     @HttpCode(200)
     @UseGuards(RolesGuard)
-    @Roles([UserRole.USER])
-    async update(@Param('id') id:string,@Body() reviewDto:ReviewDTO, @GetUser() user:User):Promise<Review>
-    {
-        return this.reviewService.update(reviewDto, id, user);
+    @Roles([UserRole.USER,UserRole.ADMIN,UserRole.MODERATOR])
+    async update(@Param('id') id:string,@Body() reviewDto:ReviewDTO, @GetUser() user:User):Promise<string>
+    {   
+        if(this.reviewService.update(reviewDto, id, user))
+            {
+                return "Success";
+            }
+            return "false";
     }
 
     @Delete(':id')

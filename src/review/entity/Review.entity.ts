@@ -16,13 +16,13 @@ export type ReviewDocument = HydratedDocument<Review>;
   },
 })
 export class Review {
-  @Prop({ type: String, required: true })
+  @Prop({ type: String})
   comment: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String})
   image: string;
 
-  @Prop({type: Number, required:true})
+  @Prop({type: Number})
   rate: number;
 
   @Prop({type:Types.ObjectId, ref : 'Product'})

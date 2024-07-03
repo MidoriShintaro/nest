@@ -37,9 +37,17 @@ export class Order {
   @Prop({ type: Number})
   totalAmount: number;
 
+  @Prop({ type: String})
+  address: string;
+
+  @Prop({ type: String})
+  zipcode: string;
+
   @Prop({ type: Number})
   totalDue: number;
- 
+  
+  @Prop({ type:Boolean , required: true })
+  active: boolean;
   
 }
 

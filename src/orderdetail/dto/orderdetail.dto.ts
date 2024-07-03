@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { ProductDto } from "src/product/dto/product.dto";
 
 export class OrderdetailDto{
    
@@ -21,5 +22,8 @@ export class OrderdetailDto{
 
     @IsOptional()
     unitPrice:Number;
+
+    @IsOptional()
+    product:ProductDto;
 
 }

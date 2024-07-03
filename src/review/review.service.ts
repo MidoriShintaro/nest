@@ -47,13 +47,20 @@ export class ReviewService {
 
 
 
-    async update(reviewDto: ReviewDTO, id:string, user:any): Promise<Review> {
+    async update(reviewDto: ReviewDTO, id:string, user:any): Promise<Boolean> {
+        let result = false;
+        const role = ['ADMIN','MODERATOR'];
         const userObject = await this.userModel.findById(new Types.ObjectId(user.id));
-        if(!userObject.Reviews.includes(id))
-        {
-            throw new ExceptionsHandler();
-        }
         console.error('userobject is', userObject);
+        console.error('check is', role.includes(userObject.role));
+        console.error('check is', userObject.Reviews.includes(id));
+
+
+
+
+        if( userObject.Reviews.includes(id)||role.includes(userObject.role))
+        {
+            result = true;
         const objectId = new Types.ObjectId(id);
         const review = await this.reviewModel.findById(objectId);
         const {comment,image,productId,rate} = reviewDto;
@@ -69,7 +76,14 @@ export class ReviewService {
         {
             review.rate = rate;
         }
-        return await new this.reviewModel(review).save();
+         await new this.reviewModel(review).save();
+        }
+        else{
+            console.log('error');
+            throw new ExceptionsHandler();
+        }
+        console.log('result', result);
+      return result;
     }
 
     async delete(id: string, user: any) {

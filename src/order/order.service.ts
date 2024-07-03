@@ -44,6 +44,11 @@ export class OrderService {
         const userObjectId = userObject._id.toHexString();
         orderModel.userId = userObjectId;
         orderModel.status = 'NOTPAY';
+        orderModel.active = true;
+        orderModel.address = createProductDto.address;
+        orderModel.zipcode = createProductDto.zipcode;
+       
+
 
         const orderSaved = new this.orderModel(orderModel);
 
@@ -91,6 +96,54 @@ export class OrderService {
       session.endSession();
     }
   }
+  async cancelOrder(orderId: string): Promise<Boolean> {
+    
+
+
+    const session: ClientSession = await this.orderModel.startSession();
+    session.startTransaction();
+    try {
+      const orderObject = new Types.ObjectId(orderId);
+      const orderObjectModel = await this.orderModel.findById(orderObject).exec();
+      orderObjectModel.active = false;
+      await orderObjectModel.save();
+      return true;
+      session.commitTransaction();
+     
+    } catch (error) {
+      console.log(error);
+      session.abortTransaction();
+      return false;
+    }finally{
+      session.endSession();
+    }
+  }
+  async getAllOrder(id: string): Promise<Order[]> {
+
+
+    const session: ClientSession = await this.orderModel.startSession();
+    session.startTransaction();
+    try {
+      
+      const userModel = this.userModel.findById(id).exec();
+
+      if(userModel === undefined)
+        {
+            throw new NotFoundException('Not found user');
+        }
+     
+       return this.orderModel.find({userId:id, active:true});
+
+
+    } catch (error) {
+     
+      session.abortTransaction();
+      
+    }finally{
+      session.endSession();
+    }
+  }
+
 
   //async update(updateProductDto: ProductDto, id:string): Promise<Product> {
   //    const objectId = new Types.ObjectId(id);

@@ -113,6 +113,7 @@ export class PaymentService {
     const paymentSaved = await createdPayment.save();
     order.paymentId = paymentSaved._id.toHexString();
     order.totalDue = order.totalAmount + shipValue;
+    order.active = true;
     if(method==='MOMO'||method ==='BANK')
       { 
         order.status = 'PAID';

@@ -7,6 +7,7 @@ import { Product } from 'src/product/entity/Product.entity';
 import { Order } from 'src/order/entity/Order.entity';
 
 import { User } from 'src/user/entity/user.entity';
+import { ProductDto } from 'src/product/dto/product.dto';
 // import { session } from 'passport';
 
 @Injectable()
@@ -87,8 +88,45 @@ export class OrderDetailService {
     }
   }
 
-  async findAllInOrder(): Promise<Orderdetail[]> {
-    return this.orderDetailModel.find().exec();
+  async findAllInOrder(orderId:String): Promise<OrderdetailDto[]> {
+    const orderDetailList = await this.orderDetailModel.find({orderId:orderId}).exec();
+    console.log("orderDetailList", orderDetailList);
+    const result = [];
+    for(const orderDetailModel of orderDetailList)
+      {
+        const product = await this.productModel.findById(new Types.ObjectId(orderDetailModel.productId)).exec();
+        const productDto:ProductDto = {
+          productName: product.productName,
+          price: product.price,
+          id: '',
+          size: '',
+          color: '',
+          numberStock: 0,
+          description: '',
+          viewCount: 0,
+          height: 0,
+          width: 0,
+          length: 0,
+          weight: 0,
+          image: '',
+          categoryName: '',
+          brand: '',
+          cartId: '',
+          ids: []
+        }
+          const orderDetailDTO:OrderdetailDto = {
+            product:productDto,
+            quantity:orderDetailModel.quantity,
+            unitPrice:orderDetailModel.unitPrice,
+            userId:'',
+             productId:'',
+             orderId:'',
+
+   }
+        console.log('orderdetailModel',orderDetailModel);
+        result.push(orderDetailDTO);
+      }
+    return result;
   }
 
   async findAll(): Promise<Orderdetail[]> {

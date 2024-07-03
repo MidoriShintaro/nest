@@ -3,7 +3,9 @@ import {
   Controller,
   Get,
   HttpCode,
+  Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
@@ -14,6 +16,7 @@ import { User, UserRole } from 'src/user/entity/user.entity';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/role.guard';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { use } from 'passport';
 
 @Controller('api/order')
 @UseGuards(JwtAuthGuard)
@@ -30,6 +33,26 @@ export class OrderController {
   ): Promise<Order> {
     console.log('do this function')
     return this.orderService.create(orderDto);
+  }
+  @Put('/cancel/order/:id')
+  @HttpCode(200)
+  @UseGuards(RolesGuard)
+  @Roles([UserRole.USER])
+  async cancelOrder(@Param('id')id: string): Promise<Boolean> {
+
+    return this.orderService.cancelOrder(id);
+  }
+  @Get('/get/order')
+  @HttpCode(200)
+  @UseGuards(RolesGuard)
+  @Roles([UserRole.USER])
+  async getAllOrderOfUser(
+    @GetUser() user:any
+     
+   
+  ): Promise<Order[]> {
+
+    return this.orderService.getAllOrder(user.id);
   }
   @Get()
   @HttpCode(200)
