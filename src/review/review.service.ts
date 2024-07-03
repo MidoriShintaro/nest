@@ -88,6 +88,18 @@ export class ReviewService {
 
     async delete(id: string, user: any) {
         try{
+            const role = ['ADMIN','MODERATOR'];
+        const userObject = await this.userModel.findById(new Types.ObjectId(user.id));
+        console.error('userobject is', userObject);
+        console.error('check is', role.includes(userObject.role));
+        console.error('check is', userObject.Reviews.includes(id));
+
+
+
+
+        if( userObject.Reviews.includes(id)||role.includes(userObject.role))
+        {
+
         const objectId = new Types.ObjectId(id);
         const review = await this.reviewModel.findById(objectId);
         await review.deleteOne();
@@ -103,7 +115,7 @@ export class ReviewService {
                 await this.reviewModel.findById(id))._id.toHexString()),1);
         await proudct.save();
         await userObject.save();
-      
+            }
         }
         catch(Error)
         {
