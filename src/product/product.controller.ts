@@ -12,6 +12,7 @@ import { ProductService } from './product.service';
 import { Product } from './entity/Product.entity';
 import { ProductDto } from './dto/product.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { DeleteDTO } from './dto/deleteDTO.dto';
 
 @Controller('/api/product')
 @UseGuards(JwtAuthGuard)
@@ -36,9 +37,9 @@ export class ProductController {
   }
 
   @Delete()
-  async delete(@Body() body: any) {
-    const productIds: string[] = body.ids;
-    console.error('products', productIds);
-    await this.productService.delete(productIds);
+  async delete(@Body() deleteDto:DeleteDTO) {
+    
+    console.error('products', deleteDto.ids);
+    await this.productService.delete(deleteDto.ids);
   }
 }

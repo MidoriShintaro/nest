@@ -107,7 +107,7 @@ export class ProductService {
           throw new Error('Product not found!!!');
         }
         const categoriesToUpdate = await this.categoryModel.findOne({
-          Products: id,
+          products: id,
         });
         console.error('categoryUpdate', categoriesToUpdate);
         // Update each category to remove the reference to the deleted product
