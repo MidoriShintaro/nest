@@ -36,7 +36,7 @@ export class ProductController {
     return this.productService.update(productDto, id);
   }
 
-  @Delete()
+  @Put()
   async delete(@Body() deleteDto:DeleteDTO) {
     
     console.error('products', deleteDto.ids);
