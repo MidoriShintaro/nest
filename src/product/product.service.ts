@@ -98,8 +98,8 @@ export class ProductService {
     return result;
   }
 
-  async delete(ids: string[]) {
-    for (const id of ids) {
+  async delete(id: string) {
+
       try {
         const objectId = new Types.ObjectId(id);
         const oldProduct = await this.productModel.findById(objectId).exec();
@@ -126,7 +126,7 @@ export class ProductService {
         console.log(error);
         // Handle error or rethrow it
       }
-    }
+   
   }
 
   async findNameAndCode(createProductDto: ProductDto): Promise<boolean> {

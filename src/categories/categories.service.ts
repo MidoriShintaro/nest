@@ -25,8 +25,8 @@ export class CategoriesService {
     return await oldCategory.save();
   }
 
-  async delete(ids: string[]) {
-    for (const id of ids) {
+  async delete(id :string) {
+
       const session: ClientSession = await this.categoryModel.startSession();
       session.startTransaction();
       console.error('idNumber:', id);
@@ -64,7 +64,7 @@ export class CategoriesService {
         session.abortTransaction();
         session.endSession();
       }
-    }
+    
   }
   async findByName(categoryName: string): Promise<Category> {
     const category = await this.categoryModel

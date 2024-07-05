@@ -26,12 +26,11 @@ export class CategoriesController {
   ): Promise<Category> {
     return this.categoryService.update(categoryDto, id);
   }
-  @Put('/delete')
-  async delete(@Body() body: any) {
-    const ids: string[] = body.ids;
-    console.error('id from rest', ids);
+  @Delete(':id')
+  async delete(@Param('id') id:string) {
+    console.error('id from rest', id);
 
-    this.categoryService.delete(ids);
+    this.categoryService.delete(id);
   }
 
   @Get()

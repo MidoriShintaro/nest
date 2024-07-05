@@ -36,10 +36,10 @@ export class ProductController {
     return this.productService.update(productDto, id);
   }
 
-  @Put()
-  async delete(@Body() deleteDto:DeleteDTO) {
+  @Delete(':id')
+  async delete(@Param('id') id:string) {
     
-    console.error('products', deleteDto.ids);
-    await this.productService.delete(deleteDto.ids);
+    console.error('products', id);
+    await this.productService.delete(id);
   }
 }
