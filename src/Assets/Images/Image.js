@@ -1,0 +1,11 @@
+export let payment = 'https://res.cloudinary.com/dxguqzge7/image/upload/v1682838910/payment_mkel3w.jpg';
+export let profile = 'https://res.cloudinary.com/dxguqzge7/image/upload/v1682838912/vecteezy_user-avatar-line-style__x94mjc.jpg';
+export let MaleCloth = 'https://res.cloudinary.com/dxguqzge7/image/upload/v1682838911/Male-Cloth_fyyrzb.jpg';
+export let Accessory = 'https://res.cloudinary.com/dyp4yk66w/image/upload/v1719415404/ecommerce/Lam_Decor_-_Phong_Nen_Phu_Kien_Chup_Anh-48359_l26ahf.jpg';
+export let Suitcase = 'https://res.cloudinary.com/dyp4yk66w/image/upload/v1719393270/ecommerce/9f4a362aab6fed21fd64655527965bad_z5ania.jpg';
+export let Electronics = 'https://res.cloudinary.com/dxguqzge7/image/upload/v1682838911/Electronics_lrjvlg.jpg';
+export let Jewelry = 'https://res.cloudinary.com/dxguqzge7/image/upload/v1682838911/model-jwellery_qlcjog.jpg';
+export let HandBag = 'https://res.cloudinary.com/dyp4yk66w/image/upload/v1719420799/ecommerce/2022_w1sr9o.webp';
+export let BackPack = 'https://res.cloudinary.com/dyp4yk66w/image/upload/v1719393502/ecommerce/pgytech-onego-backpack-15_r6fh3c.jpg';
+export let EmptyCart = 'https://res.cloudinary.com/dxguqzge7/image/upload/v1682838909/Cart_bk4xgl.jpg';
+export let customerReview = "https://res.cloudinary.com/dxguqzge7/image/upload/v1682838911/Review_bm6chw.jpg";
