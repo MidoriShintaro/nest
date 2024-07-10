@@ -7,11 +7,11 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { OrderdetailDto } from './dto/orderdetail.dto';
-import { Orderdetail } from './entity/Orderdetail.entity';
+import { OrderdetailDto } from './dto/OrderDetail.dto';
+import { Orderdetail } from './entity/OrderDetail.entity';
 import { OrderDetailService } from './orderdetail.service';
 
-@Controller('/orderdetail')
+@Controller('/api/orderDetail')
 export class OrderDetailController {
   constructor(private readonly orderDetailService: OrderDetailService) {}
 
@@ -26,7 +26,7 @@ export class OrderDetailController {
   //}
   @Get()
   async getAllInOder(): Promise<Orderdetail[]> {
-    return this.orderDetailService.findAll();
+    return this.orderDetailService.findAllInOrder();
   }
   @Put(':id')
   async update(
@@ -36,5 +36,10 @@ export class OrderDetailController {
     return this.orderDetailService.updateQuantity(orderDetailDto, id);
   }
 
-  
+  @Delete()
+  async delete(@Body() body: any) {
+    const orderDetailIds: string[] = body.ids;
+    console.error('orderDetail', orderDetailIds);
+    // await this.orderDetailService.delete(orderDetailIds);
+  }
 }

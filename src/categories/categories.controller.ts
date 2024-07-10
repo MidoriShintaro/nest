@@ -11,7 +11,7 @@ import { CategoriesService } from './categories.service';
 import { CategoriesDTO } from './dto/category.dto';
 import { Category } from './entity/Categories.entity';
 
-@Controller('/categories')
+@Controller('/api/categories')
 export class CategoriesController {
   constructor(private readonly categoryService: CategoriesService) {}
 
@@ -29,7 +29,6 @@ export class CategoriesController {
   @Delete()
   async delete(@Body() body: any) {
     const ids: string[] = body.ids;
-    console.error('id from rest', ids);
 
     this.categoryService.delete(ids);
   }

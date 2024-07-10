@@ -10,7 +10,6 @@ import { Payment } from 'src/payment/entity/Payment.entity';
 import { User } from 'src/user/entity/user.entity';
 import { Cart } from 'src/cart/entity/cart.entity';
 import { OrderDetailService } from 'src/orderdetail/orderdetail.service';
-import { OrderdetailDto } from 'src/orderdetail/dto/orderdetail.dto';
 
 @Injectable()
 export class OrderService {
@@ -21,75 +20,73 @@ export class OrderService {
     @InjectModel(Payment.name) private paymentModel: Model<Payment>,
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Cart.name) private cartModel: Model<Cart>,
-    private orderDetailService:OrderDetailService
-  
-   
-
+    private orderDetailService: OrderDetailService,
   ) {}
 
   async create(createProductDto: OrderDto): Promise<Order> {
     console.log('You are doing in this function');
 
-
     const session: ClientSession = await this.orderModel.startSession();
     session.startTransaction();
     try {
-      
       const { cartIds } = createProductDto;
-    
+
       const orderModel = new Order();
-        const usesrId = new Types.ObjectId(createProductDto.user);
-      const userObject = await this.userModel.findById(usesrId);
-        console.log('userObject', userObject);
-        const userObjectId = userObject._id.toHexString();
-        orderModel.userId = userObjectId;
-        orderModel.status = 'NOTPAY';
+      const userId = new Types.ObjectId(createProductDto.user);
+      const userObject = await this.userModel.findById(userId);
+      console.log('userObject', userObject);
+      const userObjectId = userObject._id.toHexString();
+      orderModel.userId = userObjectId;
+      orderModel.status = 'NOTPAY';
 
-        const orderSaved = new this.orderModel(orderModel);
+      const orderSaved = new this.orderModel(orderModel);
 
-        const orderCreated = await orderSaved.save();
-        console.log('orderCreated',orderCreated);
-
+      const orderCreated = await orderSaved.save();
+      console.log('orderCreated', orderCreated);
 
       let totalPrice = 0;
       for (const cartId of cartIds) {
         const cartObject = new Types.ObjectId(cartId);
-        const cart = await this.cartModel
-          .findById(cartObject)
-          .exec();
-          const orderDetailModel = new Orderdetail();
-      
-          orderDetailModel.productId = cart.product;
-          orderDetailModel.quantity = cart.quantity;
-          const productObject = await this.productModel.findById(new Types.ObjectId(cart.product));
-          const price = productObject.price;
-          totalPrice = price * cart.quantity;
-          orderDetailModel.unitPrice = price * cart.quantity;
-          orderDetailModel.orderId = orderCreated.id;
-          orderDetailModel.active = true;
-         const orderdetailt = new this.orderdetailModel(orderDetailModel);
+        const cart = await this.cartModel.findById(cartObject).exec();
+        const orderDetailModel = new Orderdetail();
+
+        orderDetailModel.productId = cart.product;
+        orderDetailModel.quantity = cart.quantity;
+        const productObject = await this.productModel.findById(
+          new Types.ObjectId(cart.product),
+        );
+        const price = productObject.price;
+        totalPrice = price * cart.quantity;
+        orderDetailModel.unitPrice = price * cart.quantity;
+        orderDetailModel.orderId = orderCreated.id;
+        orderDetailModel.active = true;
+        const orderdetailt = new this.orderdetailModel(orderDetailModel);
         const test = await orderdetailt.save();
-         console.log('orderdetailt', test);
-       }
+        console.log('orderdetailt', test);
+      }
 
       console.error('total Price ', totalPrice);
       orderCreated.totalAmount = totalPrice;
-      
-       const result =await orderCreated.save();
-       console.error('result', result)
 
-     
+      const result = await orderCreated.save();
+      console.error('result', result);
+
       await userObject.OrderIds.push(result.id);
       return result;
       session.commitTransaction();
-     
     } catch (error) {
       console.log(error);
       session.abortTransaction();
-      
-    }finally{
+    } finally {
       session.endSession();
     }
+  }
+
+  async getOrdersByUser(userId: string): Promise<Order[]> {
+    const orders = await this.orderModel.find({ userId });
+    if (!orders) throw new NotFoundException('Order not found');
+
+    return orders;
   }
 
   //async update(updateProductDto: ProductDto, id:string): Promise<Product> {
@@ -193,4 +190,10 @@ export class OrderService {
 
   //    return this.productModel.find().exec();
   //}
+  async getAllOrder(): Promise<Order[]> {
+    return await this.orderModel.find().populate({
+      path: 'userId paymentId',
+      select: 'username email phoneNumber value',
+    });
+  }
 }

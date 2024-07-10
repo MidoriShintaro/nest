@@ -96,7 +96,6 @@ export class CategoriesService {
     console.error('result categoryId', categoryObjectId);
     console.error('result categoryId', categoryId);
 
-
     const category = await this.categoryModel.findById(categoryObjectId).exec();
     console.error('result categoryId', categoryId);
 
@@ -110,7 +109,7 @@ export class CategoriesService {
     console.error('id is:', categoryName);
     return categoryName.toString();
   }
-  async deleteOldProductAndAddnewProduct(
+  async deleteOldProductAndAddNewProduct(
     oldName: string,
     newName: string,
     productId: string,

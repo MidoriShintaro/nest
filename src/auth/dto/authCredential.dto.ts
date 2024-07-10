@@ -1,7 +1,5 @@
 import {
   IsEmail,
-  IsEmpty,
-  // IsNotEmpty,
   IsOptional,
   IsString,
   Matches,
@@ -22,7 +20,7 @@ export class AuthCredential {
   })
   password: string;
 
-  @IsEmpty()
+  @IsOptional()
   phoneNumber: string;
 
   // @IsEmpty()

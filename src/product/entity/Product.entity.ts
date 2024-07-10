@@ -1,9 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Category } from 'src/categories/entity/Categories.entity';
-
-import { Voucher } from 'src/voucher/entity/Voucher.entity';
-import { Review } from 'src/review/entity/Review.entity';
 import { Orderdetail } from 'src/orderdetail/entity/Orderdetail.entity';
 
 export type ProductDocument = HydratedDocument<Product>;
@@ -68,12 +64,12 @@ export class Product {
   guarantee: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Voucher' }] })
-  vouchers: String[];
+  vouchers: string[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Review' }] })
-  reviews: String[];
+  @Prop({ type: [{ type: String, ref: 'Review' }] })
+  reviews: string[];
 
-  @Prop({ type: Types.ObjectId, ref: 'OrderDetial' })
+  @Prop({ type: Types.ObjectId, ref: 'Orderdetail' })
   orderDetail: Orderdetail;
 }
 

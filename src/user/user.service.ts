@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ChangePasswordDto } from './dto/changePassword.dto';
+import { updateDto } from './dto/update.dto';
 
 @Injectable()
 export class UserService {
@@ -56,12 +57,12 @@ export class UserService {
     return 'User created successfully';
   }
 
-  async updateUser(id: string, userDto: UserDto): Promise<string> {
+  async updateUser(id: string, userDto: updateDto): Promise<string> {
     const user = await this.userModel.findById(id);
 
     if (!user) throw new NotFoundException('User does not exist');
 
-    user.updateOne(
+    await user.updateOne(
       {
         username: userDto.username,
         email: userDto.email,
@@ -84,23 +85,23 @@ export class UserService {
 
   async changePassword(
     user: any,
-    { currentPassword, newPassword, passwordConfirm }: ChangePasswordDto,
+    { currentPassword, newPassword }: ChangePasswordDto,
   ): Promise<string> {
+    const currentUser = await this.userModel.findById(user.id);
     if (!user) throw new UnauthorizedException();
 
-    if (!bcrypt.compareSync(user.password, currentPassword))
-      throw new BadRequestException('Password is incorrect');
+    if (!bcrypt.compareSync(currentPassword, currentUser.password))
+      throw new BadRequestException('Current password is incorrect');
 
     if (currentPassword === newPassword)
       throw new BadRequestException(
         'New password must have different current password',
       );
 
-    if (newPassword !== passwordConfirm)
-      throw new BadRequestException('Password not same');
-
     const salt = bcrypt.genSaltSync(12);
-    user.password = bcrypt.hashSync(newPassword, salt);
+    await currentUser.updateOne({
+      password: bcrypt.hashSync(newPassword, salt),
+    });
     return 'Change password successfully';
   }
 }

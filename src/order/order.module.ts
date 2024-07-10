@@ -21,11 +21,10 @@ import { OrderDetailService } from 'src/orderdetail/orderdetail.service';
       { name: Payment.name, schema: PaymentSchema },
       { name: User.name, schema: UserSchema },
       { name: Product.name, schema: ProductSchema },
-      { name: Cart.name, schema: CartSchema }
-
+      { name: Cart.name, schema: CartSchema },
     ]),
   ],
   controllers: [OrderController],
-  providers: [OrderService,OrderDetailService],
+  providers: [OrderService, OrderDetailService],
 })
 export class OrderModule {}

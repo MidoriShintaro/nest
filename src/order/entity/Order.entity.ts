@@ -1,9 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Date, HydratedDocument, Types } from 'mongoose';
-import { Orderdetail } from 'src/orderdetail/entity/Orderdetail.entity';
-import { Payment } from 'src/payment/entity/Payment.entity';
-
-import { Column } from 'typeorm';
+import { HydratedDocument, Types } from 'mongoose';
 
 export type OrderDocument = HydratedDocument<Order>;
 
@@ -18,29 +14,29 @@ export type OrderDocument = HydratedDocument<Order>;
   },
 })
 export class Order {
-  
-
-  @Prop({ type:String ,enum:{
-    values:['NOTPAY','PAID']
-  }, required: true })
+  @Prop({
+    type: String,
+    enum: {
+      values: ['NOTPAY', 'PAID'],
+    },
+    required: true,
+  })
   status: string;
 
-  @Prop({type:[{type:Types.ObjectId, ref:'Orderdetail'}]})
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Orderdetail' }] })
   orderdetailIds: string[];
 
-  @Prop({type:Types.ObjectId, ref:'Payment'})
+  @Prop({ type: Types.ObjectId, ref: 'Payment' })
   paymentId: string;
 
-  @Prop({type:Types.ObjectId, ref:'User'})
+  @Prop({ type: Types.ObjectId, ref: 'User' })
   userId: string;
 
-  @Prop({ type: Number})
+  @Prop({ type: Number })
   totalAmount: number;
 
-  @Prop({ type: Number})
+  @Prop({ type: Number })
   totalDue: number;
- 
-  
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

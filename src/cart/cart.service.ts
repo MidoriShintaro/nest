@@ -11,10 +11,20 @@ export class CartService {
     private cartModel: Model<Cart>,
   ) {}
 
+  async getAllCartAllProduct(): Promise<Cart[]> {
+    return await this.cartModel.find().populate({
+      path: 'product',
+      select: 'productName price category',
+      populate: { path: 'category', select: 'categoryName' },
+    });
+  }
+
   async getAllCartProduct(user: string): Promise<Cart[]> {
-    return await this.cartModel
-      .find({ user })
-      .populate({ path: 'product', select: 'productname price' });
+    return await this.cartModel.find({ user }).populate({
+      path: 'product',
+      select: 'productName price category',
+      populate: { path: 'category reviews', select: 'categoryName rate' },
+    });
   }
 
   async addToCart(cart: CartDto): Promise<string> {
@@ -42,26 +52,23 @@ export class CartService {
   }
 
   async updateCart(
-    userId: string,
-    productId: string,
-    cart: CartDto,
+    cartId: string,
+    { quantity, user, product }: CartDto,
   ): Promise<string> {
-    const item = await this.cartModel.findOne({
-      $and: [{ user: userId }, { product: productId }],
-    });
+    const item = await this.cartModel.findById(cartId);
 
     if (!item) {
       throw new NotFoundException('Item not found');
     }
 
-    await item.updateOne({ quantity: cart.quantity }, { new: true });
+    await item.updateOne({ quantity, user, product }, { new: true });
     return 'Item updated successfully';
   }
 
-  async removeFromCart(userId: string, productId: string): Promise<string> {
-    const item = await this.cartModel.findOne({
-      $and: [{ user: userId }, { product: productId }],
-    });
+  async removeFromCart(cartId: string): Promise<string> {
+    const item = await this.cartModel.findById(cartId);
+
+    if (!item) throw new NotFoundException('Item not found');
 
     await item.deleteOne();
 

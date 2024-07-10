@@ -15,6 +15,7 @@ import { OrderModule } from './order/order.module';
 import { PaymentModule } from './payment/payment.module';
 import { ReviewModule } from './review/review.module';
 import { CartModule } from './cart/cart.module';
+import { CloudinaryModule } from './utils/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { CartModule } from './cart/cart.module';
     PaymentModule,
     ReviewModule,
     CartModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

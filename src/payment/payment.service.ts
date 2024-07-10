@@ -96,7 +96,9 @@ export class PaymentService {
   //    }
   //    return true;
   //}
-
+  async getPayments(): Promise<Payment[]> {
+    return await this.paymentModel.find().populate('orderId');
+  }
   async create(createPaymentDto: PaymentDto): Promise<Payment> {
     const { method, orderId, shipValue } = createPaymentDto;
     const createdPayment = new this.paymentModel();
@@ -107,16 +109,14 @@ export class PaymentService {
       throw new NotFoundException('Not found Order');
     }
 
-    
-    createdPayment.method =  method;
-    createdPayment.value =  order.totalAmount + shipValue;
+    createdPayment.method = method;
+    createdPayment.value = order.totalAmount + shipValue;
     const paymentSaved = await createdPayment.save();
     order.paymentId = paymentSaved._id.toHexString();
     order.totalDue = order.totalAmount + shipValue;
-    if(method==='MOMO'||method ==='BANK')
-      { 
-        order.status = 'PAID';
-      }
+    if (method === 'MOMO' || method === 'BANK') {
+      order.status = 'PAID';
+    }
     console.error('order paymentid  is', order.paymentId);
     await order.save();
     return paymentSaved;

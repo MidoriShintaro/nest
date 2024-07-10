@@ -3,16 +3,13 @@ import {
   Controller,
   Get,
   HttpCode,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { OrderDto } from './dto/order.dto';
 import { Order } from './entity/Order.entity';
-import { GetUser } from 'src/auth/get-user.decorator';
-import { User, UserRole } from 'src/user/entity/user.entity';
-import { Roles } from 'src/auth/roles.decorator';
-import { RolesGuard } from 'src/auth/role.guard';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('api/order')
@@ -22,24 +19,22 @@ export class OrderController {
 
   @Post()
   @HttpCode(200)
-  @UseGuards(RolesGuard)
-  @Roles([UserRole.USER])
-  async create(
-    @Body() orderDto: OrderDto
-   
-  ): Promise<Order> {
-    console.log('do this function')
+  async create(@Body() orderDto: OrderDto): Promise<Order> {
+    console.log('do this function');
     return this.orderService.create(orderDto);
   }
   @Get()
   @HttpCode(200)
-  @UseGuards(RolesGuard)
-  @Roles([UserRole.USER])
-  async findOne(@GetUser() user: User) {
-  // In ra thông tin người dùng
-
+  async getAllOrder(): Promise<Order[]> {
+    // In ra thông tin người dùng
     // Thực hiện các thao tác khác với thông tin người dùng...
- 
+    return await this.orderService.getAllOrder();
+  }
+
+  @Get('/:user')
+  @HttpCode(200)
+  async getOrderByUser(@Param('user') user: string): Promise<Order[]> {
+    return await this.orderService.getOrdersByUser(user);
   }
   //@Get()
   //async getAll():Promise<Product[]>

@@ -18,6 +18,11 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 export class CartController {
   constructor(private cartService: CartService) {}
 
+  @Get()
+  async getAllCartAllProducts(): Promise<Cart[]> {
+    return await this.cartService.getAllCartAllProduct();
+  }
+
   @Get('/:userId')
   async getAllCartProducts(@Param('userId') user: string): Promise<Cart[]> {
     return this.cartService.getAllCartProduct(user);
@@ -28,20 +33,16 @@ export class CartController {
     return await this.cartService.addToCart(cart);
   }
 
-  @Patch('/:userId/:productId')
+  @Patch('/:id')
   async updateCart(
-    @Param('userId') user: string,
-    @Param('productId') product: string,
+    @Param('id') id: string,
     @Body() cart: CartDto,
   ): Promise<string> {
-    return await this.cartService.updateCart(user, product, cart);
+    return await this.cartService.updateCart(id, cart);
   }
 
-  @Delete('/:userId/:productId')
-  async removeFromCart(
-    @Param('userId') user: string,
-    @Param('productId') product: string,
-  ): Promise<string> {
-    return await this.cartService.removeFromCart(user, product);
+  @Delete('/:id')
+  async removeFromCart(@Param('id') id: string): Promise<string> {
+    return await this.cartService.removeFromCart(id);
   }
 }

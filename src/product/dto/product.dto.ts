@@ -1,12 +1,4 @@
-import {
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class ProductDto {
   id: string;
@@ -23,7 +15,7 @@ export class ProductDto {
   @IsNotEmpty()
   color: string;
 
-  @IsNumber()
+  // @IsNumber()
   @IsNotEmpty()
   price: number;
 
@@ -55,7 +47,7 @@ export class ProductDto {
   @IsOptional()
   weight: number;
 
-  @IsString()
+  // @IsString()
   @IsOptional()
   image: string;
 

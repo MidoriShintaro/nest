@@ -14,8 +14,8 @@ export class OrderDetailService {
   constructor(
     @InjectModel(Orderdetail.name) private orderDetailModel: Model<Orderdetail>,
     @InjectModel(Product.name) private productModel: Model<Product>,
-    @InjectModel(Order.name) private ordertModel: Model<Order>,
-    @InjectModel(User.name) private usertModel: Model<User>,
+    @InjectModel(Order.name) private orderModel: Model<Order>,
+    @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
   async updateQuantity(
@@ -36,13 +36,12 @@ export class OrderDetailService {
     return oldOrderDetail.save();
   }
 
-
   async create(createOrderDetail: OrderdetailDto): Promise<Orderdetail> {
     const session: ClientSession = await this.orderDetailModel.startSession();
     try {
       session.startTransaction();
 
-      const { quantity, productId, orderId, userId } = createOrderDetail;
+      const { quantity, productId, orderId } = createOrderDetail;
       const OrderDetail = new Orderdetail();
       console.error('createDetail is', createOrderDetail);
       const productObjectId = new Types.ObjectId(productId);
@@ -54,7 +53,6 @@ export class OrderDetailService {
       if (!productFind) {
         throw new Error('Product not found!!!');
       }
-      
 
       OrderDetail.productId = productId;
       OrderDetail.quantity = quantity;
@@ -76,9 +74,9 @@ export class OrderDetailService {
       OrderDetail.unitPrice = quantity * priceProduct;
 
       OrderDetail.active = true;
-      const orderdetail = new this.orderDetailModel(OrderDetail);
-      const orderDetailsaved = orderdetail.save();
-      return orderDetailsaved;
+      const orderDetail = new this.orderDetailModel(OrderDetail);
+      const orderDetailSaved = orderDetail.save();
+      return orderDetailSaved;
       session.commitTransaction();
       session.endSession();
     } catch (Error) {
@@ -88,10 +86,17 @@ export class OrderDetailService {
   }
 
   async findAllInOrder(): Promise<Orderdetail[]> {
-    return this.orderDetailModel.find().exec();
-  }
-
-  async findAll(): Promise<Orderdetail[]> {
-    return this.orderDetailModel.find().exec();
+    return this.orderDetailModel
+      .find()
+      .populate({
+        path: 'productId',
+        populate: {
+          path: 'category reviews',
+          select: 'categoryName rate',
+        },
+        select: 'productName price',
+      })
+      .populate({ path: 'orderId', select: 'totalAmount userId status' })
+      .exec();
   }
 }
