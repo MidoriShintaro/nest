@@ -88,8 +88,10 @@ export class ProductService {
       }
     }
     if (brand != null) {
+      oldProduct.brand = brand;
     }
     if (image != null) {
+      oldProduct.image = image;
     }
     if (cartId != null) {
     }

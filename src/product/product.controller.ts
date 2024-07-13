@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   UseGuards,
+  UploadedFile
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from './entity/Product.entity';
@@ -30,9 +31,10 @@ export class ProductController {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() productDto: ProductDto,
+    @Body() productDto: ProductDto
+ 
   ): Promise<Product> {
-  
+    console.log('file name', file);
     return this.productService.update(productDto, id);
   }
 
