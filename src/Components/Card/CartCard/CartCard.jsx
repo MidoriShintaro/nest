@@ -85,12 +85,17 @@ const CartCard = ({ cart, removeFromCart }) => {
           {" "}
           <Rating
             name="read-only"
-            value={Math.round(
-              cart?.product?.reviews.reduce(
-                (total, cur) =>
-                  ((total.rate + cur.rate) * 1) / cart.product.reviews.length
-              )
-            )}
+            value={
+              cart.product.reviews
+                ? Math.round(
+                    cart?.product?.reviews.reduce(
+                      (total, cur) =>
+                        ((total.rate + cur.rate) * 1) /
+                        cart.product.reviews.length
+                    )
+                  )
+                : 0
+            }
             readOnly
             precision={0.5}
           />

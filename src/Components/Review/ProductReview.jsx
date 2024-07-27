@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import Rating from "@mui/material/Rating";
 import {
   MdSentimentSatisfiedAlt,
@@ -94,15 +93,11 @@ const ProductReview = ({ authToken, setProceed, setOpenAlert, id }) => {
     } else if (comment.length >= 4 && value > 0) {
       try {
         if (setProceed) {
-          const { data } = await axios.post(
-            `${process.env.REACT_APP_ADD_REVIEW}`,
-            { id: id, comment: comment, rating: value },
-            {
-              headers: {
-                Authorization: authToken,
-              },
-            }
-          );
+          const { data } = await instance.post("/review", {
+            productId: id,
+            comment: comment,
+            rate: value,
+          });
           toast.success(data.msg, { theme: "colored", autoClose: 500 });
           fetchReviews();
         } else {

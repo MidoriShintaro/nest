@@ -158,7 +158,7 @@ const ProductDetail = () => {
               <div className="detail-img-box">
                 <img
                   alt={product.data.productName}
-                  src={product.image}
+                  src={product.data.image}
                   className="detail-img"
                 />
                 <br />

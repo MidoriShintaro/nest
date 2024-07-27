@@ -77,7 +77,8 @@ const MobileNavigation = () => {
           }}
         >
           <div className="links">
-            <Badge badgeContent={setProceed ? cart.length : 0}>
+            {/* <Badge badgeContent={setProceed ? cart.length : 0}> */}
+            <Badge badgeContent={0}>
               <AiOutlineShoppingCart style={{ fontSize: 23 }} />
             </Badge>
           </div>

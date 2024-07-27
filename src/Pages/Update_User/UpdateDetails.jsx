@@ -51,7 +51,7 @@ const UpdateDetails = () => {
 
   useEffect(() => {
     setProceed ? getUserData() : navigate("/login");
-  }, [navigate, setProceed, userDetails, userId]);
+  }, [navigate, setProceed, userId]);
 
   const getUserData = async () => {
     try {
@@ -218,7 +218,6 @@ const UpdateDetails = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Contact Number"
-                type="tel"
                 name="phoneNumber"
                 value={userDetails.phoneNumber || ""}
                 onChange={handleOnchange}
