@@ -11,9 +11,7 @@ import {
 } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
-import { RolesGuard } from 'src/auth/role.guard';
-import { User, UserRole } from 'src/user/entity/user.entity';
-import { Roles } from 'src/auth/roles.decorator';
+import { User } from 'src/user/entity/user.entity';
 import { ReviewDTO } from './dto/review.dto';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { Review } from './entity/Review.entity';
@@ -25,8 +23,6 @@ export class ReviewController {
 
   @Post()
   @HttpCode(200)
-  @UseGuards(RolesGuard)
-  @Roles([UserRole.USER])
   async create(
     @Body() reviewDto: ReviewDTO,
     @GetUser() user: User,
