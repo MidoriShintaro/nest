@@ -18,7 +18,6 @@ const SingleCategory = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("Authorization");
   useEffect(() => {
-    if (!token) navigate("/login");
     const getCategoryProduct = async () => {
       try {
         setIsLoading(true);
@@ -43,43 +42,6 @@ const SingleCategory = () => {
     "Low Rated",
   ];
 
-  // if (cat === "handbag") {
-  //   productFilter.push(
-  //     "All",
-  //     "Price Low To High",
-  //     "Price High To Low",
-  //     "High Rated",
-  //     "Low Rated"
-  //   );
-  // } else if (cat === "suitcase") {
-  //   productFilter.push(
-  //     "All",
-  //     "Men",
-  //     "Women",
-  //     "Price Low To High",
-  //     "Price High To Low",
-  //     "High Rated",
-  //     "Low Rated"
-  //   );
-  // } else if (cat === "backpack") {
-  //   productFilter.push(
-  //     "All",
-  //     "Price Low To High",
-  //     "Price High To Low",
-  //     "High Rated",
-  //     "Low Rated"
-  //   );
-  // } else if (cat === "accessory") {
-  //   productFilter.push(
-  //     "All",
-  //     "Price Low To High",
-  //     "Price High To Low",
-  //     "High Rated",
-  //     "Low Rated"
-  //   );
-  // } else if (cat === "jewelry") {
-  //   productFilter.push("All");
-  // }
 
   const handleChange = (e) => {
     setFilterOption(e.target.value.split(" ").join("").toLowerCase());
@@ -183,7 +145,6 @@ const SingleCategory = () => {
             
             <Link to={`/Detail/type/${cat}/${prod.id}`} key={prod.id}>
               <ProductCard prod={prod} />
-              {console.log(prod)}
             </Link>
           ))}
         </Container>

@@ -45,8 +45,6 @@ const ProductDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authToken) navigate("/login");
-
     getSingleProduct(setProduct, id, setLoading);
 
     const getSimilarProducts = async () => {
@@ -56,7 +54,7 @@ const ProductDetail = () => {
     getSimilarProducts();
 
     window.scroll(0, 0);
-  }, [id, cat, navigate, authToken]);
+  }, [id, cat, navigate]);
 
   const addToCart = async (product) => {
     if (setProceed) {
@@ -66,7 +64,6 @@ const ProductDetail = () => {
           user: user,
           quantity: productQuantity,
         });
-        console.log(data);
         setCart(data.data);
         setCart([...cart, product]);
         toast.success("Added To Cart", { autoClose: 500, theme: "colored" });

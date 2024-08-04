@@ -14,12 +14,12 @@ const HomePage = () => {
   const { setCart } = useContext(ContextFunction);
   const navigate = useNavigate();
   let userId = localStorage.getItem("user");
-  const auth = localStorage.getItem("Authorization");
-  useEffect(() => {
-    if (!auth) {
-      navigate("/");
-    }
-  }, [auth, navigate]);
+  // const auth = localStorage.getItem("Authorization");
+  // useEffect(() => {
+  //   if (!auth) {
+  //     navigate("/");
+  //   }
+  // }, [auth, navigate]);
 
   useEffect(() => {
     const getCart = async () => {

@@ -34,14 +34,21 @@ const Cart = () => {
   let setProceed = authToken ? true : false;
 
   useEffect(() => {
-    getCart();
+    if (setProceed) {
+      getCart();
+    } else {
+      setOpenAlert(true);
+    }
     //   getPreviousOrder();
+
     window.scroll(0, 0);
   }, [userId, setCart]);
 
   const getCart = async () => {
-    const { data } = await instance.get(`/cart/${userId}`);
-    setCart(data.data);
+    if (setProceed) {
+      const { data } = await instance.get(`/cart/${userId}`);
+      setCart(data.data);
+    }
   };
 
   useEffect(() => {

@@ -182,7 +182,7 @@ const ProductReview = ({ authToken, setProceed, setOpenAlert, id }) => {
           />
         </div>
       </div>
-      {reviews.length >= 1 ? (
+      {reviews?.length >= 1 ? (
         <Box
           sx={{
             display: "flex",
