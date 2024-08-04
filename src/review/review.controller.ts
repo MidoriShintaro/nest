@@ -17,12 +17,12 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { Review } from './entity/Review.entity';
 
 @Controller('api/review')
-@UseGuards(JwtAuthGuard)
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @Post()
   @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
   async create(
     @Body() reviewDto: ReviewDTO,
     @GetUser() user: User,
@@ -46,6 +46,7 @@ export class ReviewController {
   }
 
   @Post('/:productId')
+  @UseGuards(JwtAuthGuard)
   async getReviewByProductId(
     @Param('productId') id: string,
   ): Promise<Review[]> {
@@ -59,6 +60,7 @@ export class ReviewController {
 
   @Put(':id')
   @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param('id') id: string,
     @Body() reviewDto: ReviewDTO,
@@ -68,6 +70,7 @@ export class ReviewController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   async delete(
     @Param('id') id: string,

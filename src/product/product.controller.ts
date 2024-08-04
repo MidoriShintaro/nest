@@ -17,18 +17,19 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('/api/product')
-@UseGuards(JwtAuthGuard)
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('image'))
+  @UseGuards(JwtAuthGuard)
   async create(
     @Body() productDto: ProductDto,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<string> {
     return this.productService.create(productDto, image);
   }
+
   @Get()
   async getAll(): Promise<Product[]> {
     return this.productService.findAll();

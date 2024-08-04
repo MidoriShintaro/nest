@@ -14,7 +14,6 @@ import { CartDto } from './dto/cart.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('/api/cart')
-@UseGuards(JwtAuthGuard)
 export class CartController {
   constructor(private cartService: CartService) {}
 
@@ -29,11 +28,13 @@ export class CartController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async addToCart(@Body() cart: CartDto): Promise<string> {
     return await this.cartService.addToCart(cart);
   }
 
   @Patch('/:id')
+  @UseGuards(JwtAuthGuard)
   async updateCart(
     @Param('id') id: string,
     @Body() cart: CartDto,
@@ -42,6 +43,7 @@ export class CartController {
   }
 
   @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
   async removeFromCart(@Param('id') id: string): Promise<string> {
     return await this.cartService.removeFromCart(id);
   }
