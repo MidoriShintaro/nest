@@ -37,6 +37,8 @@ export class Order {
 
   @Prop({ type: Number })
   totalDue: number;
+  @Prop({ type: String })
+  orderCode: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

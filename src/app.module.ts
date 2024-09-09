@@ -16,6 +16,7 @@ import { PaymentModule } from './payment/payment.module';
 import { ReviewModule } from './review/review.module';
 import { CartModule } from './cart/cart.module';
 import { CloudinaryModule } from './utils/cloudinary/cloudinary.module';
+import { ZaloPayModule } from './zalopay/zalopay.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { CloudinaryModule } from './utils/cloudinary/cloudinary.module';
     ReviewModule,
     CartModule,
     CloudinaryModule,
+    ZaloPayModule
   ],
   controllers: [AppController],
   providers: [AppService],

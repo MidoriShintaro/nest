@@ -10,6 +10,7 @@ import { Payment } from 'src/payment/entity/Payment.entity';
 import { User } from 'src/user/entity/user.entity';
 import { Cart } from 'src/cart/entity/cart.entity';
 import { OrderDetailService } from 'src/orderdetail/orderdetail.service';
+import moment from 'moment';
 
 @Injectable()
 export class OrderService {
@@ -25,7 +26,8 @@ export class OrderService {
 
   async create(createProductDto: OrderDto): Promise<Order> {
     console.log('You are doing in this function');
-
+    const transID = Math.floor(Math.random() * 1000000);
+    const ordercode = `${moment().format('YYMMDD')}_${transID}`;
     const session: ClientSession = await this.orderModel.startSession();
     session.startTransaction();
     try {
@@ -60,6 +62,7 @@ export class OrderService {
         orderDetailModel.unitPrice = price * cart.quantity;
         orderDetailModel.orderId = orderCreated.id;
         orderDetailModel.active = true;
+
         const orderdetailt = new this.orderdetailModel(orderDetailModel);
         const test = await orderdetailt.save();
         console.log('orderdetailt', test);
@@ -67,7 +70,7 @@ export class OrderService {
 
       console.error('total Price ', totalPrice);
       orderCreated.totalAmount = totalPrice;
-
+      orderCreated.orderCode = ordercode;
       const result = await orderCreated.save();
       console.error('result', result);
 
