@@ -14,8 +14,8 @@ export class OrderDetailService {
   constructor(
     @InjectModel(Orderdetail.name) private orderDetailModel: Model<Orderdetail>,
     @InjectModel(Product.name) private productModel: Model<Product>,
-    @InjectModel(Order.name) private ordertModel: Model<Order>,
-    @InjectModel(User.name) private usertModel: Model<User>,
+    @InjectModel(Order.name) private orderModel: Model<Order>,
+    @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
   async updateQuantity(
@@ -36,70 +36,15 @@ export class OrderDetailService {
     return oldOrderDetail.save();
   }
 
-  async delete(ids: string[]) {
-    for (const id of ids) {
-      try {
-        const objectId = new Types.ObjectId(id);
-        const oldOrderDetail = await this.orderDetailModel
-          .findById(objectId)
-          .exec();
-        if (!oldOrderDetail) {
-          throw new Error('Product not found!!!');
-        }
-        const userId = new Types.ObjectId(oldOrderDetail.UserId);
-        const userUpdate = await this.usertModel.findById(userId);
-        console.error('userUpdate', userUpdate);
-        // Update each category to remove the reference to the deleted product
-        userUpdate.OrderdetailIds.splice(
-          userUpdate.OrderdetailIds.indexOf(
-            (await this.orderDetailModel.findById(id))._id.toHexString(),
-          ),
-          1,
-        );
-        await userUpdate.save();
-
-        if (oldOrderDetail.OrderId != undefined) {
-          const orderId = new Types.ObjectId(oldOrderDetail.OrderId);
-          const orderUpdate = await this.ordertModel.findById(orderId);
-          orderUpdate.OrderdetailIds.splice(
-            orderUpdate.OrderdetailIds.indexOf(
-              (await this.orderDetailModel.findById(id))._id.toHexString(),
-            ),
-            1,
-          );
-          await orderUpdate.save();
-        }
-        const productId = new Types.ObjectId(oldOrderDetail.ProductId);
-        const productDelete = await this.ordertModel.findById(productId);
-        if (productDelete.OrderdetailIds != undefined) {
-          productDelete.OrderdetailIds.splice(
-            productDelete.OrderdetailIds.indexOf(
-              (await this.orderDetailModel.findById(id))._id.toHexString(),
-            ),
-            1,
-          );
-          await productDelete.save();
-        }
-        const result = await oldOrderDetail.deleteOne();
-        if (result.deletedCount === 0) {
-          throw new Error('No product is deleted');
-        }
-      } catch (error) {
-        console.log(error);
-        // Handle error or rethrow it
-      }
-    }
-  }
-
   async create(createOrderDetail: OrderdetailDto): Promise<Orderdetail> {
     const session: ClientSession = await this.orderDetailModel.startSession();
     try {
       session.startTransaction();
 
-      const { quantity, ProductId, OrderId, userId } = createOrderDetail;
+      const { quantity, productId, orderId } = createOrderDetail;
       const OrderDetail = new Orderdetail();
       console.error('createDetail is', createOrderDetail);
-      const productObjectId = new Types.ObjectId(ProductId);
+      const productObjectId = new Types.ObjectId(productId);
       const productFind = await this.productModel
         .findById(productObjectId)
         .exec();
@@ -108,45 +53,30 @@ export class OrderDetailService {
       if (!productFind) {
         throw new Error('Product not found!!!');
       }
-      const userobjectid = new Types.ObjectId(userId);
-      const userFind = await this.usertModel.findById(userobjectid).exec();
-      console.error('user find is', userFind);
-      if (!userFind) {
-        throw new Error('User not found!!!');
-      }
-      OrderDetail.UserId = userId;
 
-      OrderDetail.ProductId = ProductId;
+      OrderDetail.productId = productId;
       OrderDetail.quantity = quantity;
 
       console.error('product Find is', productFind);
       const priceProduct = productFind.price;
-      const orderObjectId = new Types.ObjectId(OrderId);
-      console.error('Order is ', OrderId);
-      if (OrderId != undefined) {
+      const orderObjectId = new Types.ObjectId(orderId);
+      console.error('Order is ', orderId);
+      if (orderId != undefined) {
         const orderFind = await this.productModel
           .findById(orderObjectId)
           .exec();
         if (!orderFind) {
           throw new Error('Order not found!!!');
         }
-        OrderDetail.OrderId = OrderId;
+        OrderDetail.orderId = orderId;
       }
 
-      OrderDetail.UnitPrice = quantity * priceProduct;
+      OrderDetail.unitPrice = quantity * priceProduct;
 
-      OrderDetail.active = false;
-      const orderdetail = new this.orderDetailModel(OrderDetail);
-      const orderDetailsaved = orderdetail.save();
-      const orderDetails = userFind.OrderdetailIds;
-      orderDetails.push((await orderDetailsaved)._id.toHexString());
-      userFind.OrderdetailIds = orderDetails;
-
-      await userFind.save();
-      console.error('Order detail is', orderDetailsaved);
-      console.error('user after saved is', userFind);
-
-      return orderDetailsaved;
+      OrderDetail.active = true;
+      const orderDetail = new this.orderDetailModel(OrderDetail);
+      const orderDetailSaved = orderDetail.save();
+      return orderDetailSaved;
       session.commitTransaction();
       session.endSession();
     } catch (Error) {
@@ -156,10 +86,17 @@ export class OrderDetailService {
   }
 
   async findAllInOrder(): Promise<Orderdetail[]> {
-    return this.orderDetailModel.find().exec();
-  }
-
-  async findAll(): Promise<Orderdetail[]> {
-    return this.orderDetailModel.find().exec();
+    return this.orderDetailModel
+      .find()
+      .populate({
+        path: 'productId',
+        populate: {
+          path: 'category reviews',
+          select: 'categoryName rate',
+        },
+        select: 'productName price',
+      })
+      .populate({ path: 'orderId', select: 'totalAmount userId status' })
+      .exec();
   }
 }

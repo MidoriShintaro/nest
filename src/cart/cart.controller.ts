@@ -14,9 +14,13 @@ import { CartDto } from './dto/cart.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('/api/cart')
-@UseGuards(JwtAuthGuard)
 export class CartController {
   constructor(private cartService: CartService) {}
+
+  @Get()
+  async getAllCartAllProducts(): Promise<Cart[]> {
+    return await this.cartService.getAllCartAllProduct();
+  }
 
   @Get('/:userId')
   async getAllCartProducts(@Param('userId') user: string): Promise<Cart[]> {
@@ -24,24 +28,23 @@ export class CartController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async addToCart(@Body() cart: CartDto): Promise<string> {
     return await this.cartService.addToCart(cart);
   }
 
-  @Patch('/:userId/:productId')
+  @Patch('/:id')
+  @UseGuards(JwtAuthGuard)
   async updateCart(
-    @Param('userId') user: string,
-    @Param('productId') product: string,
+    @Param('id') id: string,
     @Body() cart: CartDto,
   ): Promise<string> {
-    return await this.cartService.updateCart(user, product, cart);
+    return await this.cartService.updateCart(id, cart);
   }
 
-  @Delete('/:userId/:productId')
-  async removeFromCart(
-    @Param('userId') user: string,
-    @Param('productId') product: string,
-  ): Promise<string> {
-    return await this.cartService.removeFromCart(user, product);
+  @Delete('/:id')
+  @UseGuards(JwtAuthGuard)
+  async removeFromCart(@Param('id') id: string): Promise<string> {
+    return await this.cartService.removeFromCart(id);
   }
 }

@@ -1,9 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Category } from 'src/categories/entity/Categories.entity';
-
-import { Voucher } from 'src/voucher/entity/Voucher.entity';
-import { Review } from 'src/review/entity/Review.entity';
 import { Orderdetail } from 'src/orderdetail/entity/Orderdetail.entity';
 
 export type ProductDocument = HydratedDocument<Product>;
@@ -20,7 +16,7 @@ export type ProductDocument = HydratedDocument<Product>;
 })
 export class Product {
   @Prop({ type: String, required: true })
-  productname: string;
+  productName: string;
 
   @Prop({ type: String, required: true })
   size: string;
@@ -29,7 +25,7 @@ export class Product {
   color: string;
 
   @Prop({ type: Number })
-  numberstock: number;
+  numberStock: number;
 
   @Prop({ type: Number, required: true })
   price: number;
@@ -50,31 +46,31 @@ export class Product {
   description: string;
 
   @Prop({ type: Number })
-  viewcount: number;
+  viewCount: number;
 
   @Prop({ type: String })
   image: string;
 
   @Prop({ type: String })
-  Brand: string;
+  brand: string;
 
   @Prop({ type: Types.ObjectId, ref: 'Category', required: true })
-  Category: string;
+  category: string;
 
   @Prop({ type: Types.ObjectId, ref: 'Cart' })
-  Cart: string;
+  cart: string;
 
   @Prop({ type: String })
-  Guarantee: string;
+  guarantee: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Voucher' }] })
-  Vouchers: String[];
+  vouchers: string[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Review' }] })
-  Reviews: String[];
+  @Prop({ type: [{ type: String, ref: 'Review' }] })
+  reviews: string[];
 
-  @Prop({ type: Types.ObjectId, ref: 'OrderDetial' })
-  Orderdetail: Orderdetail;
+  @Prop({ type: Types.ObjectId, ref: 'Orderdetail' })
+  orderDetail: Orderdetail;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

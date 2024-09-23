@@ -4,14 +4,18 @@ import { EmailService } from './email.service';
 
 @Module({
   imports: [
-    MailerModule.forRoot({
-      transport: {
-        host: 'sandbox.smtp.mailtrap.io',
-        port: 2525,
-        auth: { user: 'a3bcdcfec65900', pass: 'eca599876f7825' },
-      },
+    MailerModule.forRootAsync({
+      useFactory: async () => ({
+        transport: {
+          host: 'sandbox.smtp.mailtrap.io',
+          port: 2525,
+          secure: false, // Adjust based on your email service
+          auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+        },
+      }),
     }),
   ],
   providers: [EmailService],
+  exports: [EmailService],
 })
 export class EmailModule {}

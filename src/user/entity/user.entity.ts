@@ -47,17 +47,11 @@ export class User {
   })
   role: string;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Orderdetail' }] })
-  OrderdetailIds: string[];
-
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Review' }] })
   Reviews: string[];
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Voucher' }] })
   Vouchers: string[];
-
-  @Prop({ type: Types.ObjectId, ref: 'Adress' })
-  address: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Order' }] })
   OrderIds: string[];

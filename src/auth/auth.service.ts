@@ -66,7 +66,7 @@ export class AuthService {
       expiresIn: '15m',
     });
 
-    const url = `http://localhost:3000/forgot-password/${token}`;
+    const url = `http://localhost:3000/user/reset-password/${token}`;
     const html = `<table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8" style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;">
         <tr>
           <td>

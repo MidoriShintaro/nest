@@ -6,38 +6,67 @@ import {
   Param,
   Post,
   Put,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from './entity/Product.entity';
 import { ProductDto } from './dto/product.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('/api/product')
-@UseGuards(JwtAuthGuard)
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  async create(@Body() productDto: ProductDto): Promise<Product> {
-    return this.productService.create(productDto);
+  @UseInterceptors(FileInterceptor('image'))
+  @UseGuards(JwtAuthGuard)
+  async create(
+    @Body() productDto: ProductDto,
+    @UploadedFile() image: Express.Multer.File,
+  ): Promise<string> {
+    return this.productService.create(productDto, image);
   }
+
   @Get()
   async getAll(): Promise<Product[]> {
     return this.productService.findAll();
   }
-  @Put(':id')
+
+  @Get('/:id')
+  async getProduct(@Param('id') id: string): Promise<Product> {
+    return await this.productService.getProduct(id);
+  }
+
+  @Get('/category/:categoryName')
+  async getProductByCategory(
+    @Param('categoryName') categoryName: string,
+  ): Promise<Product[]> {
+    return await this.productService.getProductByCategory(categoryName);
+  }
+
+  @Post('/category')
+  async filteredProductByCategory(@Body() options: any): Promise<Product[]> {
+    return await this.productService.filteredProductByCategory(
+      options.categoryName,
+      options.filter,
+    );
+  }
+
+  @Put('/:id')
+  @UseInterceptors(FileInterceptor('image'))
   async update(
     @Param('id') id: string,
     @Body() productDto: ProductDto,
-  ): Promise<Product> {
-    return this.productService.update(productDto, id);
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<string> {
+    return this.productService.update(productDto, id, file);
   }
 
-  @Delete()
-  async delete(@Body() body: any) {
-    const productIds: string[] = body.ids;
-    console.error('products', productIds);
-    await this.productService.delete(productIds);
+  @Delete('/:id')
+  async delete(@Param('id') id: string): Promise<string> {
+    return await this.productService.delete(id);
   }
 }

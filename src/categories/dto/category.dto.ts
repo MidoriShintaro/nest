@@ -10,7 +10,7 @@ export class CategoriesDTO {
 
   @IsString()
   @IsNotEmpty()
-  categoryname: string;
+  categoryName: string;
 
   @IsString()
   @IsNotEmpty()

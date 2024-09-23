@@ -8,6 +8,9 @@ import { Product } from 'src/product/entity/Product.entity';
 import { Payment } from 'src/payment/entity/Payment.entity';
 
 import { User } from 'src/user/entity/user.entity';
+import { Cart } from 'src/cart/entity/cart.entity';
+import { OrderDetailService } from 'src/orderdetail/orderdetail.service';
+import moment from 'moment';
 
 @Injectable()
 export class OrderService {
@@ -16,45 +19,77 @@ export class OrderService {
     @InjectModel(Orderdetail.name) private orderdetailModel: Model<Orderdetail>,
     @InjectModel(Product.name) private productModel: Model<Product>,
     @InjectModel(Payment.name) private paymentModel: Model<Payment>,
-    @InjectModel(Payment.name) private userModel: Model<User>,
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Cart.name) private cartModel: Model<Cart>,
+    private orderDetailService: OrderDetailService,
   ) {}
 
-  async create(createProductDto: OrderDto, user: User): Promise<Order> {
+  async create(createProductDto: OrderDto): Promise<Order> {
+    console.log('You are doing in this function');
+    const transID = Math.floor(Math.random() * 1000000);
+    const ordercode = `${moment().format('YYMMDD')}_${transID}`;
     const session: ClientSession = await this.orderModel.startSession();
+    session.startTransaction();
     try {
-      const { orderdetailIds } = createProductDto;
+      const { cartIds } = createProductDto;
+
       const orderModel = new Order();
-      orderModel.status = false;
+      const userId = new Types.ObjectId(createProductDto.user);
+      const userObject = await this.userModel.findById(userId);
+      console.log('userObject', userObject);
+      const userObjectId = userObject._id.toHexString();
+      orderModel.userId = userObjectId;
+      orderModel.status = 'NOTPAY';
+
+      const orderSaved = new this.orderModel(orderModel);
+
+      const orderCreated = await orderSaved.save();
+      console.log('orderCreated', orderCreated);
+
       let totalPrice = 0;
-      for (const orderdetailId of orderdetailIds) {
-        const orderdetailObject = new Types.ObjectId(orderdetailId);
-        const orderdetail = await this.orderdetailModel
-          .findById(orderdetailObject)
-          .exec();
-        totalPrice += orderdetail.UnitPrice;
-        if (!orderdetail) {
-          throw new NotFoundException('Orderdetail not found');
-        }
+      for (const cartId of cartIds) {
+        const cartObject = new Types.ObjectId(cartId);
+        const cart = await this.cartModel.findById(cartObject).exec();
+        const orderDetailModel = new Orderdetail();
+
+        orderDetailModel.productId = cart.product;
+        orderDetailModel.quantity = cart.quantity;
+        const productObject = await this.productModel.findById(
+          new Types.ObjectId(cart.product),
+        );
+        const price = productObject.price;
+        totalPrice = price * cart.quantity;
+        orderDetailModel.unitPrice = price * cart.quantity;
+        orderDetailModel.orderId = orderCreated.id;
+        orderDetailModel.active = true;
+
+        const orderdetailt = new this.orderdetailModel(orderDetailModel);
+        const test = await orderdetailt.save();
+        console.log('orderdetailt', test);
       }
 
       console.error('total Price ', totalPrice);
-      orderModel.totalAmount = totalPrice;
-      orderModel.OrderdetailIds = orderdetailIds;
-      const userIsAct = user.username;
-      const userObject = await this.userModel.findOne({ username: userIsAct });
-      const userObjectId = userObject._id.toHexString();
-      orderModel.userId = userObjectId;
+      orderCreated.totalAmount = totalPrice;
+      orderCreated.orderCode = ordercode;
+      const result = await orderCreated.save();
+      console.error('result', result);
 
-      const orderSaved = new this.orderModel(orderModel);
-      const orderCreated = await orderSaved.save();
-      await userObject.OrderIds.push(orderCreated.id);
-      return orderCreated;
+      await userObject.OrderIds.push(result.id);
+      return result;
       session.commitTransaction();
-      session.endSession();
     } catch (error) {
+      console.log(error);
       session.abortTransaction();
+    } finally {
       session.endSession();
     }
+  }
+
+  async getOrdersByUser(userId: string): Promise<Order[]> {
+    const orders = await this.orderModel.find({ userId });
+    if (!orders) throw new NotFoundException('Order not found');
+
+    return orders;
   }
 
   //async update(updateProductDto: ProductDto, id:string): Promise<Product> {
@@ -158,4 +193,10 @@ export class OrderService {
 
   //    return this.productModel.find().exec();
   //}
+  async getAllOrder(): Promise<Order[]> {
+    return await this.orderModel.find().populate({
+      path: 'userId paymentId',
+      select: 'username email phoneNumber value',
+    });
+  }
 }

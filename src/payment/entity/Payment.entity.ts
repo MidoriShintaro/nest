@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Date, HydratedDocument, Types  } from 'mongoose';
-import { Order } from 'src/order/entity/Order.entity';
+import { HydratedDocument, Types } from 'mongoose';
 
 export type PaymentDocument = HydratedDocument<Payment>;
 
@@ -18,7 +17,7 @@ export class Payment {
   @Prop({
     type: String,
     enum: {
-      values: ['MOMO', 'BANK'],
+      values: ['MOMO', 'BANK', 'PAYBACK'],
     },
   })
   method: string;
@@ -26,14 +25,11 @@ export class Payment {
   @Prop({ type: Number, required: true })
   value: number;
 
-  @Prop({ type: Number})
-  shipvalue: number;
+  @Prop({ type: Number })
+  shipValue: number;
 
-  
-
-  @Prop({type:Types.ObjectId, ref:'Order'})
-  OrderId:string;
-
+  @Prop({ type: Types.ObjectId, ref: 'Order' })
+  orderId: string;
 }
 
 export const PaymentSchema = SchemaFactory.createForClass(Payment);

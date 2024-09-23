@@ -1,19 +1,11 @@
-import {
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class ProductDto {
   id: string;
 
   @IsString()
   @IsNotEmpty()
-  productname: string;
+  productName: string;
 
   @IsString()
   @IsNotEmpty()
@@ -23,13 +15,13 @@ export class ProductDto {
   @IsNotEmpty()
   color: string;
 
-  @IsNumber()
+  // @IsNumber()
   @IsNotEmpty()
   price: number;
 
   @IsNumber()
   @IsOptional()
-  numberstock: number;
+  numberStock: number;
 
   @IsString()
   @IsOptional()
@@ -37,7 +29,7 @@ export class ProductDto {
 
   @IsNumber()
   @IsOptional()
-  viewcount: number;
+  viewCount: number;
 
   @IsNumber()
   @IsOptional()
@@ -55,7 +47,7 @@ export class ProductDto {
   @IsOptional()
   weight: number;
 
-  @IsString()
+  // @IsString()
   @IsOptional()
   image: string;
 
@@ -70,7 +62,7 @@ export class ProductDto {
   @IsNumber()
   @IsOptional()
   //@IsNotEmpty()
-  Cart: string;
+  cartId: string;
 
   @IsOptional()
   ids: string[];

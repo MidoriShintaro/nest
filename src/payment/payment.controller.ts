@@ -1,11 +1,16 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { PaymentDto } from './dto/payment.dto';
 import { Payment } from './entity/Payment.entity';
 
-@Controller('/payment')
+@Controller('/api/payment')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
+
+  @Get()
+  async getPayments(): Promise<Payment[]> {
+    return await this.paymentService.getPayments();
+  }
 
   @Post()
   async create(@Body() paymentDto: PaymentDto): Promise<Payment> {

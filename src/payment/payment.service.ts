@@ -96,23 +96,28 @@ export class PaymentService {
   //    }
   //    return true;
   //}
-
+  async getPayments(): Promise<Payment[]> {
+    return await this.paymentModel.find().populate('orderId');
+  }
   async create(createPaymentDto: PaymentDto): Promise<Payment> {
-    const { method, value, orderId, shipvalue } = createPaymentDto;
+    const { method, orderId, shipValue } = createPaymentDto;
     const createdPayment = new this.paymentModel();
 
     const orderIdObject = new Types.ObjectId(orderId);
-    const order = await this.orderModel.findById(orderIdObject);
+    const order = await this.orderModel.findById(orderIdObject).exec();
     if (!order) {
       throw new NotFoundException('Not found Order');
     }
 
-    createdPayment.OrderId = orderId;
     createdPayment.method = method;
-    createdPayment.value = value + shipvalue;
+    createdPayment.value = order.totalAmount + shipValue;
     const paymentSaved = await createdPayment.save();
-    order.PaymentId = paymentSaved._id.toHexString();
-    console.error('order paymentid  is', order.PaymentId);
+    order.paymentId = paymentSaved._id.toHexString();
+    order.totalDue = order.totalAmount + shipValue;
+    if (method === 'MOMO' || method === 'BANK') {
+      order.status = 'PAID';
+    }
+    console.error('order paymentid  is', order.paymentId);
     await order.save();
     return paymentSaved;
   }

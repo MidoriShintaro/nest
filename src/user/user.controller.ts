@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Put,
   UseGuards,
@@ -18,6 +19,7 @@ import { ChangePasswordDto } from './dto/changePassword.dto';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { RolesGuard } from 'src/auth/role.guard';
 import { Roles } from 'src/auth/roles.decorator';
+import { updateDto } from './dto/update.dto';
 
 @Controller('/api/user')
 @UseGuards(JwtAuthGuard)
@@ -34,8 +36,7 @@ export class UserController {
   @HttpCode(200)
   @UseGuards(RolesGuard)
   @Roles([UserRole.ADMIN])
-  async getAllUser(@GetUser() user: User): Promise<User[]> {
-    console.log('user in usercontroller is', user);
+  async getAllUser(): Promise<User[]> {
     return await this.userService.getAllUsers();
   }
 
@@ -48,28 +49,28 @@ export class UserController {
   @Put('/:id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(RolesGuard)
-  @Roles([UserRole.ADMIN])
+  @Roles([UserRole.ADMIN, UserRole.USER])
   async updateUser(
     @Param('id') id: string,
-    @Body() userDto: UserDto,
+    @Body() userDto: updateDto,
   ): Promise<string> {
-    return await this.updateUser(id, userDto);
+    return await this.userService.updateUser(id, userDto);
   }
 
   @Delete('/:id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(RolesGuard)
-  @Roles([UserRole.ADMIN])
+  @Roles([UserRole.ADMIN, UserRole.USER])
   async deleteUser(@Param('id') id: string): Promise<string> {
-    return await this.deleteUser(id);
+    return await this.userService.deleteUser(id);
   }
 
-  @Put('/change-password')
+  @Patch('/change-password')
   @HttpCode(HttpStatus.OK)
   async changePassword(
     @Body() changePasswordDto: ChangePasswordDto,
     @GetUser() user: User,
   ): Promise<string> {
-    return await this.changePassword(changePasswordDto, user);
+    return await this.userService.changePassword(user, changePasswordDto);
   }
 }

@@ -7,14 +7,7 @@ export class ChangePasswordDto {
   @IsString()
   @MinLength(8)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: `Password too weak`,
+    message: `New Password too weak`,
   })
   newPassword: string;
-
-  @IsString()
-  @MinLength(8)
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: `PasswordConfirm too weak`,
-  })
-  passwordConfirm: string;
 }

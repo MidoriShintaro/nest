@@ -1,26 +1,20 @@
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
-export class PaymentDto{
+export class PaymentDto {
+  @IsString()
+  @IsEnum(['MOMO', 'BANK', 'PAYBACK'])
+  method: string;
 
-    @IsString()
-    @IsEnum(['MOMO', 'BANK'])
-    method:string;
+  @IsNotEmpty()
+  orderId: string;
 
-    @IsNumber()
-    @IsNotEmpty()
-    value:number;
-
-
-
-    @IsNotEmpty()
-    orderId:string;
-
-    
-    @IsNumber()
-    @IsOptional()
-    shipvalue:number;
-
-
-    
-    
+  @IsNumber()
+  @IsOptional()
+  shipValue: number;
 }
