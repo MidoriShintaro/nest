@@ -10,7 +10,7 @@ import { Payment } from 'src/payment/entity/Payment.entity';
 import { User } from 'src/user/entity/user.entity';
 import { Cart } from 'src/cart/entity/cart.entity';
 import { OrderDetailService } from 'src/orderdetail/orderdetail.service';
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Injectable()
 export class OrderService {
@@ -25,9 +25,16 @@ export class OrderService {
   ) {}
 
   async create(createProductDto: OrderDto): Promise<Order> {
+    const currentDate = moment();
     console.log('You are doing in this function');
     const transID = Math.floor(Math.random() * 1000000);
-    const ordercode = `${moment().format('YYMMDD')}_${transID}`;
+    console.log('transID', transID);
+
+    const ordercode = `${currentDate.format('YYMMDD')}_${transID}`;
+    console.error('ordercode', moment().format('YYMMDD'));
+
+    console.error('ordercode', ordercode);
+
     const session: ClientSession = await this.orderModel.startSession();
     session.startTransaction();
     try {
@@ -35,13 +42,16 @@ export class OrderService {
 
       const orderModel = new Order();
       const userId = new Types.ObjectId(createProductDto.user);
+      console.log('userId', userId);
       const userObject = await this.userModel.findById(userId);
       console.log('userObject', userObject);
       const userObjectId = userObject._id.toHexString();
       orderModel.userId = userObjectId;
       orderModel.status = 'NOTPAY';
-
+      orderModel.address = createProductDto.address;
+      orderModel.zipCode = createProductDto.zipCode;
       const orderSaved = new this.orderModel(orderModel);
+      console.log('orderSaved', orderSaved);
 
       const orderCreated = await orderSaved.save();
       console.log('orderCreated', orderCreated);
@@ -152,49 +162,44 @@ export class OrderService {
   //    return await oldProduct.save();
   //}
 
-  //async delete(ids: string[]) {
-  //    for (const id of ids) {
-  //        try {
-  //            const objectId = new Types.ObjectId(id);
-  //            const oldProduct = await this.productModel.findById(objectId).exec();
-  //            if (!oldProduct) {
-  //                throw new Error('Product not found!!!');
-  //            }
-  //            const categoriesToUpdate = await this.categoryModel.findOne({
-  //                Products: id,
-  //              });
-  //              console.error('categoryUpdate',categoriesToUpdate);
-  //              // Update each category to remove the reference to the deleted product
-  //              categoriesToUpdate.Products.splice(
-  //                categoriesToUpdate.Products.indexOf((
-  //                    await this.productModel.findById(id))._id.toHexString()),1);
-  //                    await categoriesToUpdate.save()
-  //            const result = await oldProduct.deleteOne();
-  //            if (result.deletedCount === 0) {
-  //                throw new Error('No product is deleted');
-  //            }
-  //        } catch (error) {
-  //            console.log(error);
-  //            // Handle error or rethrow it
-  //        }
-  //    }
-  //}
+  async delete(id: string) {
+     
+          try {
+            console.log('order id',id )
+              const objectId = new Types.ObjectId(id);
+              console.log('order id',objectId )
+              const oldOrder = await this.orderModel.findById(objectId).exec();
+              if (!oldOrder) {
+                  throw new Error('Order not found!!!');
+              }
+         
+              const result = await oldOrder.deleteOne();
+              if (result.deletedCount === 0) {
+                  throw new Error('No Order is deleted');
+              }
+              return 'Delete order successfully';
+          } catch (error) {
+              console.log(error);
+              // Handle error or rethrow it
+          }
+      
+  }
 
-  //async findNameAndCode(createProductDto: ProductDto): Promise<boolean> {
-  //    const product = await this.productModel.findOne({ categoryname: createProductDto.productname }).exec();
-  //    if (!product) {
-  //        Logger.error('Category not found');
-  //        return false;
-  //    }
-  //    return true;
-  //}
-
-  //async findAll(): Promise<Product[]> {
-
-  //    return this.productModel.find().exec();
-  //}
-  async getAllOrder(): Promise<Order[]> {
-    return await this.orderModel.find().populate({
+ 
+  async getAllOrderByUserId(userId:string): Promise<Order[]> {
+    return await this.orderModel.find({userId, status:'PAID'}).populate({
+      path: 'userId paymentId',
+      select: 'username email phoneNumber value',
+    });
+  }
+  async getAllOrderPaid(): Promise<Order[]> {
+    return await this.orderModel.find({ status:'PAID'}).populate({
+      path: 'userId paymentId',
+      select: 'username email phoneNumber value',
+    });
+  }
+  async getAllOrderNotPaid(): Promise<Order[]> {
+    return await this.orderModel.find({ status:'NOTPAY'}).populate({
       path: 'userId paymentId',
       select: 'username email phoneNumber value',
     });
