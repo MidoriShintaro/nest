@@ -5,4 +5,11 @@ export class OrderDto {
 
   @IsOptional()
   user: string;
+
+  @IsOptional()
+  address: string;
+
+  
+  @IsOptional()
+  zipCode: string;
 }
