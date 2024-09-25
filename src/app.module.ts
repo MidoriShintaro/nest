@@ -38,7 +38,7 @@ import { ZaloPayModule } from './zalopay/zalopay.module';
     ReviewModule,
     CartModule,
     CloudinaryModule,
-    ZaloPayModule
+    ZaloPayModule,
   ],
   controllers: [AppController],
   providers: [AppService],

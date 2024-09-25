@@ -22,7 +22,7 @@ export class CartService {
   async getAllCartProduct(user: string): Promise<Cart[]> {
     return await this.cartModel.find({ user }).populate({
       path: 'product',
-      select: 'productName price category',
+      select: 'productName price category image',
       populate: { path: 'category reviews', select: 'categoryName rate' },
     });
   }

@@ -42,8 +42,12 @@ export class Order {
 
   @Prop({ type: String })
   zipCode: string;
+
   @Prop({ type: String })
   address: string;
+
+  @Prop({ type: String })
+  city: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
