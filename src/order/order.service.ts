@@ -57,6 +57,7 @@ export class OrderService {
       console.log('orderCreated', orderCreated);
 
       let totalPrice = 0;
+      let totalPriceAmount = 0;
       for (const cartId of cartIds) {
         const cartObject = new Types.ObjectId(cartId);
         const cart = await this.cartModel.findById(cartObject).exec();
@@ -72,14 +73,14 @@ export class OrderService {
         orderDetailModel.unitPrice = price * cart.quantity;
         orderDetailModel.orderId = orderCreated.id;
         orderDetailModel.active = true;
-
+        totalPriceAmount=totalPriceAmount +totalPrice;
         const orderdetailt = new this.orderdetailModel(orderDetailModel);
         const test = await orderdetailt.save();
         console.log('orderdetailt', test);
       }
 
-      console.error('total Price ', totalPrice);
-      orderCreated.totalAmount = totalPrice;
+      console.error('total Price ', totalPriceAmount);
+      orderCreated.totalAmount = totalPriceAmount;
       orderCreated.orderCode = ordercode;
       const result = await orderCreated.save();
       console.error('result', result);
