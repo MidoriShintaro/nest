@@ -164,43 +164,40 @@ export class OrderService {
   //}
 
   async delete(id: string) {
-     
-          try {
-            console.log('order id',id )
-              const objectId = new Types.ObjectId(id);
-              console.log('order id',objectId )
-              const oldOrder = await this.orderModel.findById(objectId).exec();
-              if (!oldOrder) {
-                  throw new Error('Order not found!!!');
-              }
-         
-              const result = await oldOrder.deleteOne();
-              if (result.deletedCount === 0) {
-                  throw new Error('No Order is deleted');
-              }
-              return 'Delete order successfully';
-          } catch (error) {
-              console.log(error);
-              // Handle error or rethrow it
-          }
-      
+    try {
+      console.log('order id', id);
+      const objectId = new Types.ObjectId(id);
+      console.log('order id', objectId);
+      const oldOrder = await this.orderModel.findById(objectId).exec();
+      if (!oldOrder) {
+        throw new Error('Order not found!!!');
+      }
+
+      const result = await oldOrder.deleteOne();
+      if (result.deletedCount === 0) {
+        throw new Error('No Order is deleted');
+      }
+      return 'Delete order successfully';
+    } catch (error) {
+      console.log(error);
+      // Handle error or rethrow it
+    }
   }
 
- 
-  async getAllOrderByUserId(userId:string): Promise<Order[]> {
-    return await this.orderModel.find({userId, status:'PAID'}).populate({
+  async getAllOrderByUserId(userId: string): Promise<Order[]> {
+    return await this.orderModel.find({ userId, status: 'PAID' }).populate({
       path: 'userId paymentId',
       select: 'username email phoneNumber value',
     });
   }
   async getAllOrderPaid(): Promise<Order[]> {
-    return await this.orderModel.find({ status:'PAID'}).populate({
+    return await this.orderModel.find({ status: 'PAID' }).populate({
       path: 'userId paymentId',
       select: 'username email phoneNumber value',
     });
   }
   async getAllOrderNotPaid(): Promise<Order[]> {
-    return await this.orderModel.find({ status:'NOTPAY'}).populate({
+    return await this.orderModel.find({ status: 'NOTPAY' }).populate({
       path: 'userId paymentId',
       select: 'username email phoneNumber value',
     });

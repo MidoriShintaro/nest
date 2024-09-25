@@ -38,19 +38,17 @@ export class OrderController {
     return await this.orderService.getOrdersByUser(user);
   }
   @Get('/ordernotpaid')
-  async getAllOrderNotPaid():Promise<Order[]>
-  {
-      return this.orderService.getAllOrderNotPaid();
+  async getAllOrderNotPaid(): Promise<Order[]> {
+    return this.orderService.getAllOrderNotPaid();
   }
   @Get('/getorderpaidbyuser/:id')
-  async getAllByUserId(@Param('id') id:string):Promise<Order[]>
-  {
-      return this.orderService.getAllOrderByUserId(id);
+  async getAllByUserId(@Param('id') id: string): Promise<Order[]> {
+    return this.orderService.getAllOrderByUserId(id);
   }
 
   @Delete('/:id')
   async delete(@Param('id') id: string): Promise<string> {
-    console.log('id', id)
+    console.log('id', id);
     return await this.orderService.delete(id);
   }
 }

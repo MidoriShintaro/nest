@@ -36,10 +36,7 @@ export class ReviewService {
     const productObject = await this.productModel.findById(
       new Types.ObjectId(productId),
     );
-    console.error('product Object', productObject);
-    console.error('reviewSaved.id', reviewSaved._id.toHexString());
     productObject.reviews.push(reviewSaved._id.toHexString());
-    console.error('product Object save again', productObject);
     await userObject.save();
     await productObject.save();
 
@@ -129,7 +126,9 @@ export class ReviewService {
     const product = await this.productModel.findById(productId);
     if (!product) throw new NotFoundException('Product not found');
 
-    const reviews = await this.reviewModel.find({ productId: product.id });
+    const reviews = await this.reviewModel
+      .find({ productId: product.id })
+      .populate('userId');
     if (reviews.length < 0) throw new NotFoundException('Reviews not found');
 
     return reviews;
