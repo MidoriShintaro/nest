@@ -18,7 +18,7 @@ export class ZalopayService {
     const embed_data = {};
     const items = [{}];
     const transID = Math.floor(Math.random() * 1000000);
-
+    console.log(this.config);
     const order = {
       app_id: this.config.app_id,
       app_trans_id: app_trans_id,
@@ -32,7 +32,6 @@ export class ZalopayService {
       bank_code: 'zalopayapp',
       mac: '',
     };
-    console.log('order.apptransid', app_trans_id);
     const data = `${order.app_id}|${app_trans_id}|${order.app_user}|${order.amount}|${order.app_time}|${order.embed_data}|${order.item}`;
     order.mac = CryptoJS.HmacSHA256(data, this.config.key1).toString();
 
@@ -69,7 +68,7 @@ export class ZalopayService {
 
     try {
       const response = await axios(postConfig);
-      console.log(JSON.stringify(response.data));
+      console.log(response.data);
       return response.data; // Trả về dữ liệu từ response
     } catch (error) {
       console.error('Error while calling API:', error);

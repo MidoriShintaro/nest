@@ -50,6 +50,7 @@ export class OrderService {
       orderModel.status = 'NOTPAY';
       orderModel.address = createProductDto.address;
       orderModel.zipCode = createProductDto.zipCode;
+      orderModel.city = createProductDto.city;
       const orderSaved = new this.orderModel(orderModel);
       console.log('orderSaved', orderSaved);
 
@@ -73,7 +74,7 @@ export class OrderService {
         orderDetailModel.unitPrice = price * cart.quantity;
         orderDetailModel.orderId = orderCreated.id;
         orderDetailModel.active = true;
-        totalPriceAmount=totalPriceAmount +totalPrice;
+        totalPriceAmount = totalPriceAmount + totalPrice;
         const orderdetailt = new this.orderdetailModel(orderDetailModel);
         const test = await orderdetailt.save();
         console.log('orderdetailt', test);

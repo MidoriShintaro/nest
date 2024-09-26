@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ZalopayService } from './zalopay.service';
 
-@Controller('zalopay')
+@Controller('/api/zalopay')
 export class ZalopayController {
   constructor(private readonly zalopayService: ZalopayService) {}
 
