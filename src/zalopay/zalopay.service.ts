@@ -13,12 +13,15 @@ export class ZalopayService {
         key2: process.env.ZALOPAY_KEY2,
         endpoint: process.env.ZALOPAY_ENDPOINT,
         endpoint_result:process.env.ZALOPAY_ENDPOINT_RESULT,
-        callback_url:process.env.CALLBACK_URL
+        callback_url:process.env.CALLBACK_URL,
+        redirect_url:process.env.REDIRECT_URL
     };
 
     async createPayment( amount:number, username:string,app_trans_id:string) {
        
-        const embed_data = {};
+        const embed_data = {
+            redirecturl:this.config.redirect_url
+        };
         const items = [{}];
         const transID = Math.floor(Math.random() * 1000000);
      
@@ -36,6 +39,8 @@ export class ZalopayService {
             mac:''
         };
         console.log('order.apptransid', app_trans_id)
+        console.log('order.apptransid', order.callback_url)
+
         const data = `${order.app_id}|${app_trans_id}|${order.app_user}|${order.amount}|${order.app_time}|${order.embed_data}|${order.item}`;
         order.mac = CryptoJS.HmacSHA256(data, this.config.key1).toString();
 
