@@ -173,11 +173,13 @@ export class OrderService {
               if (!oldOrder) {
                   throw new Error('Order not found!!!');
               }
-         
+              this.orderdetailModel.deleteMany({ orderId:id }).exec();
+
               const result = await oldOrder.deleteOne();
               if (result.deletedCount === 0) {
                   throw new Error('No Order is deleted');
               }
+
               return 'Delete order successfully';
           } catch (error) {
               console.log(error);
