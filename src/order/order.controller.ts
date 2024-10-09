@@ -32,7 +32,7 @@ export class OrderController {
     return await this.orderService.getAllOrderPaid();
   }
 
-  @Get('/getallbyuser/:user')
+  @Get('/user/:user')
   @HttpCode(200)
   async getOrderByUser(@Param('user') user: string): Promise<Order[]> {
     return await this.orderService.getOrdersByUser(user);
@@ -48,7 +48,6 @@ export class OrderController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string): Promise<string> {
-    console.log('id', id);
     return await this.orderService.delete(id);
   }
 }

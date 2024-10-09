@@ -8,7 +8,7 @@ import {
 
 export class PaymentDto {
   @IsString()
-  @IsEnum(['MOMO', 'BANK', 'PAYBACK'])
+  @IsEnum(['ZALOPAY'])
   method: string;
 
   @IsNotEmpty()

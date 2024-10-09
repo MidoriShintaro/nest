@@ -74,4 +74,13 @@ export class CartService {
 
     return 'Remove item from cart';
   }
+
+  async removeAllFromCartByUser(userId: string): Promise<string> {
+    const items = await this.cartModel.find({ user: userId });
+    if (items.length < 0) throw new NotFoundException('Item not found');
+    for (const item of items) {
+      await item.deleteOne();
+    }
+    return 'Remove all items from cart';
+  }
 }

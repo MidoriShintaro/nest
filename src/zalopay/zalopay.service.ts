@@ -71,7 +71,6 @@ export class ZalopayService {
 
     try {
       const response = await axios(postConfig);
-      console.log(JSON.stringify(response.data));
       return response.data; // Trả về dữ liệu từ response
     } catch (error) {
       console.error('Error while calling API:', error);

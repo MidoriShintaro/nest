@@ -49,8 +49,6 @@ export class OrderService {
       orderModel.userId = userObjectId;
       orderModel.status = 'NOTPAY';
       orderModel.address = createProductDto.address;
-      orderModel.zipCode = createProductDto.zipCode;
-      orderModel.city = createProductDto.city;
       const orderSaved = new this.orderModel(orderModel);
       console.log('orderSaved', orderSaved);
 
@@ -76,15 +74,12 @@ export class OrderService {
         orderDetailModel.active = true;
         totalPriceAmount = totalPriceAmount + totalPrice;
         const orderdetailt = new this.orderdetailModel(orderDetailModel);
-        const test = await orderdetailt.save();
-        console.log('orderdetailt', test);
+        await orderdetailt.save();
       }
 
-      console.error('total Price ', totalPriceAmount);
       orderCreated.totalAmount = totalPriceAmount;
       orderCreated.orderCode = ordercode;
       const result = await orderCreated.save();
-      console.error('result', result);
 
       await userObject.OrderIds.push(result.id);
       return result;
@@ -166,9 +161,7 @@ export class OrderService {
 
   async delete(id: string) {
     try {
-      console.log('order id', id);
       const objectId = new Types.ObjectId(id);
-      console.log('order id', objectId);
       const oldOrder = await this.orderModel.findById(objectId).exec();
       if (!oldOrder) {
         throw new Error('Order not found!!!');
