@@ -26,7 +26,7 @@ const Cart = () => {
   const [total, setTotal] = useState(0);
   const [openAlert, setOpenAlert] = useState(false);
   const [previousOrder, setPreviousOrder] = useState([]);
-  let shippingCoast = 100;
+  let shippingCoast = 0;
 
   const navigate = useNavigate();
   let authToken = localStorage.getItem("Authorization");
@@ -42,7 +42,7 @@ const Cart = () => {
     //   getPreviousOrder();
 
     window.scroll(0, 0);
-  }, [userId, setCart]);
+  }, [userId, setCart, setProceed]);
 
   const getCart = async () => {
     if (setProceed) {
@@ -54,14 +54,10 @@ const Cart = () => {
   useEffect(() => {
     if (setProceed) {
       setTotal(
-        cart.reduce(
-          (acc, curr) =>
-            acc + (curr.product?.price * curr.quantity + shippingCoast),
-          0
-        )
+        cart.reduce((acc, curr) => acc + curr.product?.price * curr.quantity, 0)
       );
     }
-  }, [cart, setProceed, shippingCoast]);
+  }, [cart, setProceed]);
 
   const handleClose = () => {
     setOpenAlert(false);

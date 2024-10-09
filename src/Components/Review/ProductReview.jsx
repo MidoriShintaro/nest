@@ -25,6 +25,7 @@ import "./Review.css";
 import CommentCard from "../Card/Comment Card/CommentCard";
 import { customerReview } from "../../Assets/Images/Image";
 import instance from "../../axios/axios";
+import { useNavigate } from "react-router-dom";
 
 const labels = {
   0: <MdOutlineSentimentVeryDissatisfied style={{ color: "red" }} />,
@@ -50,6 +51,8 @@ const ProductReview = ({ authToken, setProceed, setOpenAlert, id }) => {
   const [comment, setComment] = useState("");
   const [filterOption, setFilterOption] = useState("All");
   const [title, setTitle] = useState("All");
+  const auth = localStorage.getItem("Authorization");
+  const navigate = useNavigate();
 
   const commentFilter = [
     "All",
@@ -64,17 +67,14 @@ const ProductReview = ({ authToken, setProceed, setOpenAlert, id }) => {
     fetchReviews();
   };
   const fetchReviews = async () => {
-    const filter = filterOption.toLowerCase();
-    const { data } = await instance.post(
-      `/review/${id}`
-      //   { filterType: filter }
-    );
-    console.log(data);
+    // const filter = filterOption.toLowerCase();
+    const { data } = await instance.post(`/review/${id}`);
     setReviews(data.data);
   };
   useEffect(() => {
+    if (!auth) return navigate("/login");
     fetchReviews();
-  }, [title, id]);
+  }, [title, id, auth, navigate]);
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();

@@ -45,16 +45,18 @@ const ProductDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getSingleProduct(setProduct, id, setLoading);
+    if (setProceed) {
+      getSingleProduct(setProduct, id, setLoading);
 
-    const getSimilarProducts = async () => {
-      const { data } = await instance.get(`/product/category/${cat}`);
-      setSimilarProduct(data.data);
-    };
-    getSimilarProducts();
+      const getSimilarProducts = async () => {
+        const { data } = await instance.get(`/product/category/${cat}`);
+        setSimilarProduct(data.data);
+      };
+      getSimilarProducts();
 
-    window.scroll(0, 0);
-  }, [id, cat, navigate]);
+      window.scroll(0, 0);
+    }
+  }, [id, cat, navigate, setProceed]);
 
   const addToCart = async (product) => {
     if (setProceed) {
@@ -204,14 +206,14 @@ const ProductDetail = () => {
                 <Typography variant="h6" color="red">
                   <s>
                     {" "}
-                    ₹
                     {product.data.price > 1000
                       ? product.data.price + 1000
                       : product.data.price + 300}
+                    VND
                   </s>{" "}
                 </Typography>
                 <Typography variant="h6" color="primary">
-                  ₹{product.data.price}
+                  {product.data.price} VND
                 </Typography>
               </div>
               <Box
@@ -237,13 +239,13 @@ const ProductDetail = () => {
               <Typography>Size: {product.data.size}</Typography>
               <Rating
                 name="read-only"
-                value={Math.round(
+                value={
                   product.data.reviews.length > 0 &&
-                    product.data.reviews.reduce(
-                      (total, cur) => total + cur.rate,
-                      0
-                    ) / product.data.reviews.length
-                )}
+                  product.data.reviews.reduce(
+                    (total, cur) => total + cur.rate,
+                    0
+                  ) / product.data.reviews.length
+                }
                 readOnly
                 precision={0.5}
               />
@@ -258,17 +260,6 @@ const ProductDetail = () => {
                     Buy
                   </Button>
                 </Tooltip>
-                {/* <Tooltip title="Add To Wishlist">
-                  <Button
-                    style={{ marginLeft: 10 }}
-                    size="small"
-                    variant="contained"
-                    className="all-btn"
-                    onClick={() => addToWhishList(product)}
-                  >
-                    {<AiFillHeart fontSize={21} />}
-                  </Button>
-                </Tooltip> */}
                 <Tooltip title="Share">
                   <Button
                     style={{ marginLeft: 10 }}

@@ -18,6 +18,7 @@ const SingleCategory = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("Authorization");
   useEffect(() => {
+    if (!token) return navigate("/login");
     const getCategoryProduct = async () => {
       try {
         setIsLoading(true);
@@ -41,7 +42,6 @@ const SingleCategory = () => {
     "High Rated",
     "Low Rated",
   ];
-
 
   const handleChange = (e) => {
     setFilterOption(e.target.value.split(" ").join("").toLowerCase());
@@ -142,7 +142,6 @@ const SingleCategory = () => {
           }}
         >
           {productData?.map((prod) => (
-            
             <Link to={`/Detail/type/${cat}/${prod.id}`} key={prod.id}>
               <ProductCard prod={prod} />
             </Link>

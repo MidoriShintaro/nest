@@ -51,6 +51,7 @@ const getAllProducts = async (setData) => {
 
 const getSingleProduct = async (setProduct, id, setLoading) => {
   const { data } = await instance.get(`/product/${id}`);
+  console.log(data);
   setProduct(data);
   setLoading(false);
 };

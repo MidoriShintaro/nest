@@ -21,9 +21,9 @@ const CartCard = ({ cart, removeFromCart }) => {
         <CardActionArea className={styles.card_action}>
           <Box className={styles.img_box}>
             <img
+              src={`${cart?.product?.image}`}
               alt={cart?.product?.productName}
               loading="lazy"
-              src={cart?.product?.image}
               className={styles.img}
             />
           </Box>
@@ -57,7 +57,7 @@ const CartCard = ({ cart, removeFromCart }) => {
                 variant="h6"
                 sx={{ textAlign: "center" }}
               >
-                ₹{cart?.product?.price}
+                {cart?.product?.price} VND
               </Typography>
             </Box>
           </CardContent>
@@ -86,15 +86,11 @@ const CartCard = ({ cart, removeFromCart }) => {
           <Rating
             name="read-only"
             value={
-              cart.product.reviews
-                ? Math.round(
-                    cart?.product?.reviews.reduce(
-                      (total, cur) =>
-                        ((total.rate + cur.rate) * 1) /
-                        cart.product.reviews.length
-                    )
-                  )
-                : 0
+              cart?.product?.reviews.length > 0 &&
+              cart?.product?.reviews.reduce(
+                (total, cur) => total + cur.rate,
+                0
+              ) / cart?.product?.reviews.length
             }
             readOnly
             precision={0.5}

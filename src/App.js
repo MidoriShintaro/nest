@@ -44,8 +44,8 @@ function App() {
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/checkout" element={<CheckoutForm />} />
             <Route path="/update" element={<UpdateDetails />} />
-            <Route path="/paymentsuccess" element={<PaymentSuccess />} />
-            <Route path="/forgotpassword" element={<ForgotPasswordForm />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/forgot-password" element={<ForgotPasswordForm />} />
             <Route path="/user/reset-password/:token" element={<AddNewPassword />} />
 
             {/* Admin Routes */}
