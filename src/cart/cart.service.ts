@@ -22,7 +22,7 @@ export class CartService {
   async getAllCartProduct(user: string): Promise<Cart[]> {
     return await this.cartModel.find({ user }).populate({
       path: 'product',
-      select: 'productName price category',
+      select: 'productName price category image',
       populate: { path: 'category reviews', select: 'categoryName rate' },
     });
   }
@@ -73,5 +73,14 @@ export class CartService {
     await item.deleteOne();
 
     return 'Remove item from cart';
+  }
+
+  async removeAllFromCartByUser(userId: string): Promise<string> {
+    const items = await this.cartModel.find({ user: userId });
+    if (items.length < 0) throw new NotFoundException('Item not found');
+    for (const item of items) {
+      await item.deleteOne();
+    }
+    return 'Remove all items from cart';
   }
 }

@@ -8,8 +8,4 @@ export class OrderDto {
 
   @IsOptional()
   address: string;
-
-  
-  @IsOptional()
-  zipCode: string;
 }

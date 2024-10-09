@@ -49,7 +49,6 @@ export class OrderService {
       orderModel.userId = userObjectId;
       orderModel.status = 'NOTPAY';
       orderModel.address = createProductDto.address;
-      orderModel.zipCode = createProductDto.zipCode;
       const orderSaved = new this.orderModel(orderModel);
       console.log('orderSaved', orderSaved);
 
@@ -73,17 +72,14 @@ export class OrderService {
         orderDetailModel.unitPrice = price * cart.quantity;
         orderDetailModel.orderId = orderCreated.id;
         orderDetailModel.active = true;
-        totalPriceAmount=totalPriceAmount +totalPrice;
+        totalPriceAmount = totalPriceAmount + totalPrice;
         const orderdetailt = new this.orderdetailModel(orderDetailModel);
-        const test = await orderdetailt.save();
-        console.log('orderdetailt', test);
+        await orderdetailt.save();
       }
 
-      console.error('total Price ', totalPriceAmount);
       orderCreated.totalAmount = totalPriceAmount;
       orderCreated.orderCode = ordercode;
       const result = await orderCreated.save();
-      console.error('result', result);
 
       await userObject.OrderIds.push(result.id);
       return result;
@@ -164,45 +160,40 @@ export class OrderService {
   //}
 
   async delete(id: string) {
-     
-          try {
-            console.log('order id',id )
-              const objectId = new Types.ObjectId(id);
-              console.log('order id',objectId )
-              const oldOrder = await this.orderModel.findById(objectId).exec();
-              if (!oldOrder) {
-                  throw new Error('Order not found!!!');
-              }
-              this.orderdetailModel.deleteMany({ orderId:id }).exec();
+    try {
+      console.log('order id', id);
+      const objectId = new Types.ObjectId(id);
+      console.log('order id', objectId);
+      const oldOrder = await this.orderModel.findById(objectId).exec();
+      if (!oldOrder) {
+        throw new Error('Order not found!!!');
+      }
 
-              const result = await oldOrder.deleteOne();
-              if (result.deletedCount === 0) {
-                  throw new Error('No Order is deleted');
-              }
-
-              return 'Delete order successfully';
-          } catch (error) {
-              console.log(error);
-              // Handle error or rethrow it
-          }
-      
+      const result = await oldOrder.deleteOne();
+      if (result.deletedCount === 0) {
+        throw new Error('No Order is deleted');
+      }
+      return 'Delete order successfully';
+    } catch (error) {
+      console.log(error);
+      // Handle error or rethrow it
+    }
   }
 
- 
-  async getAllOrderByUserId(userId:string): Promise<Order[]> {
-    return await this.orderModel.find({userId, status:'PAID'}).populate({
+  async getAllOrderByUserId(userId: string): Promise<Order[]> {
+    return await this.orderModel.find({ userId, status: 'PAID' }).populate({
       path: 'userId paymentId',
       select: 'username email phoneNumber value',
     });
   }
   async getAllOrderPaid(): Promise<Order[]> {
-    return await this.orderModel.find({ status:'PAID'}).populate({
+    return await this.orderModel.find({ status: 'PAID' }).populate({
       path: 'userId paymentId',
       select: 'username email phoneNumber value',
     });
   }
   async getAllOrderNotPaid(): Promise<Order[]> {
-    return await this.orderModel.find({ status:'NOTPAY'}).populate({
+    return await this.orderModel.find({ status: 'NOTPAY' }).populate({
       path: 'userId paymentId',
       select: 'username email phoneNumber value',
     });

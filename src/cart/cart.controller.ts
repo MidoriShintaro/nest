@@ -47,4 +47,10 @@ export class CartController {
   async removeFromCart(@Param('id') id: string): Promise<string> {
     return await this.cartService.removeFromCart(id);
   }
+
+  @Delete('/user/:id')
+  @UseGuards(JwtAuthGuard)
+  async removeAllFromCartByUser(@Param('id') id: string): Promise<string> {
+    return await this.cartService.removeAllFromCartByUser(id);
+  }
 }

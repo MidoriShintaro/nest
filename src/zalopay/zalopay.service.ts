@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import * as CryptoJS from 'crypto-js';
 import * as qs from 'qs';
-
 @Injectable()
 export class ZalopayService {
   private readonly config = {
@@ -35,8 +34,6 @@ export class ZalopayService {
       bank_code: 'zalopayapp',
       mac: '',
     };
-    console.log('order.apptransid', app_trans_id);
-    console.log('order.apptransid', order.callback_url);
 
     const data = `${order.app_id}|${app_trans_id}|${order.app_user}|${order.amount}|${order.app_time}|${order.embed_data}|${order.item}`;
     order.mac = CryptoJS.HmacSHA256(data, this.config.key1).toString();
@@ -74,7 +71,6 @@ export class ZalopayService {
 
     try {
       const response = await axios(postConfig);
-      console.log(JSON.stringify(response.data));
       return response.data; // Trả về dữ liệu từ response
     } catch (error) {
       console.error('Error while calling API:', error);

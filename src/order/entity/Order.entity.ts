@@ -23,9 +23,6 @@ export class Order {
   })
   status: string;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Orderdetail' }] })
-  orderdetailIds: string[];
-
   @Prop({ type: Types.ObjectId, ref: 'Payment' })
   paymentId: string;
 
@@ -40,8 +37,6 @@ export class Order {
   @Prop({ type: String })
   orderCode: string;
 
-  @Prop({ type: String })
-  zipCode: string;
   @Prop({ type: String })
   address: string;
 }
