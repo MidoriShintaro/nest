@@ -118,14 +118,15 @@ const ProductChart = ({ products, review, cart, paymentData }) => {
     .reduce((acc, item) => {
       const month = item.createdAt.substr(0, 7);
       const index = acc.findIndex((el) => el.month === month);
-      if (index !== -1) {
-        acc[index].totalAmount += item.totalAmount;
+      console.log(acc);
+      if (index !== -1 && item.status === "PAID") {
+        acc[index].totalAmount += item.totalDue;
       } else {
-        acc.push({ month: month, totalAmount: item.totalAmount });
+        acc.push({ month: month, totalAmount: item.totalDue });
       }
       return acc;
     }, []);
-
+  // console.log(groupedData);
   const formatXAxis = (tickItem) => {
     return new Date(tickItem).toLocaleString("default", { month: "short" });
   };
@@ -144,7 +145,7 @@ const ProductChart = ({ products, review, cart, paymentData }) => {
               margin={{
                 top: 10,
                 right: 30,
-                left: 0,
+                left: 15,
                 bottom: 0,
               }}
             >

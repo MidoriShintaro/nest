@@ -1,17 +1,18 @@
 import { Box, IconButton, Typography } from "@mui/material";
+import numeral from "numeral";
 import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 
 const Widget = ({ numbers, heading, color, icon }) => {
   // const isSmallScreen = useMediaQuery('(max-width:600px)');
   const [value, setValue] = useState(0);
-  const endValue = numbers;
+  const endValue = numbers
 
   useEffect(() => {
     setValue(endValue);
   }, [endValue]);
 
-  const prefix = heading === "Revenue" ? "₹" : "";
+  const prefix = heading === "Revenue" ? "VND" : "";
   return (
     <Box
       sx={{

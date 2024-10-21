@@ -9,7 +9,6 @@ import {
   Paper,
   IconButton,
   Collapse,
-  Typography,
 } from "@mui/material";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -41,7 +40,7 @@ const OrderTable = ({ orders, orderDetail }) => {
                   Email
                 </TableCell>
                 <TableCell sx={{ color: "#1976d2", fontWeight: "bold" }}>
-                  Phone Number
+                  Paid Status
                 </TableCell>
                 <TableCell sx={{ color: "#1976d2", fontWeight: "bold" }}>
                   Total Amount
@@ -81,7 +80,7 @@ const OrderTable = ({ orders, orderDetail }) => {
                     </TableCell>
                     <TableCell>
                       <Link to={`user/${order.userId.id}`}>
-                        {order.userId.phoneNumber}
+                        {order.status}
                       </Link>
                     </TableCell>
                     <TableCell>
@@ -194,17 +193,24 @@ const OrderTable = ({ orders, orderDetail }) => {
                                     <Link
                                       to={`/admin/home/product/${product.productId.category.categoryName}/${product.productId.id}`}
                                     >
-                                      {product.productId.reviews.reduce(
-                                        (total, cur) =>
-                                          ((total.rate + cur.rate) * 1) /
-                                          product.productId.reviews.length
-                                      )}
+                                      {isNaN(
+                                        product.productId.reviews.reduce(
+                                          (total, cur) => total + cur.rate,
+                                          0
+                                        ) / product.productId.reviews.length
+                                      )
+                                        ? "0"
+                                        : product.productId.reviews.reduce(
+                                            (total, cur) => total + cur.rate,
+                                            0
+                                          ) / product.productId.reviews.length}
                                     </Link>
                                   </TableCell>
                                 </TableRow>
                               ))}
                             </TableBody>
                           </Table>
+                          
                         </div>
                       </Collapse>
                     </TableCell>

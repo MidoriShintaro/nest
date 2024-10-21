@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import styles from "./ProductCard.module.css";
+import numeral from "numeral";
 
 export default function ProductCard({ prod }) {
   return (
@@ -37,7 +38,7 @@ export default function ProductCard({ prod }) {
         }}
       >
         <Typography variant="h6" color="primary">
-          ₹{prod.price}
+          {numeral(prod.price).format("0,0")} VND
         </Typography>
         <Typography>
           <Rating

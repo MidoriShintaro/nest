@@ -29,6 +29,7 @@ import ProductReview from "../../Components/Review/ProductReview";
 import ProductCard from "../../Components/Card/Product Card/ProductCard";
 import { Transition, getSingleProduct } from "../../Constants/Constant";
 import instance from "../../axios/axios";
+import numeral from "numeral";
 
 const ProductDetail = () => {
   const { cart, setCart } = useContext(ContextFunction);
@@ -191,7 +192,7 @@ const ProductDetail = () => {
               </Typography>
               <Chip
                 label={
-                  product.data.price > 1000 ? "Upto 9% off" : "Upto 38% off"
+                  product.data.price > 1000 ? "Upto 10% off" : "Upto 38% off"
                 }
                 variant="outlined"
                 sx={{
@@ -207,13 +208,13 @@ const ProductDetail = () => {
                   <s>
                     {" "}
                     {product.data.price > 1000
-                      ? product.data.price + 1000
-                      : product.data.price + 300}
+                      ? numeral(product.data.price + 1000).format("0,0")
+                      : numeral(product.data.price + 300).format("0,0")}
                     VND
                   </s>{" "}
                 </Typography>
                 <Typography variant="h6" color="primary">
-                  {product.data.price} VND
+                  {numeral(product.data.price).format("0,0")} VND
                 </Typography>
               </div>
               <Box

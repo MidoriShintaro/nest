@@ -81,8 +81,8 @@ export default function BasicTabs({ users, getUser }) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const totalRevenue = order.reduce((acc, curr) => acc + curr.totalAmount, 0);
+  const payment = order.filter((o) => o.status === "PAID");
+  const totalRevenue = payment.reduce((acc, curr) => acc + curr.totalDue, 0);
   const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   return (
@@ -173,7 +173,7 @@ export default function BasicTabs({ users, getUser }) {
           products={category}
           review={review}
           cart={cart}
-          paymentData={order}
+          paymentData={payment}
           users={users}
         />
       </TabPanel>
