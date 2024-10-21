@@ -161,7 +161,9 @@ export class OrderService {
 
   async delete(id: string) {
     try {
+      console.log('order id', id);
       const objectId = new Types.ObjectId(id);
+      console.log('order id', objectId);
       const oldOrder = await this.orderModel.findById(objectId).exec();
       if (!oldOrder) {
         throw new Error('Order not found!!!');
