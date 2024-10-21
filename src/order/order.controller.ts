@@ -24,6 +24,11 @@ export class OrderController {
     console.log('do this function');
     return this.orderService.create(orderDto);
   }
+  @Get()
+  async getAllOrder(): Promise<Order[]> {
+    return await this.orderService.getAllOrder();
+  }
+
   @Get('/orderpaid')
   @HttpCode(200)
   async getAllOrderPaid(): Promise<Order[]> {

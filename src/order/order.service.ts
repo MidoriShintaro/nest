@@ -196,4 +196,7 @@ export class OrderService {
       select: 'username email phoneNumber value',
     });
   }
+  async getAllOrder(): Promise<Order[]> {
+    return await this.orderModel.find().populate('userId paymentId');
+  }
 }
