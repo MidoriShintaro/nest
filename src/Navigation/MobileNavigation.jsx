@@ -29,7 +29,7 @@ import {
 } from "../Constants/Constant";
 
 const MobileNavigation = () => {
-  const { cart, setCart } = useContext(ContextFunction);
+  const { setCart } = useContext(ContextFunction);
 
   const [openAlert, setOpenAlert] = useState(false);
 

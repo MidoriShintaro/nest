@@ -8,18 +8,10 @@ import BannerData from "../../Helpers/HomePageBanner";
 import Carousel from "../../Components/Carousel/Carousel";
 import SearchBar from "../../Components/SearchBar/SearchBar";
 import instance from "../../axios/axios";
-import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const { setCart } = useContext(ContextFunction);
-  const navigate = useNavigate();
   let userId = localStorage.getItem("user");
-  const auth = localStorage.getItem("Authorization");
-  useEffect(() => {
-    if (!auth) {
-      navigate("/login");
-    }
-  }, [auth, navigate]);
 
   useEffect(() => {
     const getCart = async () => {

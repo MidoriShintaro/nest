@@ -8,7 +8,6 @@ import ProductDetail from "./Pages/Detail/ProductDetail";
 import SingleCategory from "./SingleCategory/SingleCategory";
 import MobileNavigation from "./Navigation/MobileNavigation";
 import DesktopNavigation from "./Navigation/DesktopNavigation";
-import Wishlist from "./Pages/WhisList/Wishlist";
 import PaymentSuccess from "./Pages/Payment/PaymentSuccess";
 import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -41,7 +40,6 @@ function App() {
             <Route path="/Detail/type/:cat/:id" element={<ProductDetail />} />
             <Route path="product/type/:cat" element={<SingleCategory />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/checkout" element={<CheckoutForm />} />
             <Route path="/update" element={<UpdateDetails />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />

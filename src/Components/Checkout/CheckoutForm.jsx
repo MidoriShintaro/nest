@@ -18,7 +18,6 @@ import { MdUpdate } from "react-icons/md";
 import { ContextFunction } from "../../Context/Context";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import CopyRight from "../CopyRight/CopyRight";
 import { Transition, handleClose } from "../../Constants/Constant";
 import { AiFillCloseCircle, AiOutlineSave } from "react-icons/ai";
 import instance from "../../axios/axios";
@@ -376,7 +375,6 @@ const CheckoutForm = () => {
           </DialogActions>
         </Dialog>
       </Container>
-      <CopyRight sx={{ mt: 8, mb: 10 }} />
     </>
   );
 };
