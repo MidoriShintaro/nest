@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Review } from './entity/Review.entity';
 import { Product } from 'src/product/entity/Product.entity';
@@ -17,30 +17,39 @@ export class ReviewService {
 
   async create(reviewDto: ReviewDTO, user: any): Promise<Review> {
     const { comment, productId, rate } = reviewDto;
-
-    const reviewObject = new Review();
-    reviewObject.productId = productId;
-    reviewObject.comment = comment;
-
-    // reviewObject.image = image;
-
-    reviewObject.rate = rate;
-    reviewObject.userId = user.id;
-
-    const reviewModel = new this.reviewModel(reviewObject);
-    const reviewSaved = await reviewModel.save();
-    const userObject = await this.userModel.findById(
-      new Types.ObjectId(user.id),
-    );
-    userObject.Reviews.push(reviewSaved._id.toHexString());
-    const productObject = await this.productModel.findById(
-      new Types.ObjectId(productId),
-    );
-    productObject.reviews.push(reviewSaved._id.toHexString());
-    await userObject.save();
-    await productObject.save();
-
-    return reviewSaved;
+  
+    try {
+      const reviewObject = new Review();
+      reviewObject.productId = productId;
+      reviewObject.comment = comment;
+      reviewObject.rate = rate;
+      reviewObject.userId = user.id;
+  
+      const reviewModel = new this.reviewModel(reviewObject);
+      const reviewSaved = await reviewModel.save();
+  
+      const userObject = await this.userModel.findById(new Types.ObjectId(user.id));
+      if (!userObject) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+      userObject.Reviews.push(reviewSaved._id.toHexString());
+  
+      const productObject = await this.productModel.findById(new Types.ObjectId(productId));
+      if (!productObject) {
+        throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
+      }
+      productObject.reviews.push(reviewSaved._id.toHexString());
+  
+      await userObject.save();
+      await productObject.save();
+  
+      return reviewSaved;
+    } catch (error) {
+      throw new HttpException(
+        error.message || 'Failed to create review',
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async update(reviewDto: ReviewDTO, id: string, user: any): Promise<string> {

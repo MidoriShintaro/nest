@@ -192,6 +192,12 @@ export class OrderService {
       select: 'username email phoneNumber value',
     });
   }
+  async getAllOrder(): Promise<Order[]> {
+    return await this.orderModel.find().populate({
+      path: 'userId paymentId',
+      select: 'username email phoneNumber value',
+    });
+  }
   async getAllOrderNotPaid(): Promise<Order[]> {
     return await this.orderModel.find({ status: 'NOTPAY' }).populate({
       path: 'userId paymentId',
