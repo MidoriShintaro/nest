@@ -32,6 +32,13 @@ export class OrderController {
     return await this.orderService.getAllOrderPaid();
   }
 
+  @Get()
+  @HttpCode(200)
+  async getAllOrder(): Promise<Order[]> {
+    return await this.orderService.getAllOrder();
+  }
+
+
   @Get('/user/:user')
   @HttpCode(200)
   async getOrderByUser(@Param('user') user: string): Promise<Order[]> {

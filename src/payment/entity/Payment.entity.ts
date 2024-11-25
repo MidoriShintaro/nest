@@ -17,7 +17,7 @@ export class Payment {
   @Prop({
     type: String,
     enum: {
-      values: ['ZALOPAY'],
+      values: ['ZALOPAY','PAYLATER'],
     },
   })
   method: string;
