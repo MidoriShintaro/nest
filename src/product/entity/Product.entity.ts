@@ -24,29 +24,11 @@ export class Product {
   @Prop({ type: String, required: true })
   color: string;
 
-  @Prop({ type: Number })
-  numberStock: number;
-
   @Prop({ type: Number, required: true })
   price: number;
 
-  @Prop({ type: Number })
-  height: number;
-
-  @Prop({ type: Number })
-  width: number;
-
-  @Prop({ type: Number })
-  length: number;
-
-  @Prop({ type: Number })
-  weight: number;
-
   @Prop({ type: String })
   description: string;
-
-  @Prop({ type: Number })
-  viewCount: number;
 
   @Prop({ type: String })
   image: string;

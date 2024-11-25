@@ -41,17 +41,14 @@ export class User {
     type: String,
     default: UserRole.USER,
     enum: {
-      values: ['USER', 'ADMIN', 'MODERATOR'],
-      message: 'Roles only have user or admin or moderator',
+      values: ['USER', 'ADMIN'],
+      message: 'Roles only have user or admin',
     },
   })
   role: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Review' }] })
   Reviews: string[];
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Voucher' }] })
-  Vouchers: string[];
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Order' }] })
   OrderIds: string[];

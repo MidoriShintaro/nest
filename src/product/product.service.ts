@@ -32,22 +32,6 @@ export class ProductService {
     }
     const updateDetails = updateProductDto;
 
-    if (updateDetails.height != null) {
-      oldProduct.height = updateDetails.height;
-    }
-    if (updateDetails.length != null) {
-      oldProduct.length = updateDetails.length;
-    }
-    if (updateDetails.weight != null) {
-      oldProduct.weight = updateDetails.weight;
-    }
-    if (updateDetails.width != null) {
-      oldProduct.width = updateDetails.width;
-    }
-    if (updateDetails.numberStock != null) {
-      oldProduct.numberStock = updateDetails.numberStock;
-    }
-
     if (updateDetails.description != null) {
       oldProduct.description = updateDetails.description;
     }
@@ -97,7 +81,6 @@ export class ProductService {
       const categoriesToUpdate = await this.categoryModel.findOne({
         products: id,
       });
-      console.error('categoryUpdate', categoriesToUpdate);
       // Update each category to remove the reference to the deleted product
       categoriesToUpdate.products.splice(
         categoriesToUpdate.products.indexOf(
@@ -133,11 +116,6 @@ export class ProductService {
     image: Express.Multer.File,
   ): Promise<string> {
     const createProduct = createProductDto;
-    // const exists = await this.findNameAndCode(createProductDto);
-    // if (exists) {
-    //   Logger.error('Category already exists');
-    //   return null;
-    // }
 
     const category = await this.categoryService.findByName(
       createProductDto.categoryName,
@@ -146,18 +124,16 @@ export class ProductService {
       createProductDto.categoryName,
     );
     const data = await this.cloudinaryService.uploadImage(image, 'product');
+    console.log(data);
     const createdProduct = new Product();
     createdProduct.productName = createProduct.productName;
     createdProduct.size = createProduct.size;
     createdProduct.color = createProduct.color;
     createdProduct.price = createProduct.price;
-    createdProduct.numberStock = createProduct.numberStock;
     createdProduct.description = createProduct.description;
-    createdProduct.viewCount = createProduct.viewCount;
     createdProduct.image = data.secure_url;
     createdProduct.category = id;
     createdProduct.brand = createProduct.brand;
-    //createdProduct.Cart = Cart;
 
     const createdProducts = new this.productModel(createdProduct);
 

@@ -7,8 +7,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { OrderdetailDto } from './dto/OrderDetail.dto';
-import { Orderdetail } from './entity/OrderDetail.entity';
+import { OrderdetailDto } from './dto/orderdetail.dto';
+import { Orderdetail } from './entity/Orderdetail.entity';
 import { OrderDetailService } from './orderdetail.service';
 
 @Controller('/api/orderDetail')

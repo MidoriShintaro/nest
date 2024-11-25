@@ -70,7 +70,6 @@ export class CategoriesService {
     const category = await this.categoryModel
       .findOne({ categoryName: categoryName })
       .exec();
-    console.error('result', category);
 
     if (category === null) {
       Logger.error('Category not found');
@@ -82,7 +81,6 @@ export class CategoriesService {
     const category = await this.categoryModel
       .findOne({ categoryName: categoryName })
       .exec();
-    console.error('result', category);
 
     if (category === null) {
       Logger.error('Category not found');
@@ -137,7 +135,6 @@ export class CategoriesService {
       .findOne({ categoryName: createCategoryDto.categoryName })
       .exec();
     if (!category) {
-      Logger.error('Category not found');
       return false;
     }
     return true;
@@ -156,5 +153,9 @@ export class CategoriesService {
 
   async findAll(): Promise<Category[]> {
     return this.categoryModel.find().exec();
+  }
+
+  async getCategory(categoryId: string): Promise<Category> {
+    return this.categoryModel.findById(categoryId);
   }
 }

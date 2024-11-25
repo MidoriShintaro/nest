@@ -8,7 +8,6 @@ export class CloudinaryService {
     folder: string,
   ): Promise<UploadApiResponse | UploadApiErrorResponse> {
     return new Promise((resolve, reject) => {
-      console.log(file, folder);
       if (!file.mimetype.startsWith('image')) {
         throw new BadRequestException(
           'Sorry, this file is not an image, please try again',

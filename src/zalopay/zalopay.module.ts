@@ -3,8 +3,8 @@ import { ZalopayService } from './zalopay.service';
 import { ZalopayController } from './zalopay.controller';
 
 @Module({
-    imports: [],
-    controllers: [ZalopayController],
-    providers: [ZalopayService],
+  imports: [],
+  controllers: [ZalopayController],
+  providers: [ZalopayService],
 })
 export class ZaloPayModule {}

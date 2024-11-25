@@ -26,14 +26,9 @@ export class OrderService {
 
   async create(createProductDto: OrderDto): Promise<Order> {
     const currentDate = moment();
-    console.log('You are doing in this function');
     const transID = Math.floor(Math.random() * 1000000);
-    console.log('transID', transID);
 
     const ordercode = `${currentDate.format('YYMMDD')}_${transID}`;
-    console.error('ordercode', moment().format('YYMMDD'));
-
-    console.error('ordercode', ordercode);
 
     const session: ClientSession = await this.orderModel.startSession();
     session.startTransaction();
@@ -200,5 +195,9 @@ export class OrderService {
   }
   async getAllOrder(): Promise<Order[]> {
     return await this.orderModel.find().populate('userId paymentId');
+  }
+
+  async getOrderById(id: string): Promise<Order> {
+    return await this.orderModel.findOne({ id });
   }
 }

@@ -91,7 +91,7 @@ export class OrderDetailService {
       .populate({
         path: 'productId',
         populate: {
-          path: 'category reviews',
+          path: 'category reviews image',
           select: 'categoryName rate',
         },
         select: 'productName price',

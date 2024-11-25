@@ -27,6 +27,12 @@ export class CartService {
     });
   }
 
+  async getCartByProductId(productId: string, user: string): Promise<Cart> {
+    return await this.cartModel.findOne({
+      $and: [{ product: productId }, { user }],
+    });
+  }
+
   async addToCart(cart: CartDto): Promise<string> {
     const checkExists = await this.cartModel.findOne({
       $and: [{ user: cart.user }, { product: cart.product }],

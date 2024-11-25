@@ -27,6 +27,14 @@ export class CartController {
     return this.cartService.getAllCartProduct(user);
   }
 
+  @Get('/product/:productId/user/:userId')
+  async getCartByProductId(
+    @Param('productId') productId: string,
+    @Param('userId') user: string,
+  ): Promise<Cart> {
+    return await this.cartService.getCartByProductId(productId, user);
+  }
+
   @Post()
   @UseGuards(JwtAuthGuard)
   async addToCart(@Body() cart: CartDto): Promise<string> {

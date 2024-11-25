@@ -21,12 +21,16 @@ export class OrderController {
   @Post()
   @HttpCode(200)
   async create(@Body() orderDto: OrderDto): Promise<Order> {
-    console.log('do this function');
     return this.orderService.create(orderDto);
   }
   @Get()
   async getAllOrder(): Promise<Order[]> {
     return await this.orderService.getAllOrder();
+  }
+
+  @Get('/:id')
+  async getOrder(@Param('id') id: string): Promise<Order> {
+    return this.orderService.getOrderById(id);
   }
 
   @Get('/orderpaid')

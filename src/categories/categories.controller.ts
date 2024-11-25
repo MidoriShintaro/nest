@@ -19,6 +19,11 @@ export class CategoriesController {
   async create(@Body() categoryDto: CategoriesDTO): Promise<Category> {
     return this.categoryService.create(categoryDto);
   }
+
+  @Get(':id')
+  async getCategory(@Param('id') id: string): Promise<Category> {
+    return await this.categoryService.getCategory(id);
+  }
   @Put(':id')
   async update(
     @Param('id') id: string,
