@@ -118,6 +118,10 @@ export class PaymentService {
     if (method === 'ZALOPAY') {
       order.status = 'PAID';
     }
+    if(method === 'PAYLATER')
+    {
+      order.status = 'NOTPAY';
+    }
     console.error('order paymentid  is', order.paymentId);
     await order.save();
     return paymentSaved;

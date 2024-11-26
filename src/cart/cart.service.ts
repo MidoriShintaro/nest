@@ -53,6 +53,7 @@ export class CartService {
       product: cart.product,
       quantity: cart.quantity,
     });
+    console.log('newcart', newCart);
     await newCart.save();
     return 'Add new product to cart';
   }

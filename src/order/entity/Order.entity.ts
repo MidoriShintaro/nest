@@ -17,7 +17,7 @@ export class Order {
   @Prop({
     type: String,
     enum: {
-      values: ['NOTPAY', 'PAID'],
+      values: ['NOTPAY', 'PAID', 'EXPIRES','CANCEL'],
     },
     required: true,
   })
