@@ -6,6 +6,7 @@ import {
   HttpCode,
   Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
@@ -53,6 +54,10 @@ export class OrderController {
     return this.orderService.getAllOrderByUserId(id);
   }
 
+  @Put('/:id')
+  async updateStatus(@Param('id') id: string, @Body('status') status:string): Promise<Order> {
+    return await this.orderService.updateStatus(status, id);
+  }
   @Delete('/:id')
   async delete(@Param('id') id: string): Promise<string> {
     return await this.orderService.delete(id);
