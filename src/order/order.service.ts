@@ -11,6 +11,7 @@ import { User } from 'src/user/entity/user.entity';
 import { Cart } from 'src/cart/entity/cart.entity';
 import { OrderDetailService } from 'src/orderdetail/orderdetail.service';
 import * as moment from 'moment';
+import { stat } from 'fs';
 
 @Injectable()
 export class OrderService {
@@ -97,6 +98,27 @@ export class OrderService {
     if (!orders) throw new NotFoundException('Order not found');
 
     return orders;
+  }
+  async updateStatus(status: string, id: string): Promise<Order> {
+    const VALID_STATUSES = ['NOTPAY', 'PAID', 'EXPIRES','CANCEL'];
+    
+
+    if(!VALID_STATUSES.includes(status))
+    {
+      throw new NotFoundException(`Not found status`);
+    }
+    const objectId = new Types.ObjectId(id);
+    const updatedOrder = await this.orderModel.findByIdAndUpdate(
+      objectId, 
+      { status}, 
+      { new: true } 
+    );
+
+    if (!updatedOrder) {
+      throw new NotFoundException(`Order with id ${id} not found`);
+    }
+
+    return updatedOrder;
   }
 
   //async update(updateProductDto: ProductDto, id:string): Promise<Product> {
