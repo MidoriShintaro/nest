@@ -74,6 +74,7 @@ export class OrderService {
       }
 
       orderCreated.totalAmount = totalPriceAmount;
+      orderCreated.totalDue = totalPriceAmount;
       orderCreated.orderCode = ordercode;
       const result = await orderCreated.save();
 

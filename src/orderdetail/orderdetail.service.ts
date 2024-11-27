@@ -99,4 +99,21 @@ export class OrderDetailService {
       .populate({ path: 'orderId', select: 'totalAmount userId status' })
       .exec();
   }
+  async findAllInOrderByOrderId(orderId:string): Promise<Orderdetail[]> {
+    console.log('orderid', orderId);
+    console.log(this.orderDetailModel
+      .find({orderId:orderId}).exec());
+    return this.orderDetailModel
+      .find({orderId:orderId})
+      .populate({
+        path: 'productId',
+        populate: {
+          path: 'category reviews',
+          select: 'categoryName rate',
+        },
+        select: 'productName price',
+      })
+      .populate({ path: 'orderId', select: 'totalAmount totalDue userId status' })
+      .exec();
+  }
 }
