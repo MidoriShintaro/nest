@@ -95,27 +95,24 @@ export class OrderService {
 
     return orders;
   }
-  async updateOrder(id: string, update: UpdateOrderDTO): Promise<Order> {
-    // const VALID_STATUSES = ['NOTPAY', 'PAID', 'EXPIRES', 'CANCEL'];
+  async updateOrder(id: string, order: UpdateOrderDTO): Promise<Order> {
+    const VALID_STATUSES = ['NOTPAY', 'PAID', 'EXPIRES', 'CANCEL'];
 
-    // console.log(update);
-
-    // if (!VALID_STATUSES.includes(update.status)) {
-    //   throw new NotFoundException(`Not found status`);
-    // }
-    console.log(id, update);
-    const order = await this.orderModel.findById(id);
-    if (!order) throw new NotFoundException('No order found');
-
-    const orderUpdated = await order.updateOne(
-      {
-        status: update.status,
-        orderCode: update.orderCode,
-      },
+    if (!VALID_STATUSES.includes(order.status)) {
+      throw new NotFoundException(`Not found status`);
+    }
+    const objectId = new Types.ObjectId(id);
+    const updatedOrder = await this.orderModel.findByIdAndUpdate(
+      objectId,
+      { status: order.status, orderCode: order.orderCode },
       { new: true },
     );
 
-    return orderUpdated;
+    if (!updatedOrder) {
+      throw new NotFoundException(`Order with id ${id} not found`);
+    }
+
+    return updatedOrder;
   }
 
   //async update(updateProductDto: ProductDto, id:string): Promise<Product> {
@@ -225,6 +222,6 @@ export class OrderService {
   }
 
   async getOrderById(id: string): Promise<Order> {
-    return await this.orderModel.findOne({ id });
+    return await this.orderModel.findById(id);
   }
 }

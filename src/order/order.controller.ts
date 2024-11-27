@@ -62,7 +62,7 @@ export class OrderController {
   @Put('/:id')
   async updateStatus(
     @Param('id') id: string,
-    @Body('status') order: UpdateOrderDTO,
+    @Body() order: UpdateOrderDTO,
   ): Promise<Order> {
     return await this.orderService.updateOrder(id, order);
   }

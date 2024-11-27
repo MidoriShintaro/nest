@@ -20,9 +20,8 @@ export class OrderDetailController {
     return this.orderDetailService.create(orderDetailDto);
   }
   @Get(':id')
-  async getAllInOderByOrderId(@Param('id')id:string):Promise<Orderdetail[]>
-  {
-      return this.orderDetailService.findAllInOrderByOrderId(id);
+  async getAllInOderByOrderId(@Param('id') id: string): Promise<Orderdetail[]> {
+    return this.orderDetailService.findAllInOrderByOrderId(id);
   }
   @Get()
   async getAllInOder(): Promise<Orderdetail[]> {
