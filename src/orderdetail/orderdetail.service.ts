@@ -113,7 +113,7 @@ export class OrderDetailService {
         },
         select: 'productName price',
       })
-      .populate({ path: 'orderId', select: 'totalAmount userId status' })
+      .populate({ path: 'orderId', select: 'totalAmount totalDue userId status' })
       .exec();
   }
 }
