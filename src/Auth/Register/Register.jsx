@@ -4,9 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
-  Checkbox,
   CssBaseline,
-  FormControlLabel,
   Grid,
   InputAdornment,
   TextField,
@@ -71,8 +69,8 @@ const Register = () => {
           theme: "colored",
         });
         console.log(1);
-      } else if (credentials.password.length < 5) {
-        toast.error("Please enter password with more than 5 characters", {
+      } else if (credentials.password.length < 8) {
+        toast.error("Please enter password with more than 8 characters", {
           autoClose: 500,
           theme: "colored",
         });
@@ -196,14 +194,6 @@ const Register = () => {
                   value={credentials.password}
                   onChange={handleOnChange}
                   autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
             </Grid>

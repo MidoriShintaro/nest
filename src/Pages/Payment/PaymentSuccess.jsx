@@ -21,7 +21,7 @@ const PaymentSuccess = () => {
     const order = orders.find((o) => o.orderCode === app_trans_id);
     if (response.data.data.return_message !== "Giao dịch thành công") {
       setStatus(false);
-      await instance.delete(`/order/${order.id}`);
+      await instance.put(`/order/${order.id}`, { status: "NOTPAY" });
       // return navigate("/checkout");
     }
   };
@@ -40,6 +40,9 @@ const PaymentSuccess = () => {
 
   const paymentSuccess = async () => {
     const order = orders.find((o) => o.orderCode === app_trans_id);
+    await instance.put(`/order/${order.id}`, {
+      status: "PAID",
+    });
     const response = await instance.post("/payment", {
       method: "ZALOPAY",
       orderId: order?.id,

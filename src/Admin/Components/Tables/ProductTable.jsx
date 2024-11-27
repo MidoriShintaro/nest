@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import AddProduct from "../AddProduct";
+import numeral from "numeral";
 const ProductTable = ({ data, getProductInfo }) => {
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -99,7 +100,6 @@ const ProductTable = ({ data, getProductInfo }) => {
     };
     setFilteredData(filterData());
   }, [data, searchTerm]);
-  console.log(filteredData);
 
   return (
     <>
@@ -192,27 +192,28 @@ const ProductTable = ({ data, getProductInfo }) => {
                       <Link
                         to={`/admin/home/product/${prod.category?.categoryName}/${prod.id}`}
                       >
-                        {prod.category?.categoryName}
+                        {prod.brand}
                       </Link>
                     </TableCell>
                     <TableCell align="center">
                       <Link
                         to={`/admin/home/product/${prod.category?.categoryName}/${prod.id}`}
                       >
-                        ₹{prod.price}
+                        {numeral(prod.price).format("0,0")}đ
                       </Link>
                     </TableCell>
                     <TableCell align="center">
                       <Link
                         to={`/admin/home/product/${prod.category?.categoryName}/${prod.id}`}
                       >
-                        {prod.reviews.length > 0 &&
-                          Math.round(
-                            prod.reviews.reduce(
-                              (tol, cur) => tol + cur.rate,
-                              0
-                            ) / prod.reviews.length
-                          ) + ".0"}
+                        {prod.reviews.length > 0
+                          ? Math.round(
+                              prod.reviews.reduce(
+                                (tol, cur) => tol + cur.rate,
+                                0
+                              ) / prod.reviews.length
+                            ) + ".0"
+                          : 0}
                       </Link>
                     </TableCell>
                   </TableRow>

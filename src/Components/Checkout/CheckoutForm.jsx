@@ -80,6 +80,7 @@ const CheckoutForm = () => {
           },
         }
       );
+      console.log(response);
       if (response.data.code === 200) {
         setShippingCoast(response.data.data.total);
         localStorage.setItem("shipping", response.data.data.total);

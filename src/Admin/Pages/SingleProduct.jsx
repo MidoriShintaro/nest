@@ -56,19 +56,20 @@ const SingleProduct = () => {
     }
     const getSingleProduct = async () => {
       const { data } = await instance.get(`/product/${id}`);
+      setProduct(data.data);
+
       productInfo.productName = data.data.productName;
       productInfo.price = data.data.price;
       productInfo.size = data.data.size;
       productInfo.color = data.data.color;
       productInfo.categoryName = data.data.category.categoryName;
       productInfo.description = data.data.description;
-      data.data.brand && (productInfo.brand = data.data.brand);
-      setProduct(data.data);
+      productInfo.brand = data.data.brand;
       setLoading(false);
     };
     getSingleProduct();
     window.scroll(0, 0);
-  }, [id, productInfo, auth, navigate]);
+  }, [id, auth, navigate]);
 
   const handleOnchange = (e) => {
     setProductInfo({ ...productInfo, [e.target.name]: e.target.value });
@@ -83,14 +84,15 @@ const SingleProduct = () => {
 
   const category = ["suitcase", "handbag", "backpack", "accessory"];
   const color = [
-    "red",
-    "pink",
-    "black",
-    "green",
-    "yellow",
-    "white",
-    "purple",
-    "blue",
+    "Red",
+    "Pink",
+    "Black",
+    "Green",
+    "Yellow",
+    "White",
+    "Purple",
+    "Blue",
+    "Navy",
   ];
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -134,7 +136,7 @@ const SingleProduct = () => {
           autoClose: 500,
           theme: "colored",
         });
-        navigate(-1);
+        return navigate(-1);
       } else {
         toast.error("Something went wrong", {
           autoClose: 500,
@@ -145,6 +147,7 @@ const SingleProduct = () => {
       toast.error(error.response.data, { autoClose: 500, theme: "colored" });
     }
   };
+  console.log(productInfo);
 
   return (
     <>

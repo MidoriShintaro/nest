@@ -62,7 +62,6 @@ const Login = () => {
           password: credentials.password,
         });
         const receive = await sendAuth.data;
-        console.log(receive);
         if (receive.status === "success") {
           toast.success("Login Successfully", {
             autoClose: 500,
@@ -70,7 +69,12 @@ const Login = () => {
           });
           localStorage.setItem("Authorization", receive.data.token);
           localStorage.setItem("user", receive.data.user.id);
-          navigate("/");
+          console.log(receive);
+          navigate(
+            receive.data.user.role.toLowerCase() === "admin"
+              ? "/admin/home"
+              : "/"
+          );
         } else {
           toast.error(receive.message, {
             autoClose: 500,
@@ -160,7 +164,7 @@ const Login = () => {
           <Grid container>
             <Grid item xs>
               <Link
-                to="/forgotpassword"
+                to="/forgot-password"
                 variant="body2"
                 style={{ color: "#1976d2" }}
               >

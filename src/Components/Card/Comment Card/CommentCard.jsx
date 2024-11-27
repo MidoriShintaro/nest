@@ -79,7 +79,7 @@ const CommentCard = ({ review, setReviews, reviews, fetchReviews }) => {
   const sendEditResponse = async () => {
     if (!editComment && !value) {
       toast.error("Please Fill the all Fields", { autoClose: 500 });
-    } else if (editComment.length <= 4) {
+    } else if (editComment.length < 4) {
       toast.error("Please add more than 4 characters", { autoClose: 500 });
     } else if (value <= 0) {
       toast.error("Please add rating", { autoClose: 500 });

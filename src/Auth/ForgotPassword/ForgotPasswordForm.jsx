@@ -24,7 +24,7 @@ const ForgotPasswordForm = () => {
         email: email,
       });
       if (sendEmail.data.status === "success") {
-        toast.success(sendEmail.data.message, {
+        toast.success(sendEmail.data.data, {
           autoClose: 500,
           theme: "colored",
         });

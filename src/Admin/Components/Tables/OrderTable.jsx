@@ -18,7 +18,7 @@ const OrderTable = ({ orders, orderDetail }) => {
   const sortedOrders = orders.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
-  console.log(sortedOrders);
+  console.log(orderDetail);
 
   return (
     <>
@@ -69,34 +69,34 @@ const OrderTable = ({ orders, orderDetail }) => {
                     </TableCell>
 
                     <TableCell component="th" scope="row">
-                      <Link to={`user/${order.userId.id}`}>
-                        {`${order.userId.username}`}
+                      <Link to={`user/${order?.userId?.id}`}>
+                        {`${order?.userId?.username}`}
                       </Link>
                     </TableCell>
                     <TableCell>
-                      <Link to={`user/${order.userId.id}`}>
-                        {order.userId.email}
+                      <Link to={`user/${order?.userId?.id}`}>
+                        {order?.userId?.email}
                       </Link>
                     </TableCell>
                     <TableCell>
-                      <Link to={`user/${order.userId.id}`}>
-                        {order.status}
+                      <Link to={`user/${order?.userId?.id}`}>
+                        {order?.status}
                       </Link>
                     </TableCell>
                     <TableCell>
-                      <Link to={`user/${order.userId.id}`}>
-                        {order.totalAmount}
+                      <Link to={`user/${order?.userId?.id}`}>
+                        {order?.totalAmount}
                       </Link>
                     </TableCell>
                     <TableCell>
-                      <Link to={`user/${order.userId}`}>
-                        {new Date(order.createdAt).toLocaleDateString("en-us", {
+                      <Link to={`user/${order?.userId}`}>
+                        {new Date(order?.createdAt).toLocaleDateString("en-us", {
                           weekday: "long",
                           year: "numeric",
                           month: "short",
                           day: "numeric",
                         })}{" "}
-                        {new Date(order.createdAt).toLocaleTimeString("en-US")}
+                        {new Date(order?.createdAt).toLocaleTimeString("en-US")}
                       </Link>
                     </TableCell>
                   </TableRow>
@@ -106,7 +106,7 @@ const OrderTable = ({ orders, orderDetail }) => {
                       colSpan={6}
                     >
                       <Collapse
-                        in={openOrderId === order.id}
+                        in={openOrderId === order?.id}
                         timeout="auto"
                         unmountOnExit
                       >
@@ -155,18 +155,18 @@ const OrderTable = ({ orders, orderDetail }) => {
                                 <TableRow key={product.id}>
                                   <TableCell align="left">
                                     <Link
-                                      to={`/admin/home/product/${product.productId.category.categoryName}/${product.productId.id}`}
+                                      to={`/admin/home/product/${product.productId?.category.categoryName}/${product.productId?.id}`}
                                     >
-                                      {product.productId.productName}
+                                      {product.productId?.productName}
                                     </Link>
                                   </TableCell>
                                   <TableCell align="left">
                                     <Link
-                                      to={`/admin/home/product/${product.productId.category.categoryName}/${product.productId.id}`}
+                                      to={`/admin/home/product/${product.productId?.category.categoryName}/${product.productId?.id}`}
                                     >
                                       <img
-                                        src={product.productId.image}
-                                        alt={product.productId.productName}
+                                        src={product.productId?.image}
+                                        alt={product.productId?.productName}
                                         style={{
                                           width: "100px",
                                           height: "100px",
@@ -177,33 +177,33 @@ const OrderTable = ({ orders, orderDetail }) => {
                                   </TableCell>
                                   <TableCell align="left">
                                     <Link
-                                      to={`/admin/home/product/${product.productId.category.categoryName}/${product.productId.id}`}
+                                      to={`/admin/home/product/${product.productId?.category.categoryName}/${product.productId?.id}`}
                                     >
-                                      {product.productId.price}
+                                      {product.productId?.price}
                                     </Link>
                                   </TableCell>
                                   <TableCell align="left">
                                     <Link
-                                      to={`/admin/home/product/${product.productId.category.categoryName}/${product.productId.id}`}
+                                      to={`/admin/home/product/${product.productId?.category.categoryName}/${product.productId?.id}`}
                                     >
                                       {product.quantity}
                                     </Link>
                                   </TableCell>
                                   <TableCell align="left">
                                     <Link
-                                      to={`/admin/home/product/${product.productId.category.categoryName}/${product.productId.id}`}
+                                      to={`/admin/home/product/${product.productId?.category.categoryName}/${product.productId?.id}`}
                                     >
                                       {isNaN(
-                                        product.productId.reviews.reduce(
+                                        product.productId?.reviews.reduce(
                                           (total, cur) => total + cur.rate,
                                           0
-                                        ) / product.productId.reviews.length
+                                        ) / product.productId?.reviews.length
                                       )
                                         ? "0"
-                                        : product.productId.reviews.reduce(
+                                        : product.productId?.reviews.reduce(
                                             (total, cur) => total + cur.rate,
                                             0
-                                          ) / product.productId.reviews.length}
+                                          ) / product.productId?.reviews.length}
                                     </Link>
                                   </TableCell>
                                 </TableRow>

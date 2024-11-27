@@ -18,7 +18,6 @@ const SingleCategory = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("Authorization");
   useEffect(() => {
-    if (!token) return navigate("/login");
     const getCategoryProduct = async () => {
       try {
         setIsLoading(true);

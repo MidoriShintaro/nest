@@ -20,6 +20,8 @@ import AdminRegister from "./Admin/Auth/Register/AdminRegister";
 import AdminHomePage from "./Admin/Pages/AdminHomePage";
 import SingleUserPage from "./Admin/Pages/SingleUserPage";
 import SingleProduct from "./Admin/Pages/SingleProduct";
+import SingleCategoryPage from "./Admin/Pages/SingleCategoryPage";
+import Order from "./Pages/Order/Order";
 
 function App() {
   return (
@@ -43,14 +45,22 @@ function App() {
             <Route path="/checkout" element={<CheckoutForm />} />
             <Route path="/update" element={<UpdateDetails />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/order" element={<Order />} />
             <Route path="/forgot-password" element={<ForgotPasswordForm />} />
-            <Route path="/user/reset-password/:token" element={<AddNewPassword />} />
+            <Route
+              path="/user/reset-password/:token"
+              element={<AddNewPassword />}
+            />
 
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/register" element={<AdminRegister />} />
             <Route path="/admin/home" element={<AdminHomePage />} />
             <Route path="/admin/home/user/:id" element={<SingleUserPage />} />
+            <Route
+              path="/admin/home/category/:id"
+              element={<SingleCategoryPage />}
+            />
             <Route
               path="/admin/home/product/:type/:id"
               element={<SingleProduct />}

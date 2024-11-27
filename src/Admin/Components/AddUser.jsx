@@ -230,13 +230,6 @@ const AddUser = ({ getUser }) => {
                       name="role"
                     />
                     <FormControlLabel
-                      value="MODERATOR"
-                      name="role"
-                      control={<Radio />}
-                      onChange={handleOnChange}
-                      label="MODERATOR"
-                    />
-                    <FormControlLabel
                       value="USER"
                       control={<Radio />}
                       onChange={handleOnChange}

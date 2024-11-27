@@ -42,6 +42,7 @@ const renderCustomizedLabel = ({
   );
 };
 const ProductChart = ({ products, review, cart, paymentData }) => {
+  console.log(products);
   const productData = [
     {
       name: "Hand Bag",
@@ -118,7 +119,6 @@ const ProductChart = ({ products, review, cart, paymentData }) => {
     .reduce((acc, item) => {
       const month = item.createdAt.substr(0, 7);
       const index = acc.findIndex((el) => el.month === month);
-      console.log(acc);
       if (index !== -1 && item.status === "PAID") {
         acc[index].totalAmount += item.totalDue;
       } else {
@@ -126,12 +126,13 @@ const ProductChart = ({ products, review, cart, paymentData }) => {
       }
       return acc;
     }, []);
-  // console.log(groupedData);
+  console.log(cart);
   const formatXAxis = (tickItem) => {
     return new Date(tickItem).toLocaleString("default", { month: "short" });
   };
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
+
   return (
     <>
       <Container sx={{ marginTop: 5 }}>

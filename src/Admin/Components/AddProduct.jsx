@@ -48,7 +48,7 @@ const AddProduct = ({ getProductInfo, data }) => {
   const handleUploadImage = (e) => {
     if (e.target && e.target.files && e.target.files[0]) {
       setPreviewImage(URL.createObjectURL(e.target.files[0]));
-      setProductInfo({ image: e.target.files[0] });
+      setProductInfo({ ...productInfo, image: e.target.files[0] });
     }
   };
 
@@ -58,14 +58,14 @@ const AddProduct = ({ getProductInfo, data }) => {
     e.preventDefault();
     try {
       if (
-        !productInfo.productName &&
-        !productInfo.image &&
-        !productInfo.price &&
-        !productInfo.color &&
-        !productInfo.category &&
-        !productInfo.brand &&
-        !productInfo.size &&
-        !productInfo.description
+        productInfo.productName === "" ||
+        productInfo.image === "" ||
+        productInfo.price === "" ||
+        productInfo.color === "" ||
+        productInfo.category === "" ||
+        productInfo.brand === "" ||
+        productInfo.size === "" ||
+        productInfo.description === ""
       ) {
         toast.error("Please Fill the all Fields", {
           autoClose: 500,
@@ -82,6 +82,7 @@ const AddProduct = ({ getProductInfo, data }) => {
         formData.append("size", productInfo.size);
         formData.append("description", productInfo.description);
         formData.append("brand", productInfo.brand);
+        console.log(formData.get("image"));
         const { data } = await instance.post(`/product`, formData);
         if (data.status === "success") {
           toast.success("Product added successfully", {
@@ -100,6 +101,7 @@ const AddProduct = ({ getProductInfo, data }) => {
             description: "",
             brand: "",
           });
+          setPreviewImage({ previewImage: "" });
         } else {
           toast.error("Some thing went wrong", {
             autoClose: 500,
@@ -109,10 +111,10 @@ const AddProduct = ({ getProductInfo, data }) => {
         }
       }
     } catch (error) {
-      toast.error(error.response.data.error, {
-        autoClose: 500,
-        theme: "colored",
-      });
+      // toast.error(error.response.data.error, {
+      //   autoClose: 500,
+      //   theme: "colored",
+      // });
     }
   };
 
@@ -261,7 +263,7 @@ const AddProduct = ({ getProductInfo, data }) => {
                   </Button>
                 </Grid>
                 {previewImage ? (
-                  <img src={previewImage} alt="" width="100%" height="100%" />
+                  <img src={previewImage} alt="" width={100} height={100} />
                 ) : (
                   <img
                     src={productInfo.image}

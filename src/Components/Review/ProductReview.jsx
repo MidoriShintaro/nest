@@ -72,7 +72,6 @@ const ProductReview = ({ authToken, setProceed, setOpenAlert, id }) => {
     setReviews(data.data);
   };
   useEffect(() => {
-    if (!auth) return navigate("/login");
     fetchReviews();
   }, [title, id, auth, navigate]);
 
@@ -213,7 +212,7 @@ const ProductReview = ({ authToken, setProceed, setOpenAlert, id }) => {
         </Typography>
       )}
       <Box className="review-box">
-        {reviews.map((review) => (
+        {reviews?.map((review) => (
           <CommentCard
             review={review}
             key={review._id}

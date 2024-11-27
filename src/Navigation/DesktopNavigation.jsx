@@ -1,7 +1,7 @@
 import "./Desktop.css";
 import React, { useContext, useEffect, useState } from "react";
 import {
-  // AiOutlineHeart,
+  AiOutlineHeart,
   AiOutlineShoppingCart,
   AiFillCloseCircle,
 } from "react-icons/ai";
@@ -26,28 +26,17 @@ import {
   handleClose,
   Transition,
 } from "../Constants/Constant";
-import instance from "../axios/axios";
 
 const DesktopNavigation = () => {
   const { cart, setCart } = useContext(ContextFunction);
   const [openAlert, setOpenAlert] = useState(false);
   const navigate = useNavigate();
   let userId = localStorage.getItem("user");
-  // let authToken = localStorage.getItem("Authorization");
-  const [process, setProcess] = useState(false)
-  // let setProceed = authToken !== null ? true : false;
+  let authToken = localStorage.getItem("Authorization");
+  let setProceed = authToken !== null ? true : false;
   useEffect(() => {
-    const checkToken = async () => {
-      const res = await instance.get("/user");
-      if (res.status === 401) {
-        setProcess(false)
-      } else {
-        setProcess(true)
-      }
-    };
-    checkToken();
-    getCart(process, setCart, userId);
-  }, [userId, process, setCart, navigate]);
+    getCart(setProceed, setCart, userId);
+  }, [userId, setProceed, setCart]);
 
   return (
     <>
@@ -64,13 +53,18 @@ const DesktopNavigation = () => {
                 <span className="nav-icon-span"> Home</span>
               </NavLink>
             </li>
+            {/* <li className="nav-links">
+              <NavLink to='/contact'>
+                <span className='nav-icon-span'>  Contact Us</span>
+              </NavLink>
+            </li> */}
 
             <li className="nav-links">
               <Tooltip title="Cart">
                 <NavLink to="/cart">
                   <span className="nav-icon-span">
                     Cart{" "}
-                    <Badge badgeContent={process ? cart?.length : 0}>
+                    <Badge badgeContent={setProceed ? cart?.length : 0}>
                       {" "}
                       <AiOutlineShoppingCart className="nav-icon" />
                     </Badge>
@@ -78,8 +72,21 @@ const DesktopNavigation = () => {
                 </NavLink>
               </Tooltip>
             </li>
+            <li className="nav-links">
+              <Tooltip title="Order">
+                <NavLink to="/order">
+                  <span className="nav-icon-span">
+                    Order{" "}
+                    <Badge badgeContent={setProceed && 0}>
+                      {" "}
+                      <AiOutlineHeart className="nav-icon" />
+                    </Badge>
+                  </span>
+                </NavLink>
+              </Tooltip>
+            </li>
 
-            {process ? (
+            {setProceed ? (
               <>
                 <li className="nav-links">
                   <Tooltip title="Profile">
@@ -153,7 +160,7 @@ const DesktopNavigation = () => {
               endIcon={<FiLogOut />}
               color="primary"
               onClick={() =>
-                handleLogOut(process, toast, navigate, setOpenAlert)
+                handleLogOut(setProceed, toast, navigate, setOpenAlert)
               }
             >
               Logout

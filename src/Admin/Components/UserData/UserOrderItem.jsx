@@ -11,7 +11,7 @@ const UserOrderItem = ({ commonGetRequest, id }) => {
   useEffect(() => {
     commonGetRequest("/orderDetail", "", setData);
     const getOrderUser = async () => {
-      const res = await instance.get(`/order/${id}`);
+      const res = await instance.get(`/order/user/${id}`);
       if (res.data.status === "success") {
         setOrder(res.data.data);
       }
@@ -20,6 +20,7 @@ const UserOrderItem = ({ commonGetRequest, id }) => {
   }, [commonGetRequest, id]);
 
   const total = order.reduce((acc, curr) => {
+    console.log(curr);
     if (curr.status === "PAID") {
       acc += curr.totalAmount;
     }

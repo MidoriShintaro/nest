@@ -29,7 +29,7 @@ const SingleUserPage = () => {
       <Container>
         <UserInfoItem commonGetRequest={commonGetRequest} id={id} />
         <UserOrderItem commonGetRequest={commonGetRequest} id={id} />
-        <UserCartItem commonGetRequest={commonGetRequest} id={id} />
+        {/* <UserCartItem commonGetRequest={commonGetRequest} id={id} /> */}
         <UserReviewItem commonGetRequest={commonGetRequest} id={id} />
       </Container>
     </>

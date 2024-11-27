@@ -12,6 +12,8 @@ import { TbReportMoney } from "react-icons/tb";
 import OrderTable from "./Tables/OrderTable";
 import Widget from "./Widget";
 import instance from "../../axios/axios";
+import { BiCategory } from "react-icons/bi";
+import CategoryTable from "./Tables/CategoryTable";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -149,6 +151,12 @@ export default function BasicTabs({ users, getUser }) {
             icon={<VscGraph fontSize={20} />}
           />
           <Tab
+            label={!isSmallScreen && "Category"}
+            {...a11yProps(0)}
+            iconPosition="start"
+            icon={<BiCategory fontSize={20} />}
+          />
+          <Tab
             label={!isSmallScreen && "Users"}
             {...a11yProps(1)}
             iconPosition="start"
@@ -178,12 +186,15 @@ export default function BasicTabs({ users, getUser }) {
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <UserTable users={users} paymentData={order} getUser={getUser} />
+        <CategoryTable categories={category}/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <ProductTable data={products} getProductInfo={getProductInfo} />
+        <UserTable users={users} paymentData={order} getUser={getUser} />
       </TabPanel>
       <TabPanel value={value} index={3}>
+        <ProductTable data={products} getProductInfo={getProductInfo} />
+      </TabPanel>
+      <TabPanel value={value} index={4}>
         <OrderTable orders={order} orderDetail={orderDetail} />
       </TabPanel>
     </Box>

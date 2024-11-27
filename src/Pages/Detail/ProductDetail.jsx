@@ -46,18 +46,16 @@ const ProductDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (setProceed) {
-      getSingleProduct(setProduct, id, setLoading);
+    getSingleProduct(setProduct, id, setLoading);
 
-      const getSimilarProducts = async () => {
-        const { data } = await instance.get(`/product/category/${cat}`);
-        setSimilarProduct(data.data);
-      };
-      getSimilarProducts();
+    const getSimilarProducts = async () => {
+      const { data } = await instance.get(`/product/category/${cat}`);
+      setSimilarProduct(data.data);
+    };
+    getSimilarProducts();
 
-      window.scroll(0, 0);
-    }
-  }, [id, cat, navigate, setProceed]);
+    window.scroll(0, 0);
+  }, [id, cat, navigate, setProceed, user]);
 
   const addToCart = async (product) => {
     if (setProceed) {
@@ -98,6 +96,7 @@ const ProductDetail = () => {
 
   const increaseQuantity = () => {
     setProductQuantity((prev) => prev + 1);
+
     if (productQuantity >= 5) {
       setProductQuantity(5);
     }
@@ -186,7 +185,11 @@ const ProductDetail = () => {
               <Typography>
                 <div className="chip">
                   {data.map((item, index) => (
-                    <Chip label={item} key={index} variant="outlined" />
+                    <Chip
+                      label={item.toUpperCase()}
+                      key={index}
+                      variant="outlined"
+                    />
                   ))}
                 </div>
               </Typography>
