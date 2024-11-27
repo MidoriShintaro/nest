@@ -13,6 +13,7 @@ import { OrderService } from './order.service';
 import { OrderDto } from './dto/order.dto';
 import { Order } from './entity/Order.entity';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { UpdateOrderDTO } from './dto/update-order.dto';
 
 @Controller('api/order')
 @UseGuards(JwtAuthGuard)
@@ -20,13 +21,9 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  @HttpCode(200)
+  @HttpCode(201)
   async create(@Body() orderDto: OrderDto): Promise<Order> {
     return this.orderService.create(orderDto);
-  }
-  @Get()
-  async getAllOrder(): Promise<Order[]> {
-    return await this.orderService.getAllOrder();
   }
 
   @Get('/:id')
@@ -48,7 +45,6 @@ export class OrderController {
     return await this.orderService.getAllOrder();
   }
 
-
   @Get('/user/:user')
   @HttpCode(200)
   async getOrderByUser(@Param('user') user: string): Promise<Order[]> {
@@ -64,8 +60,11 @@ export class OrderController {
   }
 
   @Put('/:id')
-  async updateStatus(@Param('id') id: string, @Body('status') status:string): Promise<Order> {
-    return await this.orderService.updateStatus(status, id);
+  async updateStatus(
+    @Param('id') id: string,
+    @Body('status') order: UpdateOrderDTO,
+  ): Promise<Order> {
+    return await this.orderService.updateOrder(id, order);
   }
   @Delete('/:id')
   async delete(@Param('id') id: string): Promise<string> {

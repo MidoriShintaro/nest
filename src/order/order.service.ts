@@ -11,7 +11,7 @@ import { User } from 'src/user/entity/user.entity';
 import { Cart } from 'src/cart/entity/cart.entity';
 import { OrderDetailService } from 'src/orderdetail/orderdetail.service';
 import * as moment from 'moment';
-import { stat } from 'fs';
+import { UpdateOrderDTO } from './dto/update-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -89,31 +89,32 @@ export class OrderService {
   }
 
   async getOrdersByUser(userId: string): Promise<Order[]> {
-    const orders = await this.orderModel.find({ userId });
+    const orders = await this.orderModel.find({ userId }).populate('userId');
     if (!orders) throw new NotFoundException('Order not found');
 
     return orders;
   }
-  async updateStatus(status: string, id: string): Promise<Order> {
-    const VALID_STATUSES = ['NOTPAY', 'PAID', 'EXPIRES','CANCEL'];
-    
+  async updateOrder(id: string, update: UpdateOrderDTO): Promise<Order> {
+    // const VALID_STATUSES = ['NOTPAY', 'PAID', 'EXPIRES', 'CANCEL'];
 
-    if(!VALID_STATUSES.includes(status))
-    {
-      throw new NotFoundException(`Not found status`);
-    }
-    const objectId = new Types.ObjectId(id);
-    const updatedOrder = await this.orderModel.findByIdAndUpdate(
-      objectId, 
-      { status}, 
-      { new: true } 
+    // console.log(update);
+
+    // if (!VALID_STATUSES.includes(update.status)) {
+    //   throw new NotFoundException(`Not found status`);
+    // }
+    console.log(id, update);
+    const order = await this.orderModel.findById(id);
+    if (!order) throw new NotFoundException('No order found');
+
+    const orderUpdated = await order.updateOne(
+      {
+        status: update.status,
+        orderCode: update.orderCode,
+      },
+      { new: true },
     );
 
-    if (!updatedOrder) {
-      throw new NotFoundException(`Order with id ${id} not found`);
-    }
-
-    return updatedOrder;
+    return orderUpdated;
   }
 
   //async update(updateProductDto: ProductDto, id:string): Promise<Product> {
@@ -220,9 +221,6 @@ export class OrderService {
       path: 'userId paymentId',
       select: 'username email phoneNumber value',
     });
-  }
-  async getAllOrder(): Promise<Order[]> {
-    return await this.orderModel.find().populate('userId paymentId');
   }
 
   async getOrderById(id: string): Promise<Order> {
